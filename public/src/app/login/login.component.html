@@ -2,15 +2,16 @@
   <!--{{ name | json }}-->
   <h2>Welcome to Dojo Pool</h2>
   <br>
+  {{ reg_user | json }}
   <div class="row">
-    <div class="col-md-6 col-md-offset-3">
-      <form #signupForm="ngForm" (submit)="getUser(signupForm)">
+    <div class="col-md-4 col-md-offset-2">
+      <form #signupForm="ngForm" (submit)="newUser(signupForm)">
         <div class="row">
           <div class="col-md-6">
             <div class="form-group">
               <label class="sr-only" for="first_name">First Name</label>
               <input type="text" name="first_name" placeholder="First Name" class="form-control"
-              [(ngModel)] = "user.first_name"
+              [(ngModel)] = "reg_user.first_name"
               required
               minlength="3"
               #firstname="ngModel"
@@ -26,7 +27,7 @@
             <div class="form-group">
               <label class="sr-only" for="last_name">Last Name</label>
               <input type="text" name="last_name" placeholder="Last Name" class="form-control"
-              [(ngModel)] = "user.last_name"
+              [(ngModel)] = "reg_user.last_name"
               required
               minlength="3"
               #lastname="ngModel"
@@ -41,7 +42,7 @@
         <div class="form-group">
           <label class="sr-only" for="phone_number">Phone Number</label>
           <input type="text" name="phone_number"  placeholder="(555) 555-5555" class="form-control"
-          [(ngModel)]="user.phone_number"
+          [(ngModel)]="reg_user.phone_number"
           required
           #phone="ngModel"
           >
@@ -53,7 +54,7 @@
         <div class="form-group">
           <label class="sr-only" for="email">Email</label>
           <input type="text" name="email"  placeholder="Email" class="form-control"
-          [(ngModel)]="user.email"
+          [(ngModel)]="reg_user.email"
           required
           pattern='^[a-zA-Z0-9.+_-]+@[a-zA-Z0-9._-]+\.[a-zA-Z]+$'
           #email="ngModel"
@@ -67,7 +68,7 @@
         <div class="form-group">
           <label class="sr-only" for="pwd">Password</label>
           <input type="password" name="password"  placeholder="Password" class="form-control"
-          [(ngModel)]="user.password"
+          [(ngModel)]="reg_user.password"
           required
           minlength="8"
           pattern="^([a-zA-Z0-9@*#]{8,15})$" 
@@ -81,7 +82,42 @@
                 <p *ngIf='pwd.errors.minlength'>Password must be at least 8 characters</p>
         </div>
 
-        <button [disabled]="!signForm.valid" type="submit" class="btn btn-success" style="width:20%">Sign Up</button>
+        <button [disabled]="!signupForm.valid" type="submit" class="btn btn-success" style="width:20%">Sign Up</button>
+      </form>
+    </div>
+    <div class="col-md-4">
+      <form #loginForm="ngForm" (submit)="getUser(loginForm)">
+        <div class="form-group">
+          <label class="sr-only" for="email">Email</label>
+          <input type="text" name="email"  placeholder="Email" class="form-control"
+          [(ngModel)]="login_user.email"
+          required
+          pattern='^[a-zA-Z0-9.+_-]+@[a-zA-Z0-9._-]+\.[a-zA-Z]+$'
+          #loginemail="ngModel"
+          >
+        </div>
+        <div class="red" *ngIf='loginemail.errors && ( loginemail.touched || signupForm.submitted)'>
+                <p *ngIf='loginemail.errors.required'>Email is required</p>
+                <p *ngIf='loginemail.errors.pattern'>Email must be valid</p>
+        </div>
+
+        <div class="form-group">
+          <label class="sr-only" for="pwd">Password</label>
+          <input type="password" name="password"  placeholder="Password" class="form-control"
+          [(ngModel)]="login_user.password"
+          required
+          minlength="8"
+          pattern="^([a-zA-Z0-9@*#]{8,15})$" 
+          #loginpwd="ngModel"
+          >
+        </div>
+
+        <div class="red" *ngIf='loginpwd.errors && ( loginpwd.touched || loginForm.submitted)'>
+                <p *ngIf='loginpwd.errors.required'>Password is required</p>
+                <p *ngIf='loginpwd.errors.pattern'>Password must be valid</p>
+                <p *ngIf='loginpwd.errors.minlength'>Password must be at least 8 characters</p>
+        </div>
+
       </form>
     </div>
   </div>

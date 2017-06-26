@@ -10,10 +10,15 @@ import { Router } from '@angular/router'
   styleUrls: ['./login.component.css']
 })
 export class LoginComponent implements OnInit {
-  user={
+  reg_user={
     first_name   : '',
     last_name    : '',
     phone_number : '',
+    email        : '',
+    password     : '',
+  }
+
+  login_user={
     email        : '',
     password     : '',
   }
@@ -27,17 +32,17 @@ export class LoginComponent implements OnInit {
   ngOnInit() {
   }
 
-  getUser(form){
+  newUser(form){
     if(!form.valid){
       return;
     }
-    this._httpServide.getOneUser(this.user)
+    this._httpServide.getOneUser(this.reg_user)
     .then(userfinded=>{
       if(userfinded != null){
         console.log("fined: ", userfinded);
         this._cookieService.put("loginuserName", userfinded.name);
         this._cookieService.put("loginuserId", userfinded._id);
-        this.user={
+        this.reg_user={
           first_name   :'',
           last_name    : '',
           phone_number : '',
@@ -47,12 +52,12 @@ export class LoginComponent implements OnInit {
         form.resetForm();
         this._router.navigate(['/dashboard']);
       }else{
-        this._httpServide.createUser(this.user)
+        this._httpServide.createUser(this.reg_user)
         .then(usercreated=>{
           console.log("created: ", usercreated);
           this._cookieService.put("loginuserName", usercreated.name);
           this._cookieService.put("loginuserId", usercreated._id);
-          this.user={
+          this.reg_user={
           first_name   :'',
           last_name    : '',
           phone_number : '',

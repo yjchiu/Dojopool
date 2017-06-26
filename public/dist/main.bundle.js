@@ -236,7 +236,7 @@ module.exports = module.exports.toString();
 /***/ "../../../../../src/app/login/login.component.html":
 /***/ (function(module, exports) {
 
-module.exports = "<div id=\"sign_up_component\">\n  <!--{{ name | json }}-->\n  <h2>Welcome to Dojo Pool</h2>\n  <br>\n  <div class=\"row\">\n    <div class=\"col-md-6 col-md-offset-3\">\n      <form #signupForm=\"ngForm\" (submit)=\"getUser(signupForm)\">\n        <div class=\"row\">\n          <div class=\"col-md-6\">\n            <div class=\"form-group\">\n              <label class=\"sr-only\" for=\"first_name\">First Name</label>\n              <input type=\"text\" name=\"first_name\" placeholder=\"First Name\" class=\"form-control\"\n              [(ngModel)] = \"user.first_name\"\n              required\n              minlength=\"3\"\n              #firstname=\"ngModel\"\n              >\n            </div>\n            <div class=\"red\" *ngIf='firstname.errors && ( firstname.touched || signupForm.submitted)'>\n                <p *ngIf='firstname.errors.required'>First name is required</p>\n                <p *ngIf='firstname.errors.minlength'>First name must be at least 3 characters.</p>\n            </div>\n          </div>\n\n          <div class=\"col-md-6\">\n            <div class=\"form-group\">\n              <label class=\"sr-only\" for=\"last_name\">Last Name</label>\n              <input type=\"text\" name=\"last_name\" placeholder=\"Last Name\" class=\"form-control\"\n              [(ngModel)] = \"user.last_name\"\n              required\n              minlength=\"3\"\n              #lastname=\"ngModel\"\n              >\n            </div>\n            <div class=\"red\" *ngIf='lastname.errors && ( lastname.touched || signupForm.submitted)'>\n                <p *ngIf='lastname.errors.required'>Last name is required</p>\n                <p *ngIf='lastname.errors.minlength'>Last name must be at least 3 characters.</p>\n            </div>\n          </div>\n        </div>\n        <div class=\"form-group\">\n          <label class=\"sr-only\" for=\"phone_number\">Phone Number</label>\n          <input type=\"text\" name=\"phone_number\"  placeholder=\"(555) 555-5555\" class=\"form-control\"\n          [(ngModel)]=\"user.phone_number\"\n          required\n          #phone=\"ngModel\"\n          >\n        </div>\n        <div class=\"red\" *ngIf='phone.errors && ( phone.touched || signupForm.submitted)'>\n                <p *ngIf='phone.errors.required'>Phone is required</p>\n        </div>\n\n        <div class=\"form-group\">\n          <label class=\"sr-only\" for=\"email\">Email</label>\n          <input type=\"text\" name=\"email\"  placeholder=\"Email\" class=\"form-control\"\n          [(ngModel)]=\"user.email\"\n          required\n          pattern='^[a-zA-Z0-9.+_-]+@[a-zA-Z0-9._-]+\\.[a-zA-Z]+$'\n          #email=\"ngModel\"\n          >\n        </div>\n        <div class=\"red\" *ngIf='email.errors && ( email.touched || signupForm.submitted)'>\n                <p *ngIf='email.errors.required'>Email is required</p>\n                <p *ngIf='email.errors.pattern'>Email must be valid</p>\n        </div>\n\n        <div class=\"form-group\">\n          <label class=\"sr-only\" for=\"pwd\">Password</label>\n          <input type=\"password\" name=\"password\"  placeholder=\"Password\" class=\"form-control\"\n          [(ngModel)]=\"user.password\"\n          required\n          minlength=\"8\"\n          pattern=\"^([a-zA-Z0-9@*#]{8,15})$\" \n          #pwd=\"ngModel\"\n          >\n        </div>\n        <p>*Password must be at least 8 characters</p>\n        <div class=\"red\" *ngIf='pwd.errors && ( pwd.touched || signupForm.submitted)'>\n                <p *ngIf='pwd.errors.required'>Password is required</p>\n                <p *ngIf='pwd.errors.pattern'>Password must be valid</p>\n                <p *ngIf='pwd.errors.minlength'>Password must be at least 8 characters</p>\n        </div>\n\n        <button [disabled]=\"!signForm.valid\" type=\"submit\" class=\"btn btn-success\" style=\"width:20%\">Sign Up</button>\n      </form>\n    </div>\n  </div>\n</div>\n"
+module.exports = "<div id=\"sign_up_component\">\n  <!--{{ name | json }}-->\n  <h2>Welcome to Dojo Pool</h2>\n  <br>\n  {{ reg_user | json }}\n  <div class=\"row\">\n    <div class=\"col-md-4 col-md-offset-2\">\n      <form #signupForm=\"ngForm\" (submit)=\"newUser(signupForm)\">\n        <div class=\"row\">\n          <div class=\"col-md-6\">\n            <div class=\"form-group\">\n              <label class=\"sr-only\" for=\"first_name\">First Name</label>\n              <input type=\"text\" name=\"first_name\" placeholder=\"First Name\" class=\"form-control\"\n              [(ngModel)] = \"reg_user.first_name\"\n              required\n              minlength=\"3\"\n              #firstname=\"ngModel\"\n              >\n            </div>\n            <div class=\"red\" *ngIf='firstname.errors && ( firstname.touched || signupForm.submitted)'>\n                <p *ngIf='firstname.errors.required'>First name is required</p>\n                <p *ngIf='firstname.errors.minlength'>First name must be at least 3 characters.</p>\n            </div>\n          </div>\n\n          <div class=\"col-md-6\">\n            <div class=\"form-group\">\n              <label class=\"sr-only\" for=\"last_name\">Last Name</label>\n              <input type=\"text\" name=\"last_name\" placeholder=\"Last Name\" class=\"form-control\"\n              [(ngModel)] = \"reg_user.last_name\"\n              required\n              minlength=\"3\"\n              #lastname=\"ngModel\"\n              >\n            </div>\n            <div class=\"red\" *ngIf='lastname.errors && ( lastname.touched || signupForm.submitted)'>\n                <p *ngIf='lastname.errors.required'>Last name is required</p>\n                <p *ngIf='lastname.errors.minlength'>Last name must be at least 3 characters.</p>\n            </div>\n          </div>\n        </div>\n        <div class=\"form-group\">\n          <label class=\"sr-only\" for=\"phone_number\">Phone Number</label>\n          <input type=\"text\" name=\"phone_number\"  placeholder=\"(555) 555-5555\" class=\"form-control\"\n          [(ngModel)]=\"reg_user.phone_number\"\n          required\n          #phone=\"ngModel\"\n          >\n        </div>\n        <div class=\"red\" *ngIf='phone.errors && ( phone.touched || signupForm.submitted)'>\n                <p *ngIf='phone.errors.required'>Phone is required</p>\n        </div>\n\n        <div class=\"form-group\">\n          <label class=\"sr-only\" for=\"email\">Email</label>\n          <input type=\"text\" name=\"email\"  placeholder=\"Email\" class=\"form-control\"\n          [(ngModel)]=\"reg_user.email\"\n          required\n          pattern='^[a-zA-Z0-9.+_-]+@[a-zA-Z0-9._-]+\\.[a-zA-Z]+$'\n          #email=\"ngModel\"\n          >\n        </div>\n        <div class=\"red\" *ngIf='email.errors && ( email.touched || signupForm.submitted)'>\n                <p *ngIf='email.errors.required'>Email is required</p>\n                <p *ngIf='email.errors.pattern'>Email must be valid</p>\n        </div>\n\n        <div class=\"form-group\">\n          <label class=\"sr-only\" for=\"pwd\">Password</label>\n          <input type=\"password\" name=\"password\"  placeholder=\"Password\" class=\"form-control\"\n          [(ngModel)]=\"reg_user.password\"\n          required\n          minlength=\"8\"\n          pattern=\"^([a-zA-Z0-9@*#]{8,15})$\" \n          #pwd=\"ngModel\"\n          >\n        </div>\n        <p>*Password must be at least 8 characters</p>\n        <div class=\"red\" *ngIf='pwd.errors && ( pwd.touched || signupForm.submitted)'>\n                <p *ngIf='pwd.errors.required'>Password is required</p>\n                <p *ngIf='pwd.errors.pattern'>Password must be valid</p>\n                <p *ngIf='pwd.errors.minlength'>Password must be at least 8 characters</p>\n        </div>\n\n        <button [disabled]=\"!signupForm.valid\" type=\"submit\" class=\"btn btn-success\" style=\"width:20%\">Sign Up</button>\n      </form>\n    </div>\n    <div class=\"col-md-4\">\n      <form #loginForm=\"ngForm\" (submit)=\"getUser(loginForm)\">\n        <div class=\"form-group\">\n          <label class=\"sr-only\" for=\"email\">Email</label>\n          <input type=\"text\" name=\"email\"  placeholder=\"Email\" class=\"form-control\"\n          [(ngModel)]=\"login_user.email\"\n          required\n          pattern='^[a-zA-Z0-9.+_-]+@[a-zA-Z0-9._-]+\\.[a-zA-Z]+$'\n          #loginemail=\"ngModel\"\n          >\n        </div>\n        <div class=\"red\" *ngIf='loginemail.errors && ( loginemail.touched || signupForm.submitted)'>\n                <p *ngIf='loginemail.errors.required'>Email is required</p>\n                <p *ngIf='loginemail.errors.pattern'>Email must be valid</p>\n        </div>\n\n        <div class=\"form-group\">\n          <label class=\"sr-only\" for=\"pwd\">Password</label>\n          <input type=\"password\" name=\"password\"  placeholder=\"Password\" class=\"form-control\"\n          [(ngModel)]=\"login_user.password\"\n          required\n          minlength=\"8\"\n          pattern=\"^([a-zA-Z0-9@*#]{8,15})$\" \n          #loginpwd=\"ngModel\"\n          >\n        </div>\n\n        <div class=\"red\" *ngIf='loginpwd.errors && ( loginpwd.touched || loginForm.submitted)'>\n                <p *ngIf='loginpwd.errors.required'>Password is required</p>\n                <p *ngIf='loginpwd.errors.pattern'>Password must be valid</p>\n                <p *ngIf='loginpwd.errors.minlength'>Password must be at least 8 characters</p>\n        </div>\n\n      </form>\n    </div>\n  </div>\n</div>\n"
 
 /***/ }),
 
@@ -268,10 +268,14 @@ var LoginComponent = (function () {
         this._httpServide = _httpServide;
         this._cookieService = _cookieService;
         this._router = _router;
-        this.user = {
+        this.reg_user = {
             first_name: '',
             last_name: '',
             phone_number: '',
+            email: '',
+            password: '',
+        };
+        this.login_user = {
             email: '',
             password: '',
         };
@@ -281,18 +285,18 @@ var LoginComponent = (function () {
     }
     LoginComponent.prototype.ngOnInit = function () {
     };
-    LoginComponent.prototype.getUser = function (form) {
+    LoginComponent.prototype.newUser = function (form) {
         var _this = this;
         if (!form.valid) {
             return;
         }
-        this._httpServide.getOneUser(this.user)
+        this._httpServide.getOneUser(this.reg_user)
             .then(function (userfinded) {
             if (userfinded != null) {
                 console.log("fined: ", userfinded);
                 _this._cookieService.put("loginuserName", userfinded.name);
                 _this._cookieService.put("loginuserId", userfinded._id);
-                _this.user = {
+                _this.reg_user = {
                     first_name: '',
                     last_name: '',
                     phone_number: '',
@@ -303,12 +307,12 @@ var LoginComponent = (function () {
                 _this._router.navigate(['/dashboard']);
             }
             else {
-                _this._httpServide.createUser(_this.user)
+                _this._httpServide.createUser(_this.reg_user)
                     .then(function (usercreated) {
                     console.log("created: ", usercreated);
                     _this._cookieService.put("loginuserName", usercreated.name);
                     _this._cookieService.put("loginuserId", usercreated._id);
-                    _this.user = {
+                    _this.reg_user = {
                         first_name: '',
                         last_name: '',
                         phone_number: '',
