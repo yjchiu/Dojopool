@@ -8,12 +8,12 @@ declare var google : any;
 declare var navigator : any;
 
 @Component({
-  selector: 'app-dashboard',
-  templateUrl: './dashboard.component.html',
-  styleUrls: ['./dashboard.component.css']
+  selector: 'app-shotgun',
+  templateUrl: './shotgun.component.html',
+  styleUrls: ['./shotgun.component.css']
 })
 
-export class DashboardComponent implements OnInit {
+export class ShotgunComponent implements OnInit {
   name='';
 
   cur_latitude = 0.0;
@@ -36,10 +36,7 @@ export class DashboardComponent implements OnInit {
     if(!this._cookieService.get("loginuserName")){
       this._route.navigate(['/']);
     }
-    console.log(" what cookie saved ",this._cookieService.get("loginuserName"));
     this.name = this._cookieService.get("loginuserName");
-    console.log(" what cookie saved 2: ", this.name);
-    
   }
 
   ngOnInit() {
