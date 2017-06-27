@@ -1,4 +1,6 @@
 var usercontroller = require('../controllers/users.js');
+var shotguncontroller = require('../controllers/shotguns.js');
+
 var path = require('path');
 module.exports = function(app) {
    // Routes

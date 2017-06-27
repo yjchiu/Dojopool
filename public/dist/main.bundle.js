@@ -21,6 +21,8 @@ webpackEmptyContext.id = "../../../../../src async recursive";
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__angular_router__ = __webpack_require__("../../../router/@angular/router.es5.js");
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__login_login_component__ = __webpack_require__("../../../../../src/app/login/login.component.ts");
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__dashboard_dashboard_component__ = __webpack_require__("../../../../../src/app/dashboard/dashboard.component.ts");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__shotgun_shotgun_component__ = __webpack_require__("../../../../../src/app/shotgun/shotgun.component.ts");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__driver_driver_component__ = __webpack_require__("../../../../../src/app/driver/driver.component.ts");
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return AppRoutingModule; });
 var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
@@ -32,9 +34,13 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
 
 
 
+
+
 var routes = [
     { path: '', pathMatch: 'full', component: __WEBPACK_IMPORTED_MODULE_2__login_login_component__["a" /* LoginComponent */] },
     { path: 'dashboard', component: __WEBPACK_IMPORTED_MODULE_3__dashboard_dashboard_component__["a" /* DashboardComponent */] },
+    { path: 'shotgun', component: __WEBPACK_IMPORTED_MODULE_4__shotgun_shotgun_component__["a" /* ShotgunComponent */] },
+    { path: 'driver', component: __WEBPACK_IMPORTED_MODULE_5__driver_driver_component__["a" /* DriverComponent */] },
     { path: '**', redirectTo: '' },
 ];
 var AppRoutingModule = (function () {
@@ -124,6 +130,8 @@ AppComponent = __decorate([
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_8__app_component__ = __webpack_require__("../../../../../src/app/app.component.ts");
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_9__login_login_component__ = __webpack_require__("../../../../../src/app/login/login.component.ts");
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_10__dashboard_dashboard_component__ = __webpack_require__("../../../../../src/app/dashboard/dashboard.component.ts");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_11__driver_driver_component__ = __webpack_require__("../../../../../src/app/driver/driver.component.ts");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_12__shotgun_shotgun_component__ = __webpack_require__("../../../../../src/app/shotgun/shotgun.component.ts");
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return AppModule; });
 var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
@@ -131,6 +139,8 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
     else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
     return c > 3 && r && Object.defineProperty(target, key, r), r;
 };
+
+
 
 
 
@@ -153,6 +163,8 @@ AppModule = __decorate([
             __WEBPACK_IMPORTED_MODULE_8__app_component__["a" /* AppComponent */],
             __WEBPACK_IMPORTED_MODULE_9__login_login_component__["a" /* LoginComponent */],
             __WEBPACK_IMPORTED_MODULE_10__dashboard_dashboard_component__["a" /* DashboardComponent */],
+            __WEBPACK_IMPORTED_MODULE_11__driver_driver_component__["a" /* DriverComponent */],
+            __WEBPACK_IMPORTED_MODULE_12__shotgun_shotgun_component__["a" /* ShotgunComponent */],
         ],
         imports: [
             __WEBPACK_IMPORTED_MODULE_0__angular_platform_browser__["a" /* BrowserModule */],
@@ -195,7 +207,7 @@ module.exports = module.exports.toString();
 /***/ "../../../../../src/app/dashboard/dashboard.component.html":
 /***/ (function(module, exports) {
 
-module.exports = "<div id=\"dashboard_container\">\n  <h1>Hello, {{ name }}</h1>\n  <a (click)=\"logout()\">Log out</a>\n{{ start }}{{ end }}\n<!--<div *ngIf = \"duration\">\n  <p>duration</p>\n  {{duration | json}}\n</div>-->\n<p>Estimate time: {{ duration }}</p>\n    <div class=\"input_container\">\n          <div class=\"form-group\">\n            <input placeholder=\"start\" autocorrect=\"off\" autocapitalize=\"off\" spellcheck=\"off\" type=\"text\" class=\"form-control\" #startsearch [formControl]=\"searchControl\">\n          </div>\n          <div class=\"form-group\">\n            <input placeholder=\"destination\" autocorrect=\"off\" autocapitalize=\"off\" spellcheck=\"off\" type=\"text\" class=\"form-control\" #endsearch [formControl]=\"searchControl\">\n          </div>\n          <!--<agm-map [latitude]=\"latitude\" [longitude]=\"longitude\" [scrollwheel]=\"false\" [zoom]=\"zoom\">\n            <agm-marker [latitude]=\"latitude\" [longitude]=\"longitude\"></agm-marker>\n          </agm-map>-->\n          <button class=\"btn btn-primary\" (click)=\"route()\">Need a Ride</button>\n    </div>\n\n    <div id=\"map\"></div>\n</div>\n\n"
+module.exports = "<div id=\"dashboard_container\">\n  <h1>Hello, {{ name }}</h1>\n  <a (click)=\"logout()\">Log out</a>\n{{ start }}{{ end }}\n<!--<div *ngIf = \"duration\">\n  <p>duration</p>\n  {{duration | json}}\n</div>-->\n<p>Estimate time: {{ duration }}</p>\n    <div class=\"input_container\">\n          <div class=\"form-group\">\n            <input placeholder=\"start\" autocorrect=\"off\" autocapitalize=\"off\" spellcheck=\"off\" type=\"text\" class=\"form-control\" #startsearch [formControl]=\"searchControl\">\n          </div>\n          <div class=\"form-group\">\n            <input placeholder=\"destination\" autocorrect=\"off\" autocapitalize=\"off\" spellcheck=\"off\" type=\"text\" class=\"form-control\" #endsearch [formControl]=\"searchControl\">\n          </div>\n          <!--<agm-map [latitude]=\"latitude\" [longitude]=\"longitude\" [scrollwheel]=\"false\" [zoom]=\"zoom\">\n            <agm-marker [latitude]=\"latitude\" [longitude]=\"longitude\"></agm-marker>\n          </agm-map>-->\n          <button class=\"btn btn-primary\" (click)=\"route()\">Need a Ride</button>\n    </div>\n    <p>TEST</p>\n    <div id=\"map\"></div>\n</div>\n\n<a [routerLink]=\"['/driver']\">I'm a driver.</a> | \n<a [routerLink]=\"['/shotgun']\">I need a driver.</a>\n"
 
 /***/ }),
 
@@ -239,7 +251,9 @@ var DashboardComponent = (function () {
         if (!this._cookieService.get("loginuserName")) {
             this._route.navigate(['/']);
         }
+        console.log(" what cookie saved ", this._cookieService.get("loginuserName"));
         this.name = this._cookieService.get("loginuserName");
+        console.log(" what cookie saved 2: ", this.name);
     }
     DashboardComponent.prototype.ngOnInit = function () {
         var _this = this;
@@ -350,6 +364,67 @@ DashboardComponent = __decorate([
 
 var _a, _b, _c, _d, _e, _f;
 //# sourceMappingURL=dashboard.component.js.map
+
+/***/ }),
+
+/***/ "../../../../../src/app/driver/driver.component.css":
+/***/ (function(module, exports, __webpack_require__) {
+
+exports = module.exports = __webpack_require__("../../../../css-loader/lib/css-base.js")(false);
+// imports
+
+
+// module
+exports.push([module.i, "", ""]);
+
+// exports
+
+
+/*** EXPORTS FROM exports-loader ***/
+module.exports = module.exports.toString();
+
+/***/ }),
+
+/***/ "../../../../../src/app/driver/driver.component.html":
+/***/ (function(module, exports) {
+
+module.exports = "<p>\n  driver works!\n</p>\n"
+
+/***/ }),
+
+/***/ "../../../../../src/app/driver/driver.component.ts":
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__angular_core__ = __webpack_require__("../../../core/@angular/core.es5.js");
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return DriverComponent; });
+var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
+    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
+    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
+    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
+    return c > 3 && r && Object.defineProperty(target, key, r), r;
+};
+var __metadata = (this && this.__metadata) || function (k, v) {
+    if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
+};
+
+var DriverComponent = (function () {
+    function DriverComponent() {
+    }
+    DriverComponent.prototype.ngOnInit = function () {
+    };
+    return DriverComponent;
+}());
+DriverComponent = __decorate([
+    __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["Component"])({
+        selector: 'app-driver',
+        template: __webpack_require__("../../../../../src/app/driver/driver.component.html"),
+        styles: [__webpack_require__("../../../../../src/app/driver/driver.component.css")]
+    }),
+    __metadata("design:paramtypes", [])
+], DriverComponent);
+
+//# sourceMappingURL=driver.component.js.map
 
 /***/ }),
 
@@ -533,6 +608,185 @@ LoginComponent = __decorate([
 
 var _a, _b, _c;
 //# sourceMappingURL=login.component.js.map
+
+/***/ }),
+
+/***/ "../../../../../src/app/shotgun/shotgun.component.css":
+/***/ (function(module, exports, __webpack_require__) {
+
+exports = module.exports = __webpack_require__("../../../../css-loader/lib/css-base.js")(false);
+// imports
+
+
+// module
+exports.push([module.i, "#map {\n        height: 300px;\n        width: 50%;\n}\n\n.input_container{\n        width: 50%;\n        margin-bottom: 20px;\n}", ""]);
+
+// exports
+
+
+/*** EXPORTS FROM exports-loader ***/
+module.exports = module.exports.toString();
+
+/***/ }),
+
+/***/ "../../../../../src/app/shotgun/shotgun.component.html":
+/***/ (function(module, exports) {
+
+module.exports = "<div id=\"dashboard_container\">\n  <h1>Hello, {{ name }}</h1>\n  <a (click)=\"logout()\">Log out</a>\n{{ start }}{{ end }}\n<!--<div *ngIf = \"duration\">\n  <p>duration</p>\n  {{duration | json}}\n</div>-->\n<p>Estimate time: {{ duration }}</p>\n    <div class=\"input_container\">\n          <div class=\"form-group\">\n            <input placeholder=\"start\" autocorrect=\"off\" autocapitalize=\"off\" spellcheck=\"off\" type=\"text\" class=\"form-control\" #startsearch [formControl]=\"searchControl\">\n          </div>\n          <div class=\"form-group\">\n            <input placeholder=\"destination\" autocorrect=\"off\" autocapitalize=\"off\" spellcheck=\"off\" type=\"text\" class=\"form-control\" #endsearch [formControl]=\"searchControl\">\n          </div>\n          <!--<agm-map [latitude]=\"latitude\" [longitude]=\"longitude\" [scrollwheel]=\"false\" [zoom]=\"zoom\">\n            <agm-marker [latitude]=\"latitude\" [longitude]=\"longitude\"></agm-marker>\n          </agm-map>-->\n          <button class=\"btn btn-primary\" (click)=\"route()\">Need a Ride</button>\n    </div>\n    <div id=\"map\"></div>\n</div>\n\n"
+
+/***/ }),
+
+/***/ "../../../../../src/app/shotgun/shotgun.component.ts":
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__angular_core__ = __webpack_require__("../../../core/@angular/core.es5.js");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__angular_forms__ = __webpack_require__("../../../forms/@angular/forms.es5.js");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__agm_core__ = __webpack_require__("../../../../@agm/core/index.js");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3_angular2_cookie_services_cookies_service__ = __webpack_require__("../../../../angular2-cookie/services/cookies.service.js");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3_angular2_cookie_services_cookies_service___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_3_angular2_cookie_services_cookies_service__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__angular_router__ = __webpack_require__("../../../router/@angular/router.es5.js");
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return ShotgunComponent; });
+var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
+    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
+    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
+    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
+    return c > 3 && r && Object.defineProperty(target, key, r), r;
+};
+var __metadata = (this && this.__metadata) || function (k, v) {
+    if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
+};
+
+
+
+
+
+var ShotgunComponent = (function () {
+    function ShotgunComponent(mapsAPILoader, ngZone, _cookieService, _route) {
+        this.mapsAPILoader = mapsAPILoader;
+        this.ngZone = ngZone;
+        this._cookieService = _cookieService;
+        this._route = _route;
+        this.name = '';
+        this.cur_latitude = 0.0;
+        this.cur_lonitute = 0.0;
+        this.start = '';
+        this.end = '';
+        this.duration = '';
+        if (!this._cookieService.get("loginuserName")) {
+            this._route.navigate(['/']);
+        }
+        this.name = this._cookieService.get("loginuserName");
+    }
+    ShotgunComponent.prototype.ngOnInit = function () {
+        var _this = this;
+        //create search FormControl
+        this.searchControl = new __WEBPACK_IMPORTED_MODULE_1__angular_forms__["c" /* FormControl */]();
+        //set current position
+        this.setCurrentPosition();
+        //load Places Autocomplete
+        this.mapsAPILoader.load()
+            .then(function () {
+            var startautocomplete = new google.maps.places.Autocomplete(_this.startsearchElementRef.nativeElement, {
+                types: ["address"]
+            });
+            var endautocomplete = new google.maps.places.Autocomplete(_this.endsearchElementRef.nativeElement, {
+                types: ["address"]
+            });
+            startautocomplete.addListener("place_changed", function () {
+                _this.ngZone.run(function () {
+                    //get the place result
+                    var place = startautocomplete.getPlace();
+                    //verify result
+                    if (place.geometry === undefined || place.geometry === null) {
+                        return;
+                    }
+                    console.log("place", place);
+                    if (place) {
+                        _this.start = place.formatted_address;
+                    }
+                });
+            });
+            endautocomplete.addListener("place_changed", function () {
+                _this.ngZone.run(function () {
+                    //get the place result
+                    var place = endautocomplete.getPlace();
+                    //verify result
+                    if (place.geometry === undefined || place.geometry === null) {
+                        return;
+                    }
+                    console.log("place", place);
+                    _this.end = place.formatted_address;
+                });
+            });
+        });
+    };
+    ShotgunComponent.prototype.setCurrentPosition = function () {
+        var _this = this;
+        if (navigator.geolocation) {
+            navigator.geolocation.getCurrentPosition(function (data) {
+                console.log("current location:", data);
+                _this.cur_latitude = data.coords.latitude;
+                _this.cur_lonitute = data.coords.longitude;
+                _this.start = new google.maps.LatLng(_this.cur_latitude, _this.cur_lonitute);
+                var map = new google.maps.Map(document.getElementById('map'), {
+                    zoom: 15,
+                    center: { lat: data.coords.latitude, lng: data.coords.longitude }
+                });
+                var marker = new google.maps.Marker({
+                    position: { lat: data.coords.latitude, lng: data.coords.longitude },
+                    map: map
+                });
+            });
+        }
+    };
+    ShotgunComponent.prototype.route = function () {
+        // console.log(this.start, this.end);
+        var self = this; ///// 
+        console.log(self);
+        var directionsService = new google.maps.DirectionsService;
+        var directionsDisplay = new google.maps.DirectionsRenderer;
+        var map = new google.maps.Map(document.getElementById('map'), {
+            zoom: 7,
+            center: { lat: this.cur_latitude, lng: this.cur_lonitute },
+        });
+        directionsDisplay.setMap(map);
+        directionsService.route({
+            origin: this.start,
+            destination: this.end,
+            travelMode: 'DRIVING'
+        }, function (res, status) {
+            console.log("response", res);
+            self.duration = res.routes[0].legs[0].duration.text;
+            console.log("dur", self.duration);
+            directionsDisplay.setDirections(res);
+        });
+    };
+    ShotgunComponent.prototype.logout = function () {
+        this._cookieService.remove('loginuserName');
+        this._route.navigate(['/']);
+    };
+    return ShotgunComponent;
+}());
+__decorate([
+    __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["ViewChild"])("startsearch"),
+    __metadata("design:type", typeof (_a = typeof __WEBPACK_IMPORTED_MODULE_0__angular_core__["ElementRef"] !== "undefined" && __WEBPACK_IMPORTED_MODULE_0__angular_core__["ElementRef"]) === "function" && _a || Object)
+], ShotgunComponent.prototype, "startsearchElementRef", void 0);
+__decorate([
+    __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["ViewChild"])("endsearch"),
+    __metadata("design:type", typeof (_b = typeof __WEBPACK_IMPORTED_MODULE_0__angular_core__["ElementRef"] !== "undefined" && __WEBPACK_IMPORTED_MODULE_0__angular_core__["ElementRef"]) === "function" && _b || Object)
+], ShotgunComponent.prototype, "endsearchElementRef", void 0);
+ShotgunComponent = __decorate([
+    __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["Component"])({
+        selector: 'app-shotgun',
+        template: __webpack_require__("../../../../../src/app/shotgun/shotgun.component.html"),
+        styles: [__webpack_require__("../../../../../src/app/shotgun/shotgun.component.css")]
+    }),
+    __metadata("design:paramtypes", [typeof (_c = typeof __WEBPACK_IMPORTED_MODULE_2__agm_core__["b" /* MapsAPILoader */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_2__agm_core__["b" /* MapsAPILoader */]) === "function" && _c || Object, typeof (_d = typeof __WEBPACK_IMPORTED_MODULE_0__angular_core__["NgZone"] !== "undefined" && __WEBPACK_IMPORTED_MODULE_0__angular_core__["NgZone"]) === "function" && _d || Object, typeof (_e = typeof __WEBPACK_IMPORTED_MODULE_3_angular2_cookie_services_cookies_service__["CookieService"] !== "undefined" && __WEBPACK_IMPORTED_MODULE_3_angular2_cookie_services_cookies_service__["CookieService"]) === "function" && _e || Object, typeof (_f = typeof __WEBPACK_IMPORTED_MODULE_4__angular_router__["b" /* Router */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_4__angular_router__["b" /* Router */]) === "function" && _f || Object])
+], ShotgunComponent);
+
+var _a, _b, _c, _d, _e, _f;
+//# sourceMappingURL=shotgun.component.js.map
 
 /***/ }),
 

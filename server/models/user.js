@@ -6,6 +6,7 @@ var UserSchema = new mongoose.Schema({
  phone_number : String,
  email        : String,
  password     : String,
-
+//  shotguns     : [{tpye: Schema.Types.ObjectId, ref:"Shotgun"}],
+//  drivers     : [{tpye: Schema.Types.ObjectId, ref:"Driver"}]
 }, {timestamps: true})
 var User = mongoose.model('User', UserSchema);

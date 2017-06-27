@@ -10,14 +10,16 @@ import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { LoginComponent } from './login/login.component';
 import { DashboardComponent } from './dashboard/dashboard.component';
-import { UserComponent } from './user/user.component';
+import { DriverComponent } from './driver/driver.component';
+import { ShotgunComponent } from './shotgun/shotgun.component';
 
 @NgModule({
   declarations: [
     AppComponent,
     LoginComponent,
     DashboardComponent,
-    UserComponent,
+    DriverComponent,
+    ShotgunComponent,
   ],
   imports: [
     BrowserModule,
