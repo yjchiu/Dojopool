@@ -1,7 +1,13 @@
 <div id="dashboard_container">
   <h1>Hello, {{ name }}</h1>
+  <a (click)="logout()">Log out</a>
 {{ start }}{{ end }}
-    <div class="inpit_container">
+<!--<div *ngIf = "duration">
+  <p>duration</p>
+  {{duration | json}}
+</div>-->
+<p>Estimate time: {{ duration }}</p>
+    <div class="input_container">
           <div class="form-group">
             <input placeholder="start" autocorrect="off" autocapitalize="off" spellcheck="off" type="text" class="form-control" #startsearch [formControl]="searchControl">
           </div>
@@ -11,10 +17,9 @@
           <!--<agm-map [latitude]="latitude" [longitude]="longitude" [scrollwheel]="false" [zoom]="zoom">
             <agm-marker [latitude]="latitude" [longitude]="longitude"></agm-marker>
           </agm-map>-->
-          <button class="btn btn-primary" (click)="route()">route</button>
+          <button class="btn btn-primary" (click)="route()">Need a Ride</button>
     </div>
 
     <div id="map"></div>
-
 </div>
 

@@ -25,7 +25,7 @@ module.exports = {
    findOne:function(req,res){
         // console.log(req);
         console.log('server side findOne function', req.body);
-        User.findOne({name:req.body.name})
+        User.findOne({email:req.body.email})
         .then(data=>{
             console.log("findOne")
             // console.log(data);

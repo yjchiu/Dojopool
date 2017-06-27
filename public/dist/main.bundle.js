@@ -182,7 +182,7 @@ exports = module.exports = __webpack_require__("../../../../css-loader/lib/css-b
 
 
 // module
-exports.push([module.i, "#map {\n        height: 300px;\n        width: 50%;\n}\n\n.inpit_container{\n        width: 50%;\n        margin-bottom: 20px;\n}", ""]);
+exports.push([module.i, "#map {\n        height: 300px;\n        width: 50%;\n}\n\n.input_container{\n        width: 50%;\n        margin-bottom: 20px;\n}", ""]);
 
 // exports
 
@@ -195,7 +195,7 @@ module.exports = module.exports.toString();
 /***/ "../../../../../src/app/dashboard/dashboard.component.html":
 /***/ (function(module, exports) {
 
-module.exports = "<div id=\"dashboard_container\">\n  <h1>Hello, {{ name }}</h1>\n{{ start }}{{ end }}\n    <div class=\"inpit_container\">\n          <div class=\"form-group\">\n            <input placeholder=\"start\" autocorrect=\"off\" autocapitalize=\"off\" spellcheck=\"off\" type=\"text\" class=\"form-control\" #startsearch [formControl]=\"searchControl\">\n          </div>\n          <div class=\"form-group\">\n            <input placeholder=\"destination\" autocorrect=\"off\" autocapitalize=\"off\" spellcheck=\"off\" type=\"text\" class=\"form-control\" #endsearch [formControl]=\"searchControl\">\n          </div>\n          <!--<agm-map [latitude]=\"latitude\" [longitude]=\"longitude\" [scrollwheel]=\"false\" [zoom]=\"zoom\">\n            <agm-marker [latitude]=\"latitude\" [longitude]=\"longitude\"></agm-marker>\n          </agm-map>-->\n          <button class=\"btn btn-primary\" (click)=\"route()\">route</button>\n    </div>\n\n    <div id=\"map\"></div>\n\n</div>\n\n"
+module.exports = "<div id=\"dashboard_container\">\n  <h1>Hello, {{ name }}</h1>\n  <a (click)=\"logout()\">Log out</a>\n{{ start }}{{ end }}\n<!--<div *ngIf = \"duration\">\n  <p>duration</p>\n  {{duration | json}}\n</div>-->\n<p>Estimate time: {{ duration }}</p>\n    <div class=\"input_container\">\n          <div class=\"form-group\">\n            <input placeholder=\"start\" autocorrect=\"off\" autocapitalize=\"off\" spellcheck=\"off\" type=\"text\" class=\"form-control\" #startsearch [formControl]=\"searchControl\">\n          </div>\n          <div class=\"form-group\">\n            <input placeholder=\"destination\" autocorrect=\"off\" autocapitalize=\"off\" spellcheck=\"off\" type=\"text\" class=\"form-control\" #endsearch [formControl]=\"searchControl\">\n          </div>\n          <!--<agm-map [latitude]=\"latitude\" [longitude]=\"longitude\" [scrollwheel]=\"false\" [zoom]=\"zoom\">\n            <agm-marker [latitude]=\"latitude\" [longitude]=\"longitude\"></agm-marker>\n          </agm-map>-->\n          <button class=\"btn btn-primary\" (click)=\"route()\">Need a Ride</button>\n    </div>\n\n    <div id=\"map\"></div>\n</div>\n\n"
 
 /***/ }),
 
@@ -235,6 +235,7 @@ var DashboardComponent = (function () {
         this.cur_lonitute = 0.0;
         this.start = '';
         this.end = '';
+        this.duration = '';
         if (!this._cookieService.get("loginuserName")) {
             this._route.navigate(['/']);
         }
@@ -264,7 +265,9 @@ var DashboardComponent = (function () {
                         return;
                     }
                     console.log("place", place);
-                    _this.start = place.formatted_address;
+                    if (place) {
+                        _this.start = place.formatted_address;
+                    }
                 });
             });
             endautocomplete.addListener("place_changed", function () {
@@ -288,6 +291,7 @@ var DashboardComponent = (function () {
                 console.log("current location:", data);
                 _this.cur_latitude = data.coords.latitude;
                 _this.cur_lonitute = data.coords.longitude;
+                _this.start = new google.maps.LatLng(_this.cur_latitude, _this.cur_lonitute);
                 var map = new google.maps.Map(document.getElementById('map'), {
                     zoom: 15,
                     center: { lat: data.coords.latitude, lng: data.coords.longitude }
@@ -301,6 +305,8 @@ var DashboardComponent = (function () {
     };
     DashboardComponent.prototype.route = function () {
         // console.log(this.start, this.end);
+        var self = this; ///// 
+        console.log(self);
         var directionsService = new google.maps.DirectionsService;
         var directionsDisplay = new google.maps.DirectionsRenderer;
         var map = new google.maps.Map(document.getElementById('map'), {
@@ -314,8 +320,14 @@ var DashboardComponent = (function () {
             travelMode: 'DRIVING'
         }, function (res, status) {
             console.log("response", res);
+            self.duration = res.routes[0].legs[0].duration.text;
+            console.log("dur", self.duration);
             directionsDisplay.setDirections(res);
         });
+    };
+    DashboardComponent.prototype.logout = function () {
+        this._cookieService.remove('loginuserName');
+        this._route.navigate(['/']);
     };
     return DashboardComponent;
 }());

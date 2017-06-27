@@ -15,12 +15,13 @@ declare var navigator : any;
 
 export class DashboardComponent implements OnInit {
   name='';
-  
+
   cur_latitude = 0.0;
   cur_lonitute = 0.0;
 
   start='';
   end='';
+  duration = '';
 
   public latitude: number;
   public longitude: number;
@@ -65,7 +66,9 @@ export class DashboardComponent implements OnInit {
             return;
           }
           console.log("place", place);
-          this.start = place.formatted_address;
+          if(place){
+            this.start = place.formatted_address;
+          }
         });
       });
 
@@ -92,6 +95,7 @@ export class DashboardComponent implements OnInit {
         console.log("current location:", data);
         this.cur_latitude = data.coords.latitude;
         this.cur_lonitute = data.coords.longitude;
+        this.start = new google.maps.LatLng(this.cur_latitude, this.cur_lonitute);
         var map = new google.maps.Map(document.getElementById('map'), {
           zoom: 15,
           center: {lat: data.coords.latitude, lng: data.coords.longitude}
@@ -106,6 +110,8 @@ export class DashboardComponent implements OnInit {
 
   route(){
     // console.log(this.start, this.end);
+    var self = this; ///// 
+    console.log(self);
     var directionsService = new google.maps.DirectionsService;
     var directionsDisplay = new google.maps.DirectionsRenderer;
     var map = new google.maps.Map(document.getElementById('map'), {
@@ -119,8 +125,17 @@ export class DashboardComponent implements OnInit {
       travelMode: 'DRIVING'
     }, function(res, status){
       console.log("response", res);
+      self.duration = res.routes[0].legs[0].duration.text;
+      console.log("dur", self.duration); 
       directionsDisplay.setDirections(res);
     })
+  }
+
+
+
+  logout(){
+    this._cookieService.remove('loginuserName');
+    this._route.navigate(['/']);
   }
 
 
