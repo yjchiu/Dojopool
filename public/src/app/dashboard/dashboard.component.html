@@ -1,0 +1,30 @@
+<div id="dashboard_container">
+  <h1>Dashboard works</h1>
+{{ start }}{{ end }}
+    <!--<input name="start" type="text"
+        placeholder="origin"
+        [(ngModel)]="start">
+
+    <input name="end" type="text"
+        placeholder="destination"
+        [(ngModel)]="end">-->
+
+
+    <div class="container">
+          <h1>Angular 2 + Google Maps Places Autocomplete</h1>
+          <div class="form-group">
+            <input placeholder="start" autocorrect="off" autocapitalize="off" spellcheck="off" type="text" class="form-control" #startsearch [formControl]="searchControl">
+          </div>
+          <div class="form-group">
+            <input placeholder="destination" autocorrect="off" autocapitalize="off" spellcheck="off" type="text" class="form-control" #endsearch [formControl]="searchControl">
+          </div>
+          <!--<agm-map [latitude]="latitude" [longitude]="longitude" [scrollwheel]="false" [zoom]="zoom">
+            <agm-marker [latitude]="latitude" [longitude]="longitude"></agm-marker>
+          </agm-map>-->
+          <button (click)="route()">route</button>
+    </div>
+
+    <div id="map"></div>
+
+</div>
+

@@ -23,6 +23,8 @@ export class LoginComponent implements OnInit {
     password     : '',
   }
 
+  isMember=true;
+
   constructor(private _httpServide:HttpService, private _cookieService:CookieService, private _router:Router) {
     if(this._cookieService.get("loginuserName")){
       this._router.navigate(['/dashboard']);
@@ -32,42 +34,45 @@ export class LoginComponent implements OnInit {
   ngOnInit() {
   }
 
+  notMember(){
+    this.isMember = false;
+  }
+
+  getUser(form){
+    if(!form.valid){
+      return;
+    }
+    this._httpServide.getOneUser(this.login_user)
+    .then(user=>{
+      console.log("Login user: ", user);
+      this._router.navigate(['/dashboard']);
+    })
+    .catch(err=>{
+      console.log("Login error: ", err);
+    })
+  }
+
   newUser(form){
     if(!form.valid){
       return;
     }
-    this._httpServide.getOneUser(this.reg_user)
-    .then(userfinded=>{
-      if(userfinded != null){
-        console.log("fined: ", userfinded);
-        this._cookieService.put("loginuserName", userfinded.name);
-        this._cookieService.put("loginuserId", userfinded._id);
-        this.reg_user={
-          first_name   :'',
-          last_name    : '',
-          phone_number : '',
-          email        : '',
-          password     : '',
-        }
-        form.resetForm();
-        this._router.navigate(['/dashboard']);
-      }else{
-        this._httpServide.createUser(this.reg_user)
-        .then(usercreated=>{
-          console.log("created: ", usercreated);
-          this._cookieService.put("loginuserName", usercreated.name);
-          this._cookieService.put("loginuserId", usercreated._id);
-          this.reg_user={
-          first_name   :'',
-          last_name    : '',
-          phone_number : '',
-          email        : '',
-          password     : '',
-          }
-          form.resetForm();
-          this._router.navigate(['/dashboard']);
-        })
+    this._httpServide.createUser(this.reg_user)
+    .then(usercreated=>{
+      console.log("created user: ", usercreated);
+      this.reg_user={
+        first_name   : '',
+        last_name    : '',
+        phone_number : '',
+        email        : '',
+        password     : '',
       }
+      form.resetForm();
+      this.isMember = true;
+      this._router.navigate(['/dashboard']);
+    })
+    .catch(err=>{
+      console.log("create user error: ", err);
+      
     })
   }
 

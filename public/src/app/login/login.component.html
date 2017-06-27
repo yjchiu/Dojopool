@@ -4,7 +4,8 @@
   <br>
   {{ reg_user | json }}
   <div class="row">
-    <div class="col-md-4 col-md-offset-2">
+    <div *ngIf="!isMember" class="col-md-4 col-md-offset-4">
+      <h1>Sign Up</h1>
       <form #signupForm="ngForm" (submit)="newUser(signupForm)">
         <div class="row">
           <div class="col-md-6">
@@ -82,10 +83,11 @@
                 <p *ngIf='pwd.errors.minlength'>Password must be at least 8 characters</p>
         </div>
 
-        <button [disabled]="!signupForm.valid" type="submit" class="btn btn-success" style="width:20%">Sign Up</button>
+        <button [disabled]="!signupForm.valid" type="submit" class="btn btn-success">Sign Up</button>
       </form>
     </div>
-    <div class="col-md-4">
+    <div *ngIf="isMember" class="col-md-4 col-md-offset-4">
+      <h1>Sign In</h1>
       <form #loginForm="ngForm" (submit)="getUser(loginForm)">
         <div class="form-group">
           <label class="sr-only" for="email">Email</label>
@@ -96,7 +98,7 @@
           #loginemail="ngModel"
           >
         </div>
-        <div class="red" *ngIf='loginemail.errors && ( loginemail.touched || signupForm.submitted)'>
+        <div class="red" *ngIf='loginemail.errors && ( loginemail.touched || loginForm.submitted)'>
                 <p *ngIf='loginemail.errors.required'>Email is required</p>
                 <p *ngIf='loginemail.errors.pattern'>Email must be valid</p>
         </div>
@@ -118,6 +120,9 @@
                 <p *ngIf='loginpwd.errors.minlength'>Password must be at least 8 characters</p>
         </div>
 
+        <p>Don't have an account? <a (click)="notMember()">Sign up</a></p>
+
+        <button [disabled]="!loginForm.valid" type="submit" class="btn btn-success">Login</button>
       </form>
     </div>
   </div>
