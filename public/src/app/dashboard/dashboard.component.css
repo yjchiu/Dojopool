@@ -3,7 +3,7 @@
         width: 50%;
 }
 
-agm-map {
-      height: 300px;
-      width: 50%
-    }
+.inpit_container{
+        width: 50%;
+        margin-bottom: 20px;
+}

@@ -45,6 +45,7 @@ export class LoginComponent implements OnInit {
     this._httpServide.getOneUser(this.login_user)
     .then(user=>{
       console.log("Login user: ", user);
+      this._cookieService.put("loginuserName", user.first_name);
       this._router.navigate(['/dashboard']);
     })
     .catch(err=>{
@@ -59,6 +60,7 @@ export class LoginComponent implements OnInit {
     this._httpServide.createUser(this.reg_user)
     .then(usercreated=>{
       console.log("created user: ", usercreated);
+      this._cookieService.put("loginuserName", usercreated.first_name);
       this.reg_user={
         first_name   : '',
         last_name    : '',

@@ -182,7 +182,7 @@ exports = module.exports = __webpack_require__("../../../../css-loader/lib/css-b
 
 
 // module
-exports.push([module.i, "#map {\n        height: 300px;\n        width: 50%;\n}\n\nagm-map {\n      height: 300px;\n      width: 50%\n    }", ""]);
+exports.push([module.i, "#map {\n        height: 300px;\n        width: 50%;\n}\n\n.inpit_container{\n        width: 50%;\n        margin-bottom: 20px;\n}", ""]);
 
 // exports
 
@@ -195,7 +195,7 @@ module.exports = module.exports.toString();
 /***/ "../../../../../src/app/dashboard/dashboard.component.html":
 /***/ (function(module, exports) {
 
-module.exports = "<div id=\"dashboard_container\">\n  <h1>Dashboard works</h1>\n{{ start }}{{ end }}\n    <!--<input name=\"start\" type=\"text\"\n        placeholder=\"origin\"\n        [(ngModel)]=\"start\">\n\n    <input name=\"end\" type=\"text\"\n        placeholder=\"destination\"\n        [(ngModel)]=\"end\">-->\n\n\n    <div class=\"container\">\n          <h1>Angular 2 + Google Maps Places Autocomplete</h1>\n          <div class=\"form-group\">\n            <input placeholder=\"start\" autocorrect=\"off\" autocapitalize=\"off\" spellcheck=\"off\" type=\"text\" class=\"form-control\" #startsearch [formControl]=\"searchControl\">\n          </div>\n          <div class=\"form-group\">\n            <input placeholder=\"destination\" autocorrect=\"off\" autocapitalize=\"off\" spellcheck=\"off\" type=\"text\" class=\"form-control\" #endsearch [formControl]=\"searchControl\">\n          </div>\n          <!--<agm-map [latitude]=\"latitude\" [longitude]=\"longitude\" [scrollwheel]=\"false\" [zoom]=\"zoom\">\n            <agm-marker [latitude]=\"latitude\" [longitude]=\"longitude\"></agm-marker>\n          </agm-map>-->\n          <button (click)=\"route()\">route</button>\n    </div>\n\n    <div id=\"map\"></div>\n\n</div>\n\n"
+module.exports = "<div id=\"dashboard_container\">\n  <h1>Hello, {{ name }}</h1>\n{{ start }}{{ end }}\n    <div class=\"inpit_container\">\n          <div class=\"form-group\">\n            <input placeholder=\"start\" autocorrect=\"off\" autocapitalize=\"off\" spellcheck=\"off\" type=\"text\" class=\"form-control\" #startsearch [formControl]=\"searchControl\">\n          </div>\n          <div class=\"form-group\">\n            <input placeholder=\"destination\" autocorrect=\"off\" autocapitalize=\"off\" spellcheck=\"off\" type=\"text\" class=\"form-control\" #endsearch [formControl]=\"searchControl\">\n          </div>\n          <!--<agm-map [latitude]=\"latitude\" [longitude]=\"longitude\" [scrollwheel]=\"false\" [zoom]=\"zoom\">\n            <agm-marker [latitude]=\"latitude\" [longitude]=\"longitude\"></agm-marker>\n          </agm-map>-->\n          <button class=\"btn btn-primary\" (click)=\"route()\">route</button>\n    </div>\n\n    <div id=\"map\"></div>\n\n</div>\n\n"
 
 /***/ }),
 
@@ -206,6 +206,9 @@ module.exports = "<div id=\"dashboard_container\">\n  <h1>Dashboard works</h1>\n
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__angular_core__ = __webpack_require__("../../../core/@angular/core.es5.js");
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__angular_forms__ = __webpack_require__("../../../forms/@angular/forms.es5.js");
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__agm_core__ = __webpack_require__("../../../../@agm/core/index.js");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3_angular2_cookie_services_cookies_service__ = __webpack_require__("../../../../angular2-cookie/services/cookies.service.js");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3_angular2_cookie_services_cookies_service___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_3_angular2_cookie_services_cookies_service__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__angular_router__ = __webpack_require__("../../../router/@angular/router.es5.js");
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return DashboardComponent; });
 var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
@@ -219,24 +222,66 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 
 
 
-// declare var navigator : any;
+
+
 var DashboardComponent = (function () {
-    function DashboardComponent(mapsAPILoader, ngZone) {
+    function DashboardComponent(mapsAPILoader, ngZone, _cookieService, _route) {
         this.mapsAPILoader = mapsAPILoader;
         this.ngZone = ngZone;
-        // map : any;
-        this.originPlaceId = null;
-        this.destinationPlaceId = null;
-        // originInput = document.getElementById('origin-input');
-        // destinationInput = document.getElementById('destination-input');
-        // directionsService = new google.maps.DirectionsService;
-        // directionsDisplay = new google.maps.DirectionsRenderer;
+        this._cookieService = _cookieService;
+        this._route = _route;
+        this.name = '';
         this.cur_latitude = 0.0;
         this.cur_lonitute = 0.0;
         this.start = '';
         this.end = '';
+        if (!this._cookieService.get("loginuserName")) {
+            this._route.navigate(['/']);
+        }
+        this.name = this._cookieService.get("loginuserName");
     }
     DashboardComponent.prototype.ngOnInit = function () {
+        var _this = this;
+        //create search FormControl
+        this.searchControl = new __WEBPACK_IMPORTED_MODULE_1__angular_forms__["c" /* FormControl */]();
+        //set current position
+        this.setCurrentPosition();
+        //load Places Autocomplete
+        this.mapsAPILoader.load()
+            .then(function () {
+            var startautocomplete = new google.maps.places.Autocomplete(_this.startsearchElementRef.nativeElement, {
+                types: ["address"]
+            });
+            var endautocomplete = new google.maps.places.Autocomplete(_this.endsearchElementRef.nativeElement, {
+                types: ["address"]
+            });
+            startautocomplete.addListener("place_changed", function () {
+                _this.ngZone.run(function () {
+                    //get the place result
+                    var place = startautocomplete.getPlace();
+                    //verify result
+                    if (place.geometry === undefined || place.geometry === null) {
+                        return;
+                    }
+                    console.log("place", place);
+                    _this.start = place.formatted_address;
+                });
+            });
+            endautocomplete.addListener("place_changed", function () {
+                _this.ngZone.run(function () {
+                    //get the place result
+                    var place = endautocomplete.getPlace();
+                    //verify result
+                    if (place.geometry === undefined || place.geometry === null) {
+                        return;
+                    }
+                    console.log("place", place);
+                    _this.end = place.formatted_address;
+                });
+            });
+        });
+    };
+    DashboardComponent.prototype.setCurrentPosition = function () {
         var _this = this;
         if (navigator.geolocation) {
             navigator.geolocation.getCurrentPosition(function (data) {
@@ -253,91 +298,10 @@ var DashboardComponent = (function () {
                 });
             });
         }
-        //set google maps defaults
-        // this.zoom = 4;
-        // this.latitude = 39.8282;
-        // this.longitude = -98.5795;
-        //create search FormControl
-        this.searchControl = new __WEBPACK_IMPORTED_MODULE_1__angular_forms__["c" /* FormControl */]();
-        //set current position
-        this.setCurrentPosition();
-        //load Places Autocomplete
-        this.mapsAPILoader.load()
-            .then(function () {
-            var startautocomplete = new google.maps.places.Autocomplete(_this.startsearchElementRef.nativeElement, {
-                types: ["address"]
-            });
-            startautocomplete.addListener("place_changed", function () {
-                _this.ngZone.run(function () {
-                    //get the place result
-                    var place = startautocomplete.getPlace();
-                    //verify result
-                    if (place.geometry === undefined || place.geometry === null) {
-                        return;
-                    }
-                    console.log("place", place);
-                    _this.start = place.formatted_address;
-                    console.log(_this.start);
-                    //set latitude, longitude and zoom
-                    // this.latitude = place.geometry.location.lat();
-                    // this.longitude = place.geometry.location.lng();
-                    // this.zoom = 12;
-                });
-            });
-        });
-        this.mapsAPILoader.load()
-            .then(function () {
-            var endautocomplete = new google.maps.places.Autocomplete(_this.endsearchElementRef.nativeElement, {
-                types: ["address"]
-            });
-            endautocomplete.addListener("place_changed", function () {
-                _this.ngZone.run(function () {
-                    //get the place result
-                    var place = endautocomplete.getPlace();
-                    //verify result
-                    if (place.geometry === undefined || place.geometry === null) {
-                        return;
-                    }
-                    console.log("place", place);
-                    _this.end = place.formatted_address;
-                    console.log(_this.end);
-                    //set latitude, longitude and zoom
-                    // this.latitude = place.geometry.location.lat();
-                    // this.longitude = place.geometry.location.lng();
-                    // this.zoom = 12;
-                });
-            });
-        });
     };
-    DashboardComponent.prototype.setCurrentPosition = function () {
-        var _this = this;
-        if ("geolocation" in navigator) {
-            navigator.geolocation.getCurrentPosition(function (position) {
-                _this.latitude = position.coords.latitude;
-                _this.longitude = position.coords.longitude;
-                _this.zoom = 12;
-            });
-        }
-    };
-    // currentlocation(){
-    //   if(navigator.geolocation){
-    //     navigator.geolocation.getCurrentPosition(data=>{
-    //       console.log("current location:", data);
-    //       var map = new google.maps.Map(document.getElementById('map'), {
-    //         zoom: 15,
-    //         center: {lat: data.coords.latitude, lng: data.coords.longitude}
-    //       });
-    //       var marker = new google.maps.Marker({
-    //         position: {lat: data.coords.latitude, lng: data.coords.longitude},
-    //         map: map
-    //       });
-    //     });
-    //   }
-    // }
     DashboardComponent.prototype.route = function () {
-        console.log(this.start, this.end);
+        // console.log(this.start, this.end);
         var directionsService = new google.maps.DirectionsService;
-        console.log(directionsService);
         var directionsDisplay = new google.maps.DirectionsRenderer;
         var map = new google.maps.Map(document.getElementById('map'), {
             zoom: 7,
@@ -369,10 +333,10 @@ DashboardComponent = __decorate([
         template: __webpack_require__("../../../../../src/app/dashboard/dashboard.component.html"),
         styles: [__webpack_require__("../../../../../src/app/dashboard/dashboard.component.css")]
     }),
-    __metadata("design:paramtypes", [typeof (_c = typeof __WEBPACK_IMPORTED_MODULE_2__agm_core__["b" /* MapsAPILoader */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_2__agm_core__["b" /* MapsAPILoader */]) === "function" && _c || Object, typeof (_d = typeof __WEBPACK_IMPORTED_MODULE_0__angular_core__["NgZone"] !== "undefined" && __WEBPACK_IMPORTED_MODULE_0__angular_core__["NgZone"]) === "function" && _d || Object])
+    __metadata("design:paramtypes", [typeof (_c = typeof __WEBPACK_IMPORTED_MODULE_2__agm_core__["b" /* MapsAPILoader */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_2__agm_core__["b" /* MapsAPILoader */]) === "function" && _c || Object, typeof (_d = typeof __WEBPACK_IMPORTED_MODULE_0__angular_core__["NgZone"] !== "undefined" && __WEBPACK_IMPORTED_MODULE_0__angular_core__["NgZone"]) === "function" && _d || Object, typeof (_e = typeof __WEBPACK_IMPORTED_MODULE_3_angular2_cookie_services_cookies_service__["CookieService"] !== "undefined" && __WEBPACK_IMPORTED_MODULE_3_angular2_cookie_services_cookies_service__["CookieService"]) === "function" && _e || Object, typeof (_f = typeof __WEBPACK_IMPORTED_MODULE_4__angular_router__["b" /* Router */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_4__angular_router__["b" /* Router */]) === "function" && _f || Object])
 ], DashboardComponent);
 
-var _a, _b, _c, _d;
+var _a, _b, _c, _d, _e, _f;
 //# sourceMappingURL=dashboard.component.js.map
 
 /***/ }),
@@ -513,6 +477,7 @@ var LoginComponent = (function () {
         this._httpServide.getOneUser(this.login_user)
             .then(function (user) {
             console.log("Login user: ", user);
+            _this._cookieService.put("loginuserName", user.first_name);
             _this._router.navigate(['/dashboard']);
         })
             .catch(function (err) {
@@ -527,6 +492,7 @@ var LoginComponent = (function () {
         this._httpServide.createUser(this.reg_user)
             .then(function (usercreated) {
             console.log("created user: ", usercreated);
+            _this._cookieService.put("loginuserName", usercreated.first_name);
             _this.reg_user = {
                 first_name: '',
                 last_name: '',
