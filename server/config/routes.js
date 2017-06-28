@@ -11,6 +11,7 @@ module.exports = function(app) {
    
    app.post('/newshotgun', shotguncontroller.new);
    app.post('/shotguns', shotguncontroller.index);
+   app.post('/getshotgun', shotguncontroller.findOne);
 
 
 

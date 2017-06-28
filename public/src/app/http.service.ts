@@ -40,6 +40,12 @@ export class HttpService {
     .toPromise()
   }
 
+  getoneshotgun(request){
+    return this._http.post('/getshotgun', request)
+    .map(data=>data.json())
+    .toPromise()
+  }
+
   
   
 

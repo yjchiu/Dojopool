@@ -19,4 +19,17 @@
       </tr>
     </tbody>
   </table>
+  <div class="input_container">
+          <div class="form-group">
+            <input placeholder="start" autocorrect="off" autocapitalize="off" spellcheck="off" type="text" class="form-control" #startsearch [formControl]="searchControl">
+          </div>
+          <div class="form-group">
+            <input placeholder="destination" autocorrect="off" autocapitalize="off" spellcheck="off" type="text" class="form-control" #endsearch [formControl]="searchControl">
+          </div>
+          <!--<agm-map [latitude]="latitude" [longitude]="longitude" [scrollwheel]="false" [zoom]="zoom">
+            <agm-marker [latitude]="latitude" [longitude]="longitude"></agm-marker>
+          </agm-map>-->
+          <button class="btn btn-primary" (click)="route()">Need a Ride</button>
+    </div>
+    <div id="map"></div>
 </div>

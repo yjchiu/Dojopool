@@ -9,7 +9,7 @@ module.exports = {
            if(err){ console.log(err)}
            res.json(shotguns);
        })
-         
+
    },
    new: function(req, res){
        console.log("Shotgun controller new function: ", req.body);
@@ -22,18 +22,18 @@ module.exports = {
            console.log('error in controller -create!!');
        })
    },
-//    findOne:function(req,res){
-//         // console.log(req);
-//         console.log('server side findOne function', req.body);
-//         Shotgun.findOne({email:req.body.email})
-//         .then(data=>{
-//             console.log("findOne")
-//             // console.log(data);
-//             res.json(data);
-//         })
-//         .catch(err=>{
-//             console.log(err);
-//         })
-//     }
+   findOne:function(req,res){
+        // console.log(req);
+        console.log('server side findOne function', req.body);
+        Shotgun.findOne({_id:req.body.id })
+        .then(data=>{
+            console.log("findOne")
+            // console.log(data);
+            res.json(data);
+        })
+        .catch(err=>{
+            console.log(err);
+        })
+    }
     
 }

@@ -288,7 +288,7 @@ exports = module.exports = __webpack_require__("../../../../css-loader/lib/css-b
 
 
 // module
-exports.push([module.i, "", ""]);
+exports.push([module.i, "#map {\n        height: 300px;\n        width: 50%;\n}\n\n.input_container{\n        width: 50%;\n        margin-bottom: 20px;\n}", ""]);
 
 // exports
 
@@ -301,7 +301,7 @@ module.exports = module.exports.toString();
 /***/ "../../../../../src/app/driver/driver.component.html":
 /***/ (function(module, exports) {
 
-module.exports = "<div id=\"driver_container\">\n  <a (click)=\"logout()\">Log out</a>\n  <a [routerLink]=\"['/dashboard']\">Dashboard</a>\n  <table class=\"table table-bordered\">\n    <thead>\n    <tr>\n      <td>Name</td>\n      <td>Guest start</td>\n      <td> Guest destination</td>\n      <td></td>\n    </tr>\n    </thead>\n    <tbody>\n      <tr *ngFor=\"let request of shotgun_requests\">\n        <td>{{request._user.first_name}} </td>\n        <td> {{request.start}} </td>\n        <td> {{request.end}} </td>\n        <td><a class=\"btn btn-primary\" (click)=\"showroute(request._id)\">See route</a></td>\n      </tr>\n    </tbody>\n  </table>\n</div>\n"
+module.exports = "<div id=\"driver_container\">\n  <a (click)=\"logout()\">Log out</a>\n  <a [routerLink]=\"['/dashboard']\">Dashboard</a>\n  <table class=\"table table-bordered\">\n    <thead>\n    <tr>\n      <td>Name</td>\n      <td>Guest start</td>\n      <td> Guest destination</td>\n      <td></td>\n    </tr>\n    </thead>\n    <tbody>\n      <tr *ngFor=\"let request of shotgun_requests\">\n        <td>{{request._user.first_name}} </td>\n        <td> {{request.start}} </td>\n        <td> {{request.end}} </td>\n        <td><a class=\"btn btn-primary\" (click)=\"showroute(request._id)\">See route</a></td>\n      </tr>\n    </tbody>\n  </table>\n  <div class=\"input_container\">\n          <div class=\"form-group\">\n            <input placeholder=\"start\" autocorrect=\"off\" autocapitalize=\"off\" spellcheck=\"off\" type=\"text\" class=\"form-control\" #startsearch [formControl]=\"searchControl\">\n          </div>\n          <div class=\"form-group\">\n            <input placeholder=\"destination\" autocorrect=\"off\" autocapitalize=\"off\" spellcheck=\"off\" type=\"text\" class=\"form-control\" #endsearch [formControl]=\"searchControl\">\n          </div>\n          <!--<agm-map [latitude]=\"latitude\" [longitude]=\"longitude\" [scrollwheel]=\"false\" [zoom]=\"zoom\">\n            <agm-marker [latitude]=\"latitude\" [longitude]=\"longitude\"></agm-marker>\n          </agm-map>-->\n          <button class=\"btn btn-primary\" (click)=\"route()\">Need a Ride</button>\n    </div>\n    <div id=\"map\"></div>\n</div>\n"
 
 /***/ }),
 
@@ -314,6 +314,8 @@ module.exports = "<div id=\"driver_container\">\n  <a (click)=\"logout()\">Log o
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_angular2_cookie_services_cookies_service___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_1_angular2_cookie_services_cookies_service__);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__http_service__ = __webpack_require__("../../../../../src/app/http.service.ts");
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__angular_router__ = __webpack_require__("../../../router/@angular/router.es5.js");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__angular_forms__ = __webpack_require__("../../../forms/@angular/forms.es5.js");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__agm_core__ = __webpack_require__("../../../../@agm/core/index.js");
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return DriverComponent; });
 var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
@@ -328,17 +330,26 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 
 
 
+
+
 var DriverComponent = (function () {
-    function DriverComponent(_httpService, _cookieService, _route) {
+    function DriverComponent(_httpService, _cookieService, _route, mapsAPILoader, ngZone) {
         var _this = this;
         this._httpService = _httpService;
         this._cookieService = _cookieService;
         this._route = _route;
+        this.mapsAPILoader = mapsAPILoader;
+        this.ngZone = ngZone;
         this.shotgun_requests = [];
         this.name = '';
         this.user_id = {
             id: '',
         };
+        this.cur_latitude = 0.0;
+        this.cur_lonitute = 0.0;
+        this.driver_start = '';
+        this.driver_end = '';
+        this.duration = '';
         if (!this._cookieService.get("loginuserName")) {
             this._route.navigate(['/']);
         }
@@ -353,6 +364,139 @@ var DriverComponent = (function () {
         });
     }
     DriverComponent.prototype.ngOnInit = function () {
+        var _this = this;
+        //create search FormControl
+        this.searchControl = new __WEBPACK_IMPORTED_MODULE_4__angular_forms__["c" /* FormControl */]();
+        //set current position
+        this.setCurrentPosition();
+        //load Places Autocomplete
+        this.mapsAPILoader.load()
+            .then(function () {
+            var startautocomplete = new google.maps.places.Autocomplete(_this.startsearchElementRef.nativeElement, {
+                types: ["address"]
+            });
+            var endautocomplete = new google.maps.places.Autocomplete(_this.endsearchElementRef.nativeElement, {
+                types: ["address"]
+            });
+            startautocomplete.addListener("place_changed", function () {
+                _this.ngZone.run(function () {
+                    //get the place result
+                    var place = startautocomplete.getPlace();
+                    //verify result
+                    if (place.geometry === undefined || place.geometry === null) {
+                        return;
+                    }
+                    console.log("place", place);
+                    if (place) {
+                        _this.driver_start = place.formatted_address;
+                    }
+                });
+            });
+            endautocomplete.addListener("place_changed", function () {
+                _this.ngZone.run(function () {
+                    //get the place result
+                    var place = endautocomplete.getPlace();
+                    //verify result
+                    if (place.geometry === undefined || place.geometry === null) {
+                        return;
+                    }
+                    console.log("place", place);
+                    _this.driver_end = place.formatted_address;
+                });
+            });
+        });
+    };
+    DriverComponent.prototype.setCurrentPosition = function () {
+        var _this = this;
+        var self = this;
+        if (navigator.geolocation) {
+            navigator.geolocation.getCurrentPosition(function (data) {
+                console.log("current location:", data);
+                _this.cur_latitude = data.coords.latitude;
+                _this.cur_lonitute = data.coords.longitude;
+                _this.start_latlng = new google.maps.LatLng(_this.cur_latitude, _this.cur_lonitute);
+                var geocoder = new google.maps.Geocoder(); // create a geocoder object    // turn coordinates into an object          
+                geocoder.geocode({ 'latLng': _this.start_latlng }, function (results, status) {
+                    if (status == google.maps.GeocoderStatus.OK) {
+                        self.driver_start = results[0].formatted_address;
+                        // console.log("IN geocoder: ", self.start, self);       // if address found, pass to processing function
+                    }
+                });
+                var map = new google.maps.Map(document.getElementById('map'), {
+                    zoom: 15,
+                    center: { lat: data.coords.latitude, lng: data.coords.longitude }
+                });
+                var marker = new google.maps.Marker({
+                    position: { lat: data.coords.latitude, lng: data.coords.longitude },
+                    map: map
+                });
+            });
+        }
+    };
+    DriverComponent.prototype.route = function () {
+        var self = this;
+        console.log("AAA", self.driver_start, self.driver_end);
+        var shotgun = {
+            start: self.driver_start,
+            end: self.driver_end,
+            _user: this._cookieService.get('loginuserId'),
+        };
+        // this._httpService.createShotGun(shotgun);
+        console.log(self);
+        var directionsService = new google.maps.DirectionsService;
+        var directionsDisplay = new google.maps.DirectionsRenderer;
+        var map = new google.maps.Map(document.getElementById('map'), {
+            zoom: 7,
+            center: { lat: this.cur_latitude, lng: this.cur_lonitute },
+        });
+        directionsDisplay.setMap(map);
+        directionsService.route({
+            origin: this.driver_start,
+            destination: this.driver_end,
+            travelMode: 'DRIVING'
+        }, function (res, status) {
+            console.log("response", res);
+            self.duration = res.routes[0].legs[0].duration.text;
+            console.log("dur", self.duration);
+            directionsDisplay.setDirections(res);
+        });
+    };
+    DriverComponent.prototype.showroute = function (request_id) {
+        var _this = this;
+        var self = this;
+        console.log("show route: ", request_id);
+        var request = {
+            id: request_id,
+        };
+        this._httpService.getoneshotgun(request)
+            .then(function (shotgun_req) {
+            console.log("find shotgun request: ", shotgun_req);
+            console.log(_this.driver_start);
+            // console.log(this.driver_end);
+            var directionsService = new google.maps.DirectionsService;
+            var directionsDisplay = new google.maps.DirectionsRenderer;
+            var map = new google.maps.Map(document.getElementById('map'), {
+                zoom: 7,
+                center: { lat: _this.cur_latitude, lng: _this.cur_lonitute },
+            });
+            directionsDisplay.setMap(map);
+            directionsService.route({
+                origin: _this.driver_start,
+                destination: shotgun_req.end,
+                waypoints: [{
+                        location: shotgun_req.start,
+                        stopover: true
+                    }],
+                optimizeWaypoints: true,
+                travelMode: 'DRIVING'
+            }, function (res, status) {
+                console.log("response", res);
+                self.duration = res.routes[0].legs[0].duration.text;
+                console.log("dur", self.duration);
+                directionsDisplay.setDirections(res);
+            });
+        })
+            .catch();
     };
     DriverComponent.prototype.logout = function () {
         this._cookieService.remove('loginuserName');
@@ -360,16 +504,24 @@ var DriverComponent = (function () {
     };
     return DriverComponent;
 }());
+__decorate([
+    __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["ViewChild"])("startsearch"),
+    __metadata("design:type", typeof (_a = typeof __WEBPACK_IMPORTED_MODULE_0__angular_core__["ElementRef"] !== "undefined" && __WEBPACK_IMPORTED_MODULE_0__angular_core__["ElementRef"]) === "function" && _a || Object)
+], DriverComponent.prototype, "startsearchElementRef", void 0);
+__decorate([
+    __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["ViewChild"])("endsearch"),
+    __metadata("design:type", typeof (_b = typeof __WEBPACK_IMPORTED_MODULE_0__angular_core__["ElementRef"] !== "undefined" && __WEBPACK_IMPORTED_MODULE_0__angular_core__["ElementRef"]) === "function" && _b || Object)
+], DriverComponent.prototype, "endsearchElementRef", void 0);
 DriverComponent = __decorate([
     __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["Component"])({
         selector: 'app-driver',
         template: __webpack_require__("../../../../../src/app/driver/driver.component.html"),
         styles: [__webpack_require__("../../../../../src/app/driver/driver.component.css")]
     }),
-    __metadata("design:paramtypes", [typeof (_a = typeof __WEBPACK_IMPORTED_MODULE_2__http_service__["a" /* HttpService */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_2__http_service__["a" /* HttpService */]) === "function" && _a || Object, typeof (_b = typeof __WEBPACK_IMPORTED_MODULE_1_angular2_cookie_services_cookies_service__["CookieService"] !== "undefined" && __WEBPACK_IMPORTED_MODULE_1_angular2_cookie_services_cookies_service__["CookieService"]) === "function" && _b || Object, typeof (_c = typeof __WEBPACK_IMPORTED_MODULE_3__angular_router__["b" /* Router */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_3__angular_router__["b" /* Router */]) === "function" && _c || Object])
+    __metadata("design:paramtypes", [typeof (_c = typeof __WEBPACK_IMPORTED_MODULE_2__http_service__["a" /* HttpService */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_2__http_service__["a" /* HttpService */]) === "function" && _c || Object, typeof (_d = typeof __WEBPACK_IMPORTED_MODULE_1_angular2_cookie_services_cookies_service__["CookieService"] !== "undefined" && __WEBPACK_IMPORTED_MODULE_1_angular2_cookie_services_cookies_service__["CookieService"]) === "function" && _d || Object, typeof (_e = typeof __WEBPACK_IMPORTED_MODULE_3__angular_router__["b" /* Router */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_3__angular_router__["b" /* Router */]) === "function" && _e || Object, typeof (_f = typeof __WEBPACK_IMPORTED_MODULE_5__agm_core__["b" /* MapsAPILoader */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_5__agm_core__["b" /* MapsAPILoader */]) === "function" && _f || Object, typeof (_g = typeof __WEBPACK_IMPORTED_MODULE_0__angular_core__["NgZone"] !== "undefined" && __WEBPACK_IMPORTED_MODULE_0__angular_core__["NgZone"]) === "function" && _g || Object])
 ], DriverComponent);
 
-var _a, _b, _c;
+var _a, _b, _c, _d, _e, _f, _g;
 //# sourceMappingURL=driver.component.js.map
 
 /***/ }),
@@ -424,6 +576,11 @@ var HttpService = (function () {
     };
     HttpService.prototype.getallshotgun = function (user_id) {
         return this._http.post('/shotguns', user_id)
+            .map(function (data) { return data.json(); })
+            .toPromise();
+    };
+    HttpService.prototype.getoneshotgun = function (request) {
+        return this._http.post('/getshotgun', request)
             .map(function (data) { return data.json(); })
             .toPromise();
     };

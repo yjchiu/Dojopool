@@ -154,6 +154,7 @@ export class ShotgunComponent implements OnInit {
 
 
 
+
   logout(){
     this._cookieService.remove('loginuserName');
     this._route.navigate(['/']);
