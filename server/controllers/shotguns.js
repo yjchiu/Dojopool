@@ -2,14 +2,14 @@ var mongoose = require('mongoose');
 var Shotgun = mongoose.model('Shotgun');
 module.exports = {
    index: function(req,res){
-       Shotgun.find({})
-       .then(data => {
-           res.json(data);
+    //    console.log(req.body);
+       Shotgun.find({ _user : { $ne: req.body.id }})
+       .populate('_user')
+       .exec(function(err, shotguns){
+           if(err){ console.log(err)}
+           res.json(shotguns);
        })
-       .catch(err => {
-           res.json(err);
-           console.log('error in controller -find !!');
-       })
+         
    },
    new: function(req, res){
        console.log("Shotgun controller new function: ", req.body);

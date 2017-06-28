@@ -1,3 +1,22 @@
-<p>
-  driver works!
-</p>
+<div id="driver_container">
+  <a (click)="logout()">Log out</a>
+  <a [routerLink]="['/dashboard']">Dashboard</a>
+  <table class="table table-bordered">
+    <thead>
+    <tr>
+      <td>Name</td>
+      <td>Guest start</td>
+      <td> Guest destination</td>
+      <td></td>
+    </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let request of shotgun_requests">
+        <td>{{request._user.first_name}} </td>
+        <td> {{request.start}} </td>
+        <td> {{request.end}} </td>
+        <td><a class="btn btn-primary" (click)="showroute(request._id)">See route</a></td>
+      </tr>
+    </tbody>
+  </table>
+</div>

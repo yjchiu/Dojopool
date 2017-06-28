@@ -10,6 +10,7 @@ module.exports = function(app) {
    app.post('/getuser', usercontroller.findOne);
    
    app.post('/newshotgun', shotguncontroller.new);
+   app.post('/shotguns', shotguncontroller.index);
 
 
 

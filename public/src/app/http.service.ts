@@ -34,6 +34,12 @@ export class HttpService {
     .toPromise()
   }
 
+  getallshotgun(user_id){
+    return this._http.post('/shotguns', user_id)
+    .map(data=>data.json())
+    .toPromise()
+  }
+
   
   
 

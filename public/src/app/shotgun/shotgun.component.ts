@@ -2,8 +2,9 @@ import { Component, OnInit, NgZone, ElementRef, ViewChild } from '@angular/core'
 import { FormControl } from "@angular/forms";
 import { MapsAPILoader } from '@agm/core';
 import { CookieService } from 'angular2-cookie/services/cookies.service';
-import { Router } from '@angular/router';
 import { HttpService } from './../http.service';
+import { Router } from '@angular/router';
+
 
 declare var google : any;
 declare var navigator : any;
