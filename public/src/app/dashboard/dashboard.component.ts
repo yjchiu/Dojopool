@@ -36,105 +36,13 @@ export class DashboardComponent implements OnInit {
     if(!this._cookieService.get("loginuserName")){
       this._route.navigate(['/']);
     }
-    console.log(" what cookie saved ",this._cookieService.get("loginuserName"));
     this.name = this._cookieService.get("loginuserName");
-    console.log(" what cookie saved 2: ", this.name);
     
   }
 
-  ngOnInit() {
+  ngOnInit(){}
 
-    //create search FormControl
-    this.searchControl = new FormControl();
-
-    //set current position
-    this.setCurrentPosition();
-
-    //load Places Autocomplete
-    this.mapsAPILoader.load()
-    .then(() => {
-      let startautocomplete = new google.maps.places.Autocomplete(this.startsearchElementRef.nativeElement, {
-        types: ["address"]
-      });
-      let endautocomplete = new google.maps.places.Autocomplete(this.endsearchElementRef.nativeElement, {
-        types: ["address"]
-      });
-
-      startautocomplete.addListener("place_changed", () => {
-        this.ngZone.run(() => {
-          //get the place result
-          let place = startautocomplete.getPlace();
-          //verify result
-          if (place.geometry === undefined || place.geometry === null) {
-            return;
-          }
-          console.log("place", place);
-          if(place){
-            this.start = place.formatted_address;
-          }
-        });
-      });
-
-      endautocomplete.addListener("place_changed", () => {
-        this.ngZone.run(() => {
-          //get the place result
-          let place = endautocomplete.getPlace();
-
-          //verify result
-          if (place.geometry === undefined || place.geometry === null) {
-            return;
-          }
-          console.log("place", place);
-          this.end = place.formatted_address
-        });
-      });
-    });
-
-  }
-
-  private setCurrentPosition() {
-    if(navigator.geolocation){
-      navigator.geolocation.getCurrentPosition(data=>{
-        console.log("current location:", data);
-        this.cur_latitude = data.coords.latitude;
-        this.cur_lonitute = data.coords.longitude;
-        this.start = new google.maps.LatLng(this.cur_latitude, this.cur_lonitute);
-        var map = new google.maps.Map(document.getElementById('map'), {
-          zoom: 15,
-          center: {lat: data.coords.latitude, lng: data.coords.longitude}
-        });
-        var marker = new google.maps.Marker({
-          position: {lat: data.coords.latitude, lng: data.coords.longitude},
-          map: map
-        });
-      });
-    }
-  }
-
-  route(){
-    // console.log(this.start, this.end);
-    var self = this; ///// 
-    console.log(self);
-    var directionsService = new google.maps.DirectionsService;
-    var directionsDisplay = new google.maps.DirectionsRenderer;
-    var map = new google.maps.Map(document.getElementById('map'), {
-      zoom: 7,
-      center: {lat: this.cur_latitude, lng: this.cur_lonitute},
-    });
-    directionsDisplay.setMap(map);
-    directionsService.route({
-      origin: this.start,
-      destination: this.end,
-      travelMode: 'DRIVING'
-    }, function(res, status){
-      console.log("response", res);
-      self.duration = res.routes[0].legs[0].duration.text;
-      console.log("dur", self.duration); 
-      directionsDisplay.setDirections(res);
-    })
-  }
-
-
+  
 
   logout(){
     this._cookieService.remove('loginuserName');

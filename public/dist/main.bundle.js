@@ -194,7 +194,7 @@ exports = module.exports = __webpack_require__("../../../../css-loader/lib/css-b
 
 
 // module
-exports.push([module.i, "#map {\n        height: 300px;\n        width: 50%;\n}\n\n.input_container{\n        width: 50%;\n        margin-bottom: 20px;\n}", ""]);
+exports.push([module.i, "/*#map {\n        height: 300px;\n        width: 50%;\n}\n\n.input_container{\n        width: 50%;\n        margin-bottom: 20px;\n}*/\n\n#main_container{\n        margin: 0px auto;\n        width: 80%;\n        height: 400px;\n}\n\n#driver{\n        width: 50%;\n        height: 400px;\n        background-color: lightgreen;\n        display: inline-block;\n        vertical-align: top;\n        \n}\n#shotgun{\n        width: 50%;\n        height: 400px;\n        background-color: lightblue;\n        display: inline-block;\n\n}\n.text-center{\n        margin-top: 180px;\n}", ""]);
 
 // exports
 
@@ -207,7 +207,7 @@ module.exports = module.exports.toString();
 /***/ "../../../../../src/app/dashboard/dashboard.component.html":
 /***/ (function(module, exports) {
 
-module.exports = "<div id=\"dashboard_container\">\n  <h1>Hello, {{ name }}</h1>\n  <a (click)=\"logout()\">Log out</a>\n{{ start }}{{ end }}\n<!--<div *ngIf = \"duration\">\n  <p>duration</p>\n  {{duration | json}}\n</div>-->\n<p>Estimate time: {{ duration }}</p>\n    <div class=\"input_container\">\n          <div class=\"form-group\">\n            <input placeholder=\"start\" autocorrect=\"off\" autocapitalize=\"off\" spellcheck=\"off\" type=\"text\" class=\"form-control\" #startsearch [formControl]=\"searchControl\">\n          </div>\n          <div class=\"form-group\">\n            <input placeholder=\"destination\" autocorrect=\"off\" autocapitalize=\"off\" spellcheck=\"off\" type=\"text\" class=\"form-control\" #endsearch [formControl]=\"searchControl\">\n          </div>\n          <!--<agm-map [latitude]=\"latitude\" [longitude]=\"longitude\" [scrollwheel]=\"false\" [zoom]=\"zoom\">\n            <agm-marker [latitude]=\"latitude\" [longitude]=\"longitude\"></agm-marker>\n          </agm-map>-->\n          <button class=\"btn btn-primary\" (click)=\"route()\">Need a Ride</button>\n    </div>\n    <p>TEST</p>\n    <div id=\"map\"></div>\n</div>\n\n<a [routerLink]=\"['/driver']\">I'm a driver.</a> | \n<a [routerLink]=\"['/shotgun']\">I need a driver.</a>\n"
+module.exports = "<div id=\"dashboard_container\">\n  <h1>Hello, {{ name }}</h1>\n  <a (click)=\"logout()\">Log out</a>\n  <div id=\"main_container\">\n    <div id=\"driver\">\n      <h1 class=\"text-center\"><a [routerLink]=\"['/driver']\" style=\"color: white;\">I'm a driver.</a> </h1>\n    </div><!--\n    --><div id=\"shotgun\">\n        <h1 class=\"text-center\"><a [routerLink]=\"['/shotgun']\" style=\"color: white;\">I need a driver.</a></h1>\n    </div>\n  </div>\n\n<!--<a [routerLink]=\"['/driver']\">I'm a driver.</a> | -->\n<!--<a [routerLink]=\"['/shotgun']\">I need a driver.</a>-->\n"
 
 /***/ }),
 
@@ -216,11 +216,10 @@ module.exports = "<div id=\"dashboard_container\">\n  <h1>Hello, {{ name }}</h1>
 
 "use strict";
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__angular_core__ = __webpack_require__("../../../core/@angular/core.es5.js");
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__angular_forms__ = __webpack_require__("../../../forms/@angular/forms.es5.js");
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__agm_core__ = __webpack_require__("../../../../@agm/core/index.js");
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3_angular2_cookie_services_cookies_service__ = __webpack_require__("../../../../angular2-cookie/services/cookies.service.js");
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3_angular2_cookie_services_cookies_service___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_3_angular2_cookie_services_cookies_service__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__angular_router__ = __webpack_require__("../../../router/@angular/router.es5.js");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__agm_core__ = __webpack_require__("../../../../@agm/core/index.js");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2_angular2_cookie_services_cookies_service__ = __webpack_require__("../../../../angular2-cookie/services/cookies.service.js");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2_angular2_cookie_services_cookies_service___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_2_angular2_cookie_services_cookies_service__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__angular_router__ = __webpack_require__("../../../router/@angular/router.es5.js");
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return DashboardComponent; });
 var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
@@ -231,7 +230,6 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
 var __metadata = (this && this.__metadata) || function (k, v) {
     if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 };
-
 
 
 
@@ -251,94 +249,9 @@ var DashboardComponent = (function () {
         if (!this._cookieService.get("loginuserName")) {
             this._route.navigate(['/']);
         }
-        console.log(" what cookie saved ", this._cookieService.get("loginuserName"));
         this.name = this._cookieService.get("loginuserName");
-        console.log(" what cookie saved 2: ", this.name);
     }
-    DashboardComponent.prototype.ngOnInit = function () {
-        var _this = this;
-        //create search FormControl
-        this.searchControl = new __WEBPACK_IMPORTED_MODULE_1__angular_forms__["c" /* FormControl */]();
-        //set current position
-        this.setCurrentPosition();
-        //load Places Autocomplete
-        this.mapsAPILoader.load()
-            .then(function () {
-            var startautocomplete = new google.maps.places.Autocomplete(_this.startsearchElementRef.nativeElement, {
-                types: ["address"]
-            });
-            var endautocomplete = new google.maps.places.Autocomplete(_this.endsearchElementRef.nativeElement, {
-                types: ["address"]
-            });
-            startautocomplete.addListener("place_changed", function () {
-                _this.ngZone.run(function () {
-                    //get the place result
-                    var place = startautocomplete.getPlace();
-                    //verify result
-                    if (place.geometry === undefined || place.geometry === null) {
-                        return;
-                    }
-                    console.log("place", place);
-                    if (place) {
-                        _this.start = place.formatted_address;
-                    }
-                });
-            });
-            endautocomplete.addListener("place_changed", function () {
-                _this.ngZone.run(function () {
-                    //get the place result
-                    var place = endautocomplete.getPlace();
-                    //verify result
-                    if (place.geometry === undefined || place.geometry === null) {
-                        return;
-                    }
-                    console.log("place", place);
-                    _this.end = place.formatted_address;
-                });
-            });
-        });
-    };
-    DashboardComponent.prototype.setCurrentPosition = function () {
-        var _this = this;
-        if (navigator.geolocation) {
-            navigator.geolocation.getCurrentPosition(function (data) {
-                console.log("current location:", data);
-                _this.cur_latitude = data.coords.latitude;
-                _this.cur_lonitute = data.coords.longitude;
-                _this.start = new google.maps.LatLng(_this.cur_latitude, _this.cur_lonitute);
-                var map = new google.maps.Map(document.getElementById('map'), {
-                    zoom: 15,
-                    center: { lat: data.coords.latitude, lng: data.coords.longitude }
-                });
-                var marker = new google.maps.Marker({
-                    position: { lat: data.coords.latitude, lng: data.coords.longitude },
-                    map: map
-                });
-            });
-        }
-    };
-    DashboardComponent.prototype.route = function () {
-        // console.log(this.start, this.end);
-        var self = this; ///// 
-        console.log(self);
-        var directionsService = new google.maps.DirectionsService;
-        var directionsDisplay = new google.maps.DirectionsRenderer;
-        var map = new google.maps.Map(document.getElementById('map'), {
-            zoom: 7,
-            center: { lat: this.cur_latitude, lng: this.cur_lonitute },
-        });
-        directionsDisplay.setMap(map);
-        directionsService.route({
-            origin: this.start,
-            destination: this.end,
-            travelMode: 'DRIVING'
-        }, function (res, status) {
-            console.log("response", res);
-            self.duration = res.routes[0].legs[0].duration.text;
-            console.log("dur", self.duration);
-            directionsDisplay.setDirections(res);
-        });
-    };
+    DashboardComponent.prototype.ngOnInit = function () { };
     DashboardComponent.prototype.logout = function () {
         this._cookieService.remove('loginuserName');
         this._route.navigate(['/']);
@@ -359,7 +272,7 @@ DashboardComponent = __decorate([
         template: __webpack_require__("../../../../../src/app/dashboard/dashboard.component.html"),
         styles: [__webpack_require__("../../../../../src/app/dashboard/dashboard.component.css")]
     }),
-    __metadata("design:paramtypes", [typeof (_c = typeof __WEBPACK_IMPORTED_MODULE_2__agm_core__["b" /* MapsAPILoader */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_2__agm_core__["b" /* MapsAPILoader */]) === "function" && _c || Object, typeof (_d = typeof __WEBPACK_IMPORTED_MODULE_0__angular_core__["NgZone"] !== "undefined" && __WEBPACK_IMPORTED_MODULE_0__angular_core__["NgZone"]) === "function" && _d || Object, typeof (_e = typeof __WEBPACK_IMPORTED_MODULE_3_angular2_cookie_services_cookies_service__["CookieService"] !== "undefined" && __WEBPACK_IMPORTED_MODULE_3_angular2_cookie_services_cookies_service__["CookieService"]) === "function" && _e || Object, typeof (_f = typeof __WEBPACK_IMPORTED_MODULE_4__angular_router__["b" /* Router */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_4__angular_router__["b" /* Router */]) === "function" && _f || Object])
+    __metadata("design:paramtypes", [typeof (_c = typeof __WEBPACK_IMPORTED_MODULE_1__agm_core__["b" /* MapsAPILoader */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_1__agm_core__["b" /* MapsAPILoader */]) === "function" && _c || Object, typeof (_d = typeof __WEBPACK_IMPORTED_MODULE_0__angular_core__["NgZone"] !== "undefined" && __WEBPACK_IMPORTED_MODULE_0__angular_core__["NgZone"]) === "function" && _d || Object, typeof (_e = typeof __WEBPACK_IMPORTED_MODULE_2_angular2_cookie_services_cookies_service__["CookieService"] !== "undefined" && __WEBPACK_IMPORTED_MODULE_2_angular2_cookie_services_cookies_service__["CookieService"]) === "function" && _e || Object, typeof (_f = typeof __WEBPACK_IMPORTED_MODULE_3__angular_router__["b" /* Router */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_3__angular_router__["b" /* Router */]) === "function" && _f || Object])
 ], DashboardComponent);
 
 var _a, _b, _c, _d, _e, _f;
@@ -470,6 +383,12 @@ var HttpService = (function () {
             .map(function (data) { return data.json(); })
             .toPromise();
     };
+    HttpService.prototype.createShotGun = function (shotgun) {
+        // console.log("Inside service create shotgun", shotgun);
+        return this._http.post('/newshotgun', shotgun)
+            .map(function (data) { return data.json(); })
+            .toPromise();
+    };
     return HttpService;
 }());
 HttpService = __decorate([
@@ -565,6 +484,7 @@ var LoginComponent = (function () {
             .then(function (user) {
             console.log("Login user: ", user);
             _this._cookieService.put("loginuserName", user.first_name);
+            _this._cookieService.put("loginuserId", user._id);
             _this._router.navigate(['/dashboard']);
         })
             .catch(function (err) {
@@ -580,6 +500,7 @@ var LoginComponent = (function () {
             .then(function (usercreated) {
             console.log("created user: ", usercreated);
             _this._cookieService.put("loginuserName", usercreated.first_name);
+            _this._cookieService.put("loginuserId", usercreated._id);
             _this.reg_user = {
                 first_name: '',
                 last_name: '',
@@ -632,7 +553,7 @@ module.exports = module.exports.toString();
 /***/ "../../../../../src/app/shotgun/shotgun.component.html":
 /***/ (function(module, exports) {
 
-module.exports = "<div id=\"dashboard_container\">\n  <h1>Hello, {{ name }}</h1>\n  <a (click)=\"logout()\">Log out</a>\n{{ start }}{{ end }}\n<!--<div *ngIf = \"duration\">\n  <p>duration</p>\n  {{duration | json}}\n</div>-->\n<p>Estimate time: {{ duration }}</p>\n    <div class=\"input_container\">\n          <div class=\"form-group\">\n            <input placeholder=\"start\" autocorrect=\"off\" autocapitalize=\"off\" spellcheck=\"off\" type=\"text\" class=\"form-control\" #startsearch [formControl]=\"searchControl\">\n          </div>\n          <div class=\"form-group\">\n            <input placeholder=\"destination\" autocorrect=\"off\" autocapitalize=\"off\" spellcheck=\"off\" type=\"text\" class=\"form-control\" #endsearch [formControl]=\"searchControl\">\n          </div>\n          <!--<agm-map [latitude]=\"latitude\" [longitude]=\"longitude\" [scrollwheel]=\"false\" [zoom]=\"zoom\">\n            <agm-marker [latitude]=\"latitude\" [longitude]=\"longitude\"></agm-marker>\n          </agm-map>-->\n          <button class=\"btn btn-primary\" (click)=\"route()\">Need a Ride</button>\n    </div>\n    <div id=\"map\"></div>\n</div>\n\n"
+module.exports = "<div id=\"dashboard_container\">\n  <h1>Hello, {{ name }} {{ id }}</h1>\n  <a (click)=\"logout()\">Log out</a>\n{{ start }}{{ end }}\n<!--<div *ngIf = \"duration\">\n  <p>duration</p>\n  {{duration | json}}\n</div>-->\n<p>Estimate time: {{ duration }}</p>\n    <div class=\"input_container\">\n          <div class=\"form-group\">\n            <input placeholder=\"start\" autocorrect=\"off\" autocapitalize=\"off\" spellcheck=\"off\" type=\"text\" class=\"form-control\" #startsearch [formControl]=\"searchControl\">\n          </div>\n          <div class=\"form-group\">\n            <input placeholder=\"destination\" autocorrect=\"off\" autocapitalize=\"off\" spellcheck=\"off\" type=\"text\" class=\"form-control\" #endsearch [formControl]=\"searchControl\">\n          </div>\n          <!--<agm-map [latitude]=\"latitude\" [longitude]=\"longitude\" [scrollwheel]=\"false\" [zoom]=\"zoom\">\n            <agm-marker [latitude]=\"latitude\" [longitude]=\"longitude\"></agm-marker>\n          </agm-map>-->\n          <button class=\"btn btn-primary\" (click)=\"route()\">Need a Ride</button>\n    </div>\n    <div id=\"map\"></div>\n</div>\n\n"
 
 /***/ }),
 
@@ -646,6 +567,7 @@ module.exports = "<div id=\"dashboard_container\">\n  <h1>Hello, {{ name }}</h1>
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_3_angular2_cookie_services_cookies_service__ = __webpack_require__("../../../../angular2-cookie/services/cookies.service.js");
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_3_angular2_cookie_services_cookies_service___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_3_angular2_cookie_services_cookies_service__);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__angular_router__ = __webpack_require__("../../../router/@angular/router.es5.js");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__http_service__ = __webpack_require__("../../../../../src/app/http.service.ts");
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return ShotgunComponent; });
 var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
@@ -661,13 +583,16 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 
 
 
+
 var ShotgunComponent = (function () {
-    function ShotgunComponent(mapsAPILoader, ngZone, _cookieService, _route) {
+    function ShotgunComponent(mapsAPILoader, ngZone, _cookieService, _route, _httpService) {
         this.mapsAPILoader = mapsAPILoader;
         this.ngZone = ngZone;
         this._cookieService = _cookieService;
         this._route = _route;
+        this._httpService = _httpService;
         this.name = '';
+        this.id = '';
         this.cur_latitude = 0.0;
         this.cur_lonitute = 0.0;
         this.start = '';
@@ -677,6 +602,8 @@ var ShotgunComponent = (function () {
             this._route.navigate(['/']);
         }
         this.name = this._cookieService.get("loginuserName");
+        this.id = this._cookieService.get("loginuserId");
+        console.log("IDDD", this.id);
     }
     ShotgunComponent.prototype.ngOnInit = function () {
         var _this = this;
@@ -723,12 +650,20 @@ var ShotgunComponent = (function () {
     };
     ShotgunComponent.prototype.setCurrentPosition = function () {
         var _this = this;
+        var self = this;
         if (navigator.geolocation) {
             navigator.geolocation.getCurrentPosition(function (data) {
                 console.log("current location:", data);
                 _this.cur_latitude = data.coords.latitude;
                 _this.cur_lonitute = data.coords.longitude;
-                _this.start = new google.maps.LatLng(_this.cur_latitude, _this.cur_lonitute);
+                _this.start_latlng = new google.maps.LatLng(_this.cur_latitude, _this.cur_lonitute);
+                var geocoder = new google.maps.Geocoder(); // create a geocoder object    // turn coordinates into an object          
+                geocoder.geocode({ 'latLng': _this.start_latlng }, function (results, status) {
+                    if (status == google.maps.GeocoderStatus.OK) {
+                        self.start = results[0].formatted_address;
+                        console.log("IN geocoder: ", self.start, self); // if address found, pass to processing function
+                    }
+                });
                 var map = new google.maps.Map(document.getElementById('map'), {
                     zoom: 15,
                     center: { lat: data.coords.latitude, lng: data.coords.longitude }
@@ -741,8 +676,14 @@ var ShotgunComponent = (function () {
         }
     };
     ShotgunComponent.prototype.route = function () {
-        // console.log(this.start, this.end);
-        var self = this; ///// 
+        var self = this;
+        console.log("AAA", self.start, self.end);
+        var shotgun = {
+            start: self.start,
+            end: self.end,
+            _user: this._cookieService.get('loginuserId'),
+        };
+        this._httpService.createShotGun(shotgun);
         console.log(self);
         var directionsService = new google.maps.DirectionsService;
         var directionsDisplay = new google.maps.DirectionsRenderer;
@@ -782,10 +723,10 @@ ShotgunComponent = __decorate([
         template: __webpack_require__("../../../../../src/app/shotgun/shotgun.component.html"),
         styles: [__webpack_require__("../../../../../src/app/shotgun/shotgun.component.css")]
     }),
-    __metadata("design:paramtypes", [typeof (_c = typeof __WEBPACK_IMPORTED_MODULE_2__agm_core__["b" /* MapsAPILoader */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_2__agm_core__["b" /* MapsAPILoader */]) === "function" && _c || Object, typeof (_d = typeof __WEBPACK_IMPORTED_MODULE_0__angular_core__["NgZone"] !== "undefined" && __WEBPACK_IMPORTED_MODULE_0__angular_core__["NgZone"]) === "function" && _d || Object, typeof (_e = typeof __WEBPACK_IMPORTED_MODULE_3_angular2_cookie_services_cookies_service__["CookieService"] !== "undefined" && __WEBPACK_IMPORTED_MODULE_3_angular2_cookie_services_cookies_service__["CookieService"]) === "function" && _e || Object, typeof (_f = typeof __WEBPACK_IMPORTED_MODULE_4__angular_router__["b" /* Router */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_4__angular_router__["b" /* Router */]) === "function" && _f || Object])
+    __metadata("design:paramtypes", [typeof (_c = typeof __WEBPACK_IMPORTED_MODULE_2__agm_core__["b" /* MapsAPILoader */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_2__agm_core__["b" /* MapsAPILoader */]) === "function" && _c || Object, typeof (_d = typeof __WEBPACK_IMPORTED_MODULE_0__angular_core__["NgZone"] !== "undefined" && __WEBPACK_IMPORTED_MODULE_0__angular_core__["NgZone"]) === "function" && _d || Object, typeof (_e = typeof __WEBPACK_IMPORTED_MODULE_3_angular2_cookie_services_cookies_service__["CookieService"] !== "undefined" && __WEBPACK_IMPORTED_MODULE_3_angular2_cookie_services_cookies_service__["CookieService"]) === "function" && _e || Object, typeof (_f = typeof __WEBPACK_IMPORTED_MODULE_4__angular_router__["b" /* Router */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_4__angular_router__["b" /* Router */]) === "function" && _f || Object, typeof (_g = typeof __WEBPACK_IMPORTED_MODULE_5__http_service__["a" /* HttpService */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_5__http_service__["a" /* HttpService */]) === "function" && _g || Object])
 ], ShotgunComponent);
 
-var _a, _b, _c, _d, _e, _f;
+var _a, _b, _c, _d, _e, _f, _g;
 //# sourceMappingURL=shotgun.component.js.map
 
 /***/ }),

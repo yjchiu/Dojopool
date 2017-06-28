@@ -1,27 +1,14 @@
 <div id="dashboard_container">
   <h1>Hello, {{ name }}</h1>
   <a (click)="logout()">Log out</a>
-{{ start }}{{ end }}
-<!--<div *ngIf = "duration">
-  <p>duration</p>
-  {{duration | json}}
-</div>-->
-<p>Estimate time: {{ duration }}</p>
-    <div class="input_container">
-          <div class="form-group">
-            <input placeholder="start" autocorrect="off" autocapitalize="off" spellcheck="off" type="text" class="form-control" #startsearch [formControl]="searchControl">
-          </div>
-          <div class="form-group">
-            <input placeholder="destination" autocorrect="off" autocapitalize="off" spellcheck="off" type="text" class="form-control" #endsearch [formControl]="searchControl">
-          </div>
-          <!--<agm-map [latitude]="latitude" [longitude]="longitude" [scrollwheel]="false" [zoom]="zoom">
-            <agm-marker [latitude]="latitude" [longitude]="longitude"></agm-marker>
-          </agm-map>-->
-          <button class="btn btn-primary" (click)="route()">Need a Ride</button>
+  <div id="main_container">
+    <div id="driver">
+      <h1 class="text-center"><a [routerLink]="['/driver']" style="color: white;">I'm a driver.</a> </h1>
+    </div><!--
+    --><div id="shotgun">
+        <h1 class="text-center"><a [routerLink]="['/shotgun']" style="color: white;">I need a driver.</a></h1>
     </div>
-    <p>TEST</p>
-    <div id="map"></div>
-</div>
+  </div>
 
-<a [routerLink]="['/driver']">I'm a driver.</a> | 
-<a [routerLink]="['/shotgun']">I need a driver.</a>
+<!--<a [routerLink]="['/driver']">I'm a driver.</a> | -->
+<!--<a [routerLink]="['/shotgun']">I need a driver.</a>-->

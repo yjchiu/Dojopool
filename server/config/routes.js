@@ -8,7 +8,8 @@ module.exports = function(app) {
    app.get('/users', usercontroller.index);
    app.post('/newuser', usercontroller.new);
    app.post('/getuser', usercontroller.findOne);
-
+   
+   app.post('/newshotgun', shotguncontroller.new);
 
 
 

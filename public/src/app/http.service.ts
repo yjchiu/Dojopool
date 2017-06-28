@@ -26,6 +26,14 @@ export class HttpService {
     .toPromise()
   }
 
+
+  createShotGun(shotgun){
+    // console.log("Inside service create shotgun", shotgun);
+    return this._http.post('/newshotgun', shotgun)
+    .map(data=> data.json())
+    .toPromise()
+  }
+
   
   
 

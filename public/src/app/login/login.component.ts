@@ -46,6 +46,7 @@ export class LoginComponent implements OnInit {
     .then(user=>{
       console.log("Login user: ", user);
       this._cookieService.put("loginuserName", user.first_name);
+      this._cookieService.put("loginuserId", user._id);
       this._router.navigate(['/dashboard']);
     })
     .catch(err=>{
@@ -61,6 +62,7 @@ export class LoginComponent implements OnInit {
     .then(usercreated=>{
       console.log("created user: ", usercreated);
       this._cookieService.put("loginuserName", usercreated.first_name);
+      this._cookieService.put("loginuserId", usercreated._id);
       this.reg_user={
         first_name   : '',
         last_name    : '',

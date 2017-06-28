@@ -1,4 +1,4 @@
-#map {
+/*#map {
         height: 300px;
         width: 50%;
 }
@@ -6,4 +6,29 @@
 .input_container{
         width: 50%;
         margin-bottom: 20px;
+}*/
+
+#main_container{
+        margin: 0px auto;
+        width: 80%;
+        height: 400px;
+}
+
+#driver{
+        width: 50%;
+        height: 400px;
+        background-color: lightgreen;
+        display: inline-block;
+        vertical-align: top;
+        
+}
+#shotgun{
+        width: 50%;
+        height: 400px;
+        background-color: lightblue;
+        display: inline-block;
+
+}
+.text-center{
+        margin-top: 180px;
 }
