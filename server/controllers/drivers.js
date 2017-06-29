@@ -34,6 +34,16 @@ module.exports = {
         .catch(err=>{
             console.log(err);
         })
+    },
+    remove:function(req,res){
+        console.log('server side findOne function', req.body);
+        Driver.remove({ _user: req.body.id })
+        .then(()=>{
+            res.json(true);
+        })
+        .catch(err=>{
+            console.log(err);
+        })
     }
     
 }

@@ -65,4 +65,13 @@ export class PickupComponent implements OnInit {
 
   }
 
+  dropped_off(){
+    this._httpService.removedriver(this.driver_id)
+    .then(()=>{
+      console.log("remove successfully!!");
+      this._route.navigate(['/driver']);
+    })
+    .catch()
+  }
+
 }
