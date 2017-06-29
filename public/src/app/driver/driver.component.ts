@@ -22,6 +22,9 @@ export class DriverComponent implements OnInit {
   }
 
 
+  showroute_flag = false;
+
+
   cur_latitude = 0.0;
   cur_lonitute = 0.0;
 
@@ -29,6 +32,10 @@ export class DriverComponent implements OnInit {
   driver_end='';
   duration = '';
   start_latlng : any;
+
+  driver_time  = 0;
+  carpool_time = 0;
+  percentage = 0.0;
 
   public latitude: number;
   public longitude: number;
@@ -160,8 +167,7 @@ export class DriverComponent implements OnInit {
       travelMode: 'DRIVING'
     }, function(res, status){
       console.log("response", res);
-      self.duration = res.routes[0].legs[0].duration.text;
-      console.log("dur", self.duration); 
+      self.driver_time = Math.floor(res.routes[0].legs[0].duration.value/60);
       directionsDisplay.setDirections(res);
     })
   }
@@ -176,10 +182,8 @@ export class DriverComponent implements OnInit {
     this._httpService.getoneshotgun(request)
     .then(shotgun_req=>{
       console.log("find shotgun request: ", shotgun_req);
-      console.log(this.driver_start);
+      // console.log(this.driver_start);
       // console.log(this.driver_end);
-
-
       var directionsService = new google.maps.DirectionsService;
       var directionsDisplay = new google.maps.DirectionsRenderer;
       var map = new google.maps.Map(document.getElementById('map'), {
@@ -189,25 +193,69 @@ export class DriverComponent implements OnInit {
       directionsDisplay.setMap(map);
       directionsService.route({
         origin: this.driver_start,
-        destination: shotgun_req.end,
-        waypoints: [{
+        destination: this.driver_end,
+        waypoints: [
+        {
           location : shotgun_req.start,
           stopover: true 
-        }],
-        optimizeWaypoints: true,
+        },
+        {
+          location : shotgun_req.end,
+          stopover: true 
+        },
+        ],
         travelMode: 'DRIVING'
       }, function(res, status){
         console.log("response", res);
-        self.duration = res.routes[0].legs[0].duration.text;
-        console.log("dur", self.duration); 
+        var time = 0;
+        for(var i = 0; i < res.routes[0].legs.length;i++){
+          time += res.routes[0].legs[i].duration.value;
+          // console.log("time: ", res.routes[0].legs[i].duration.value);
+        }
+
+        self.carpool_time =  Math.floor(time/60);
         directionsDisplay.setDirections(res);
-
-
+        self.showroute_flag = true;
+        self.percentage = Math.floor((self.carpool_time-self.driver_time)*100/self.driver_time);
 
       })
     })
     .catch()
   }
+
+
+
+  pickup(request_id){
+    var self = this;
+    var request={
+      id : request_id,
+    }
+    this._httpService.getoneshotgun(request)
+    .then(shotgun_req=>{
+      console.log("PICK UP REQUEST: ", shotgun_req)
+      var driver = {
+        driver_start  : self.driver_start,
+        driver_end    : self.driver_end,
+        shotgun_start : shotgun_req.start,
+        shotgun_end   : shotgun_req.end,
+        shotgun_name  : shotgun_req._user.first_name,
+        shotgun_phone : shotgun_req._user.phone_number,
+        _user         : this._cookieService.get("loginuserId")
+      };
+      this._httpService.createDriver(driver)
+      .then(driver_created=>{
+        console.log("driver created: ", driver_created);
+      })
+      .catch(err=>{});
+
+      this._httpService.removeshotgun(shotgun_req)
+      .then(()=>{
+        this._route.navigate(['/pickup']);
+      })
+    })
+    .catch(err=>{});
+  }
+
 
 
 

@@ -1,0 +1,25 @@
+<script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCPX438xuJDV6jvpC9VhPNzM5PlGtAHIWs&libraries=places"></script>
+<div id="pickup_container">
+  <h3>Pick up Info</h3>
+  <table class="table table-bordered">
+    <thead>
+    <tr>
+      <td>Passenger</td>
+      <td>Phone</td>
+      <td>Pick up location</td>
+      <td>Drop off location</td>
+    </tr>
+    </thead>
+    <tr>
+      <td> {{ shotgun_info.shotgun_name }}</td>
+      <td> {{ shotgun_info.shotgun_phone }}</td>
+      <td> {{ shotgun_info.shotgun_start }}</td>
+      <td> {{ shotgun_info.shotgun_end }}</td>
+    </tr>
+  </table>
+  <h3>Pick up direction</h3>
+  <div id="info">
+  <div id="map"></div><!--
+  --><div id="right-panel"></div>
+  </div>
+</div>

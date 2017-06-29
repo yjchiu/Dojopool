@@ -1,0 +1,20 @@
+#map {
+        width: 50%;
+        height: 420px;
+        display: inline-block; 
+        vertical-align: top; 
+        
+}
+
+#right-panel {
+        height: 420px;
+        width: 50%;
+        overflow: auto;
+        display: inline-block; 
+        vertical-align: top; 
+        
+}
+
+#info{
+        margin-bottom: 20px;
+}

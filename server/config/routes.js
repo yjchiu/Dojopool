@@ -1,5 +1,6 @@
 var usercontroller = require('../controllers/users.js');
 var shotguncontroller = require('../controllers/shotguns.js');
+var drivercontroller = require('../controllers/drivers.js');
 
 var path = require('path');
 module.exports = function(app) {
@@ -12,6 +13,13 @@ module.exports = function(app) {
    app.post('/newshotgun', shotguncontroller.new);
    app.post('/shotguns', shotguncontroller.index);
    app.post('/getshotgun', shotguncontroller.findOne);
+   app.post('/removeshotgun', shotguncontroller.remove);
+
+
+   app.post('/newdriver', drivercontroller.new);
+   app.post('/getdriver', drivercontroller.findOne);
+
+
 
 
 

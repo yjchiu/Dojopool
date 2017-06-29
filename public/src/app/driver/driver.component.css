@@ -1,9 +1,24 @@
 #map {
         height: 300px;
-        width: 50%;
+        
 }
 
 .input_container{
-        width: 50%;
         margin-bottom: 20px;
+}
+
+#left_container{
+    width: 45%;
+    margin-bottom: 20px;
+    display: inline-block;
+    vertical-align: top;
+}
+
+#right_container{
+    width: 45%;
+    height: 200px;
+    margin-bottom: 20px;
+    background-color: lightblue; 
+    display: inline-block;
+    margin-left: 20px;
 }

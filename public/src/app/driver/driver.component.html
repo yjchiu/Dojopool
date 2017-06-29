@@ -15,11 +15,14 @@
         <td>{{request._user.first_name}} </td>
         <td> {{request.start}} </td>
         <td> {{request.end}} </td>
-        <td><a class="btn btn-primary" (click)="showroute(request._id)">See route</a></td>
+        <td><a class="btn btn-primary" (click)="showroute(request._id)">See route</a>
+            <a class="btn btn-primary" (click)="pickup(request._id)">Pick up</a>
+        </td>
       </tr>
     </tbody>
   </table>
-  <div class="input_container">
+  <div id="left_container"> 
+    <div class="input_container">
           <div class="form-group">
             <input placeholder="start" autocorrect="off" autocapitalize="off" spellcheck="off" type="text" class="form-control" #startsearch [formControl]="searchControl">
           </div>
@@ -32,4 +35,11 @@
           <button class="btn btn-primary" (click)="route()">Need a Ride</button>
     </div>
     <div id="map"></div>
+  </div>
+  <div *ngIf="showroute_flag" id="right_container">
+    <p>Before picking up passenger: {{ driver_time }} mins </p>
+    <p>After picking up passenger: {{ carpool_time }} mins </p>
+    <p>It's {{ percentage }}% more than original.</p>
+    
+  </div>
 </div>

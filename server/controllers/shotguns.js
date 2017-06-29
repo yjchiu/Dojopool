@@ -25,15 +25,20 @@ module.exports = {
    findOne:function(req,res){
         // console.log(req);
         console.log('server side findOne function', req.body);
-        Shotgun.findOne({_id:req.body.id })
-        .then(data=>{
-            console.log("findOne")
-            // console.log(data);
-            res.json(data);
+        Shotgun.findOne({ _id:req.body.id })
+        .populate('_user')
+        .exec(function(err, shotgun){
+            if(err){ console.log(err)}
+           res.json(shotgun);
         })
-        .catch(err=>{
-            console.log(err);
+    },
+    remove: function(req,res){
+        console.log("server side shotgun controller remove function: ", req.body);
+        Shotgun.remove({ _id : req.body._id })
+        .then(()=>{
+            res.json(true);
         })
+        .catch(err=>{})
     }
     
 }

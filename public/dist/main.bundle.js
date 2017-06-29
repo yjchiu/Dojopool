@@ -23,6 +23,7 @@ webpackEmptyContext.id = "../../../../../src async recursive";
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__dashboard_dashboard_component__ = __webpack_require__("../../../../../src/app/dashboard/dashboard.component.ts");
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__shotgun_shotgun_component__ = __webpack_require__("../../../../../src/app/shotgun/shotgun.component.ts");
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__driver_driver_component__ = __webpack_require__("../../../../../src/app/driver/driver.component.ts");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_6__pickup_pickup_component__ = __webpack_require__("../../../../../src/app/pickup/pickup.component.ts");
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return AppRoutingModule; });
 var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
@@ -36,11 +37,13 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
 
 
 
+
 var routes = [
     { path: '', pathMatch: 'full', component: __WEBPACK_IMPORTED_MODULE_2__login_login_component__["a" /* LoginComponent */] },
     { path: 'dashboard', component: __WEBPACK_IMPORTED_MODULE_3__dashboard_dashboard_component__["a" /* DashboardComponent */] },
     { path: 'shotgun', component: __WEBPACK_IMPORTED_MODULE_4__shotgun_shotgun_component__["a" /* ShotgunComponent */] },
     { path: 'driver', component: __WEBPACK_IMPORTED_MODULE_5__driver_driver_component__["a" /* DriverComponent */] },
+    { path: 'pickup', component: __WEBPACK_IMPORTED_MODULE_6__pickup_pickup_component__["a" /* PickupComponent */] },
     { path: '**', redirectTo: '' },
 ];
 var AppRoutingModule = (function () {
@@ -80,7 +83,7 @@ module.exports = module.exports.toString();
 /***/ "../../../../../src/app/app.component.html":
 /***/ (function(module, exports) {
 
-module.exports = "<script src=\"https://cdnjs.cloudflare.com/ajax/libs/ng2-bootstrap/x.x.x/ng2-bootstrap.min.js\"></script>\n<link href=\"https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css\" rel=\"stylesheet\">\n\n\n<div class=\"container\">\n   <router-outlet></router-outlet>\n</div>"
+module.exports = "<script src=\"https://cdnjs.cloudflare.com/ajax/libs/ng2-bootstrap/x.x.x/ng2-bootstrap.min.js\"></script>\n<link href=\"https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css\" rel=\"stylesheet\">\n<link rel=\"stylesheet\" href=\"https://bootswatch.com/readable/bootstrap.min.css\">\n\n<div class=\"container\">\n    <nav class=\"navbar navbar-default\">\n        <div class=\"container-fluid\">\n            <div class=\"navbar-header\">\n            <button type=\"button\" class=\"navbar-toggle collapsed\" data-toggle=\"collapse\" data-target=\"#bs-example-navbar-collapse-1\">\n                <span class=\"sr-only\">Toggle navigation</span>\n                <span class=\"icon-bar\"></span>\n                <span class=\"icon-bar\"></span>\n                <span class=\"icon-bar\"></span>\n            </button>\n            <a class=\"navbar-brand\" href=\"#\">DojoPool</a>\n            </div>\n\n            <div class=\"collapse navbar-collapse\" id=\"bs-example-navbar-collapse-1\">\n            <ul class=\"nav navbar-nav\">\n                <li><a [routerLink]=\"['/dashboard']\">Dashboard</a></li>\n            </ul>\n            <ul class=\"nav navbar-nav navbar-right\">\n                <li><a  (click)=\"logout()\">Logout</a></li>\n            </ul>\n            </div>\n        </div>\n    </nav>\n   <router-outlet></router-outlet>\n</div>"
 
 /***/ }),
 
@@ -89,6 +92,9 @@ module.exports = "<script src=\"https://cdnjs.cloudflare.com/ajax/libs/ng2-boots
 
 "use strict";
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__angular_core__ = __webpack_require__("../../../core/@angular/core.es5.js");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_angular2_cookie_services_cookies_service__ = __webpack_require__("../../../../angular2-cookie/services/cookies.service.js");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_angular2_cookie_services_cookies_service___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_1_angular2_cookie_services_cookies_service__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__angular_router__ = __webpack_require__("../../../router/@angular/router.es5.js");
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return AppComponent; });
 var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
@@ -96,10 +102,38 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
     else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
     return c > 3 && r && Object.defineProperty(target, key, r), r;
 };
+var __metadata = (this && this.__metadata) || function (k, v) {
+    if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
+};
+
+
 
 var AppComponent = (function () {
-    function AppComponent() {
+    function AppComponent(_cookieService, _route) {
+        this._cookieService = _cookieService;
+        this._route = _route;
+        if (!this._cookieService.get("loginuserName")) {
+            this._route.navigate(['/']);
+        }
     }
+    // users: Array<any> = [];
+    // constructor(private _http: HttpService) {
+    //   this.getUsers();
+    //   console.log("content:/// refreshed!!come here again ", this.users);
+    //  }
+    // getUsers(){
+    //   console.log("null users in parent: ", this.users);
+    //   this._http.retrieveAll()
+    //   .then(data=>{
+    //     this.users = data.reverse();
+    //   console.log("content: ", this.users);
+    //   })
+    //   .catch(err=>{console.log(err);})
+    // }
+    AppComponent.prototype.logout = function () {
+        this._cookieService.remove('loginuserName');
+        this._route.navigate(['/']);
+    };
     return AppComponent;
 }());
 AppComponent = __decorate([
@@ -107,9 +141,11 @@ AppComponent = __decorate([
         selector: 'app-root',
         template: __webpack_require__("../../../../../src/app/app.component.html"),
         styles: [__webpack_require__("../../../../../src/app/app.component.css")]
-    })
+    }),
+    __metadata("design:paramtypes", [typeof (_a = typeof __WEBPACK_IMPORTED_MODULE_1_angular2_cookie_services_cookies_service__["CookieService"] !== "undefined" && __WEBPACK_IMPORTED_MODULE_1_angular2_cookie_services_cookies_service__["CookieService"]) === "function" && _a || Object, typeof (_b = typeof __WEBPACK_IMPORTED_MODULE_2__angular_router__["b" /* Router */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_2__angular_router__["b" /* Router */]) === "function" && _b || Object])
 ], AppComponent);
 
+var _a, _b;
 //# sourceMappingURL=app.component.js.map
 
 /***/ }),
@@ -132,6 +168,7 @@ AppComponent = __decorate([
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_10__dashboard_dashboard_component__ = __webpack_require__("../../../../../src/app/dashboard/dashboard.component.ts");
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_11__driver_driver_component__ = __webpack_require__("../../../../../src/app/driver/driver.component.ts");
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_12__shotgun_shotgun_component__ = __webpack_require__("../../../../../src/app/shotgun/shotgun.component.ts");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_13__pickup_pickup_component__ = __webpack_require__("../../../../../src/app/pickup/pickup.component.ts");
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return AppModule; });
 var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
@@ -145,6 +182,8 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
 
 
 
+
+// import { NgbModule } from '@ng-bootstrap/ng-bootstrap'
 
 
 
@@ -165,6 +204,7 @@ AppModule = __decorate([
             __WEBPACK_IMPORTED_MODULE_10__dashboard_dashboard_component__["a" /* DashboardComponent */],
             __WEBPACK_IMPORTED_MODULE_11__driver_driver_component__["a" /* DriverComponent */],
             __WEBPACK_IMPORTED_MODULE_12__shotgun_shotgun_component__["a" /* ShotgunComponent */],
+            __WEBPACK_IMPORTED_MODULE_13__pickup_pickup_component__["a" /* PickupComponent */],
         ],
         imports: [
             __WEBPACK_IMPORTED_MODULE_0__angular_platform_browser__["a" /* BrowserModule */],
@@ -207,7 +247,7 @@ module.exports = module.exports.toString();
 /***/ "../../../../../src/app/dashboard/dashboard.component.html":
 /***/ (function(module, exports) {
 
-module.exports = "<div id=\"dashboard_container\">\n  <h1>Hello, {{ name }}</h1>\n  <a (click)=\"logout()\">Log out</a>\n  <div id=\"main_container\">\n    <div id=\"driver\">\n      <h1 class=\"text-center\"><a [routerLink]=\"['/driver']\" style=\"color: white;\">I'm a driver.</a> </h1>\n    </div><!--\n    --><div id=\"shotgun\">\n        <h1 class=\"text-center\"><a [routerLink]=\"['/shotgun']\" style=\"color: white;\">I need a driver.</a></h1>\n    </div>\n  </div>\n\n<!--<a [routerLink]=\"['/driver']\">I'm a driver.</a> | -->\n<!--<a [routerLink]=\"['/shotgun']\">I need a driver.</a>-->\n"
+module.exports = "<div id=\"dashboard_container\">\n  <h1>Hello, {{ name }}</h1>\n  <!--<a (click)=\"logout()\">Log out</a>-->\n  <div id=\"main_container\">\n    <div id=\"driver\">\n      <h1 class=\"text-center\"><a [routerLink]=\"['/driver']\" style=\"color: white;\">I'm a driver.</a> </h1>\n    </div><!--\n    --><div id=\"shotgun\">\n        <h1 class=\"text-center\"><a [routerLink]=\"['/shotgun']\" style=\"color: white;\">I need a driver.</a></h1>\n    </div>\n  </div>\n\n<!--<a [routerLink]=\"['/driver']\">I'm a driver.</a> | -->\n<!--<a [routerLink]=\"['/shotgun']\">I need a driver.</a>-->\n"
 
 /***/ }),
 
@@ -288,7 +328,7 @@ exports = module.exports = __webpack_require__("../../../../css-loader/lib/css-b
 
 
 // module
-exports.push([module.i, "#map {\n        height: 300px;\n        width: 50%;\n}\n\n.input_container{\n        width: 50%;\n        margin-bottom: 20px;\n}", ""]);
+exports.push([module.i, "#map {\n        height: 300px;\n        \n}\n\n.input_container{\n        margin-bottom: 20px;\n}\n\n#left_container{\n    width: 45%;\n    margin-bottom: 20px;\n    display: inline-block;\n    vertical-align: top;\n}\n\n#right_container{\n    width: 45%;\n    height: 200px;\n    margin-bottom: 20px;\n    background-color: lightblue; \n    display: inline-block;\n    margin-left: 20px;\n}", ""]);
 
 // exports
 
@@ -301,7 +341,7 @@ module.exports = module.exports.toString();
 /***/ "../../../../../src/app/driver/driver.component.html":
 /***/ (function(module, exports) {
 
-module.exports = "<div id=\"driver_container\">\n  <a (click)=\"logout()\">Log out</a>\n  <a [routerLink]=\"['/dashboard']\">Dashboard</a>\n  <table class=\"table table-bordered\">\n    <thead>\n    <tr>\n      <td>Name</td>\n      <td>Guest start</td>\n      <td> Guest destination</td>\n      <td></td>\n    </tr>\n    </thead>\n    <tbody>\n      <tr *ngFor=\"let request of shotgun_requests\">\n        <td>{{request._user.first_name}} </td>\n        <td> {{request.start}} </td>\n        <td> {{request.end}} </td>\n        <td><a class=\"btn btn-primary\" (click)=\"showroute(request._id)\">See route</a></td>\n      </tr>\n    </tbody>\n  </table>\n  <div class=\"input_container\">\n          <div class=\"form-group\">\n            <input placeholder=\"start\" autocorrect=\"off\" autocapitalize=\"off\" spellcheck=\"off\" type=\"text\" class=\"form-control\" #startsearch [formControl]=\"searchControl\">\n          </div>\n          <div class=\"form-group\">\n            <input placeholder=\"destination\" autocorrect=\"off\" autocapitalize=\"off\" spellcheck=\"off\" type=\"text\" class=\"form-control\" #endsearch [formControl]=\"searchControl\">\n          </div>\n          <!--<agm-map [latitude]=\"latitude\" [longitude]=\"longitude\" [scrollwheel]=\"false\" [zoom]=\"zoom\">\n            <agm-marker [latitude]=\"latitude\" [longitude]=\"longitude\"></agm-marker>\n          </agm-map>-->\n          <button class=\"btn btn-primary\" (click)=\"route()\">Need a Ride</button>\n    </div>\n    <div id=\"map\"></div>\n</div>\n"
+module.exports = "<div id=\"driver_container\">\n  <a (click)=\"logout()\">Log out</a>\n  <a [routerLink]=\"['/dashboard']\">Dashboard</a>\n  <table class=\"table table-bordered\">\n    <thead>\n    <tr>\n      <td>Name</td>\n      <td>Guest start</td>\n      <td> Guest destination</td>\n      <td></td>\n    </tr>\n    </thead>\n    <tbody>\n      <tr *ngFor=\"let request of shotgun_requests\">\n        <td>{{request._user.first_name}} </td>\n        <td> {{request.start}} </td>\n        <td> {{request.end}} </td>\n        <td><a class=\"btn btn-primary\" (click)=\"showroute(request._id)\">See route</a>\n            <a class=\"btn btn-primary\" (click)=\"pickup(request._id)\">Pick up</a>\n        </td>\n      </tr>\n    </tbody>\n  </table>\n  <div id=\"left_container\"> \n    <div class=\"input_container\">\n          <div class=\"form-group\">\n            <input placeholder=\"start\" autocorrect=\"off\" autocapitalize=\"off\" spellcheck=\"off\" type=\"text\" class=\"form-control\" #startsearch [formControl]=\"searchControl\">\n          </div>\n          <div class=\"form-group\">\n            <input placeholder=\"destination\" autocorrect=\"off\" autocapitalize=\"off\" spellcheck=\"off\" type=\"text\" class=\"form-control\" #endsearch [formControl]=\"searchControl\">\n          </div>\n          <!--<agm-map [latitude]=\"latitude\" [longitude]=\"longitude\" [scrollwheel]=\"false\" [zoom]=\"zoom\">\n            <agm-marker [latitude]=\"latitude\" [longitude]=\"longitude\"></agm-marker>\n          </agm-map>-->\n          <button class=\"btn btn-primary\" (click)=\"route()\">Need a Ride</button>\n    </div>\n    <div id=\"map\"></div>\n  </div>\n  <div *ngIf=\"showroute_flag\" id=\"right_container\">\n    <p>Before picking up passenger: {{ driver_time }} mins </p>\n    <p>After picking up passenger: {{ carpool_time }} mins </p>\n    <p>It's {{ percentage }}% more than original.</p>\n    \n  </div>\n</div>\n"
 
 /***/ }),
 
@@ -345,11 +385,15 @@ var DriverComponent = (function () {
         this.user_id = {
             id: '',
         };
+        this.showroute_flag = false;
         this.cur_latitude = 0.0;
         this.cur_lonitute = 0.0;
         this.driver_start = '';
         this.driver_end = '';
         this.duration = '';
+        this.driver_time = 0;
+        this.carpool_time = 0;
+        this.percentage = 0.0;
         if (!this._cookieService.get("loginuserName")) {
             this._route.navigate(['/']);
         }
@@ -456,8 +500,7 @@ var DriverComponent = (function () {
             travelMode: 'DRIVING'
         }, function (res, status) {
             console.log("response", res);
-            self.duration = res.routes[0].legs[0].duration.text;
-            console.log("dur", self.duration);
+            self.driver_time = Math.floor(res.routes[0].legs[0].duration.value / 60);
             directionsDisplay.setDirections(res);
         });
     };
@@ -471,7 +514,7 @@ var DriverComponent = (function () {
         this._httpService.getoneshotgun(request)
             .then(function (shotgun_req) {
             console.log("find shotgun request: ", shotgun_req);
-            console.log(_this.driver_start);
+            // console.log(this.driver_start);
             // console.log(this.driver_end);
             var directionsService = new google.maps.DirectionsService;
             var directionsDisplay = new google.maps.DirectionsRenderer;
@@ -482,21 +525,62 @@ var DriverComponent = (function () {
             directionsDisplay.setMap(map);
             directionsService.route({
                 origin: _this.driver_start,
-                destination: shotgun_req.end,
-                waypoints: [{
+                destination: _this.driver_end,
+                waypoints: [
+                    {
                         location: shotgun_req.start,
                         stopover: true
-                    }],
-                optimizeWaypoints: true,
+                    },
+                    {
+                        location: shotgun_req.end,
+                        stopover: true
+                    },
+                ],
                 travelMode: 'DRIVING'
             }, function (res, status) {
                 console.log("response", res);
-                self.duration = res.routes[0].legs[0].duration.text;
-                console.log("dur", self.duration);
+                var time = 0;
+                for (var i = 0; i < res.routes[0].legs.length; i++) {
+                    time += res.routes[0].legs[i].duration.value;
+                    // console.log("time: ", res.routes[0].legs[i].duration.value);
+                }
+                self.carpool_time = Math.floor(time / 60);
                 directionsDisplay.setDirections(res);
+                self.showroute_flag = true;
+                self.percentage = Math.floor((self.carpool_time - self.driver_time) * 100 / self.driver_time);
             });
         })
             .catch();
+    };
+    DriverComponent.prototype.pickup = function (request_id) {
+        var _this = this;
+        var self = this;
+        var request = {
+            id: request_id,
+        };
+        this._httpService.getoneshotgun(request)
+            .then(function (shotgun_req) {
+            console.log("PICK UP REQUEST: ", shotgun_req);
+            var driver = {
+                driver_start: self.driver_start,
+                driver_end: self.driver_end,
+                shotgun_start: shotgun_req.start,
+                shotgun_end: shotgun_req.end,
+                shotgun_name: shotgun_req._user.first_name,
+                shotgun_phone: shotgun_req._user.phone_number,
+                _user: _this._cookieService.get("loginuserId")
+            };
+            _this._httpService.createDriver(driver)
+                .then(function (driver_created) {
+                console.log("driver created: ", driver_created);
+            })
+                .catch(function (err) { });
+            _this._httpService.removeshotgun(shotgun_req)
+                .then(function () {
+                _this._route.navigate(['/pickup']);
+            });
+        })
+            .catch(function (err) { });
     };
     DriverComponent.prototype.logout = function () {
         this._cookieService.remove('loginuserName');
@@ -581,6 +665,21 @@ var HttpService = (function () {
     };
     HttpService.prototype.getoneshotgun = function (request) {
         return this._http.post('/getshotgun', request)
+            .map(function (data) { return data.json(); })
+            .toPromise();
+    };
+    HttpService.prototype.removeshotgun = function (request) {
+        return this._http.post('/removeshotgun', request)
+            .map(function (data) { return data.json(); })
+            .toPromise();
+    };
+    HttpService.prototype.createDriver = function (driver) {
+        return this._http.post('/newdriver', driver)
+            .map(function (data) { return data.json(); })
+            .toPromise();
+    };
+    HttpService.prototype.getdriver = function (driver_id) {
+        return this._http.post('/getdriver', driver_id)
             .map(function (data) { return data.json(); })
             .toPromise();
     };
@@ -724,6 +823,119 @@ LoginComponent = __decorate([
 
 var _a, _b, _c;
 //# sourceMappingURL=login.component.js.map
+
+/***/ }),
+
+/***/ "../../../../../src/app/pickup/pickup.component.css":
+/***/ (function(module, exports, __webpack_require__) {
+
+exports = module.exports = __webpack_require__("../../../../css-loader/lib/css-base.js")(false);
+// imports
+
+
+// module
+exports.push([module.i, "#map {\n        width: 50%;\n        height: 420px;\n        display: inline-block; \n        vertical-align: top; \n        \n}\n\n#right-panel {\n        height: 420px;\n        width: 50%;\n        overflow: auto;\n        display: inline-block; \n        vertical-align: top; \n        \n}\n\n#info{\n        margin-bottom: 20px;\n}\n", ""]);
+
+// exports
+
+
+/*** EXPORTS FROM exports-loader ***/
+module.exports = module.exports.toString();
+
+/***/ }),
+
+/***/ "../../../../../src/app/pickup/pickup.component.html":
+/***/ (function(module, exports) {
+
+module.exports = "<script src=\"https://maps.googleapis.com/maps/api/js?key=AIzaSyCPX438xuJDV6jvpC9VhPNzM5PlGtAHIWs&libraries=places\"></script>\n<div id=\"pickup_container\">\n  <h3>Pick up Info</h3>\n  <table class=\"table table-bordered\">\n    <thead>\n    <tr>\n      <td>Passenger</td>\n      <td>Phone</td>\n      <td>Pick up location</td>\n      <td>Drop off location</td>\n    </tr>\n    </thead>\n    <tr>\n      <td> {{ shotgun_info.shotgun_name }}</td>\n      <td> {{ shotgun_info.shotgun_phone }}</td>\n      <td> {{ shotgun_info.shotgun_start }}</td>\n      <td> {{ shotgun_info.shotgun_end }}</td>\n    </tr>\n  </table>\n  <h3>Pick up direction</h3>\n  <div id=\"info\">\n  <div id=\"map\"></div><!--\n  --><div id=\"right-panel\"></div>\n  </div>\n</div>\n"
+
+/***/ }),
+
+/***/ "../../../../../src/app/pickup/pickup.component.ts":
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__angular_core__ = __webpack_require__("../../../core/@angular/core.es5.js");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_angular2_cookie_services_cookies_service__ = __webpack_require__("../../../../angular2-cookie/services/cookies.service.js");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_angular2_cookie_services_cookies_service___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_1_angular2_cookie_services_cookies_service__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__http_service__ = __webpack_require__("../../../../../src/app/http.service.ts");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__angular_router__ = __webpack_require__("../../../router/@angular/router.es5.js");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__agm_core__ = __webpack_require__("../../../../@agm/core/index.js");
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return PickupComponent; });
+var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
+    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
+    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
+    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
+    return c > 3 && r && Object.defineProperty(target, key, r), r;
+};
+var __metadata = (this && this.__metadata) || function (k, v) {
+    if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
+};
+
+
+
+
+
+var PickupComponent = (function () {
+    function PickupComponent(_httpService, _cookieService, _route, mapsAPILoader, ngZone) {
+        this._httpService = _httpService;
+        this._cookieService = _cookieService;
+        this._route = _route;
+        this.mapsAPILoader = mapsAPILoader;
+        this.ngZone = ngZone;
+        this.driver_id = {
+            id: '',
+        };
+        this.shotgun_info = {};
+        this.cur_latitude = 0.0;
+        this.cur_lonitute = 0.0;
+        if (!this._cookieService.get("loginuserName")) {
+            this._route.navigate(['/']);
+        }
+        this.driver_id.id = this._cookieService.get('loginuserId');
+    }
+    PickupComponent.prototype.ngOnInit = function () {
+        var _this = this;
+        this._httpService.getdriver(this.driver_id)
+            .then(function (driver_res) {
+            console.log("pick up info: ", driver_res);
+            _this.shotgun_info = driver_res;
+            var directionsService = new google.maps.DirectionsService;
+            var directionsDisplay = new google.maps.DirectionsRenderer;
+            var map = new google.maps.Map(document.getElementById('map'));
+            directionsDisplay.setMap(map);
+            directionsService.route({
+                origin: driver_res.driver_start,
+                destination: driver_res.driver_end,
+                waypoints: [{
+                        location: driver_res.shotgun_start,
+                        stopover: true,
+                    },
+                    {
+                        location: driver_res.shotgun_end,
+                        stopover: true,
+                    }],
+                travelMode: 'DRIVING'
+            }, function (res, status) {
+                console.log("direction: ", res);
+                directionsDisplay.setDirections(res);
+                directionsDisplay.setPanel(document.getElementById('right-panel'));
+            });
+        });
+    };
+    return PickupComponent;
+}());
+PickupComponent = __decorate([
+    __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["Component"])({
+        selector: 'app-pickup',
+        template: __webpack_require__("../../../../../src/app/pickup/pickup.component.html"),
+        styles: [__webpack_require__("../../../../../src/app/pickup/pickup.component.css")]
+    }),
+    __metadata("design:paramtypes", [typeof (_a = typeof __WEBPACK_IMPORTED_MODULE_2__http_service__["a" /* HttpService */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_2__http_service__["a" /* HttpService */]) === "function" && _a || Object, typeof (_b = typeof __WEBPACK_IMPORTED_MODULE_1_angular2_cookie_services_cookies_service__["CookieService"] !== "undefined" && __WEBPACK_IMPORTED_MODULE_1_angular2_cookie_services_cookies_service__["CookieService"]) === "function" && _b || Object, typeof (_c = typeof __WEBPACK_IMPORTED_MODULE_3__angular_router__["b" /* Router */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_3__angular_router__["b" /* Router */]) === "function" && _c || Object, typeof (_d = typeof __WEBPACK_IMPORTED_MODULE_4__agm_core__["b" /* MapsAPILoader */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_4__agm_core__["b" /* MapsAPILoader */]) === "function" && _d || Object, typeof (_e = typeof __WEBPACK_IMPORTED_MODULE_0__angular_core__["NgZone"] !== "undefined" && __WEBPACK_IMPORTED_MODULE_0__angular_core__["NgZone"]) === "function" && _e || Object])
+], PickupComponent);
+
+var _a, _b, _c, _d, _e;
+//# sourceMappingURL=pickup.component.js.map
 
 /***/ }),
 

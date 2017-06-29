@@ -2,7 +2,9 @@ import { Component, OnInit, NgZone, ElementRef, ViewChild } from '@angular/core'
 import { FormControl } from "@angular/forms";
 import { MapsAPILoader } from '@agm/core';
 import { CookieService } from 'angular2-cookie/services/cookies.service';
-import { Router } from '@angular/router'
+import { Router } from '@angular/router';
+// import { NgbModule } from '@ng-bootstrap/ng-bootstrap'
+
 
 declare var google : any;
 declare var navigator : any;
