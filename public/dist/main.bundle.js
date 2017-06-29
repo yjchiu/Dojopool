@@ -883,12 +883,10 @@ var PickupComponent = (function () {
         this._route = _route;
         this.mapsAPILoader = mapsAPILoader;
         this.ngZone = ngZone;
+        this.shotgun_info = {};
         this.driver_id = {
             id: '',
         };
-        this.shotgun_info = {};
-        this.cur_latitude = 0.0;
-        this.cur_lonitute = 0.0;
         if (!this._cookieService.get("loginuserName")) {
             this._route.navigate(['/']);
         }
@@ -896,30 +894,33 @@ var PickupComponent = (function () {
     }
     PickupComponent.prototype.ngOnInit = function () {
         var _this = this;
-        this._httpService.getdriver(this.driver_id)
-            .then(function (driver_res) {
-            console.log("pick up info: ", driver_res);
-            _this.shotgun_info = driver_res;
-            var directionsService = new google.maps.DirectionsService;
-            var directionsDisplay = new google.maps.DirectionsRenderer;
-            var map = new google.maps.Map(document.getElementById('map'));
-            directionsDisplay.setMap(map);
-            directionsService.route({
-                origin: driver_res.driver_start,
-                destination: driver_res.driver_end,
-                waypoints: [{
-                        location: driver_res.shotgun_start,
-                        stopover: true,
-                    },
-                    {
-                        location: driver_res.shotgun_end,
-                        stopover: true,
-                    }],
-                travelMode: 'DRIVING'
-            }, function (res, status) {
-                console.log("direction: ", res);
-                directionsDisplay.setDirections(res);
-                directionsDisplay.setPanel(document.getElementById('right-panel'));
+        this.mapsAPILoader.load()
+            .then(function () {
+            _this._httpService.getdriver(_this.driver_id)
+                .then(function (driver_res) {
+                console.log("pick up info: ", driver_res);
+                _this.shotgun_info = driver_res;
+                var directionsService = new google.maps.DirectionsService;
+                var directionsDisplay = new google.maps.DirectionsRenderer;
+                var map = new google.maps.Map(document.getElementById('map'));
+                directionsDisplay.setMap(map);
+                directionsService.route({
+                    origin: driver_res.driver_start,
+                    destination: driver_res.driver_end,
+                    waypoints: [{
+                            location: driver_res.shotgun_start,
+                            stopover: true,
+                        },
+                        {
+                            location: driver_res.shotgun_end,
+                            stopover: true,
+                        }],
+                    travelMode: 'DRIVING'
+                }, function (res, status) {
+                    console.log("direction: ", res);
+                    directionsDisplay.setDirections(res);
+                    directionsDisplay.setPanel(document.getElementById('right-panel'));
+                });
             });
         });
     };
