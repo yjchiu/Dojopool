@@ -72,6 +72,13 @@ export class HttpService {
     .toPromise()
   }
 
+
+  removedriver(driver){
+    return this._http.post('/removedriver', driver)
+    .map(data=>data.json())
+    .toPromise()
+  }
+
   
   
 

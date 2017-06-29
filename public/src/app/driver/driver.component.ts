@@ -55,6 +55,7 @@ export class DriverComponent implements OnInit {
     this._httpService.getallshotgun(this.user_id)
     .then(allshotguns=>{    
       this.shotgun_requests = allshotguns;
+      console.log("SHOTGUN REQUEST: ", this.shotgun_requests);
     })
     .catch(err=>{
       console.log("error in driver component constructor", err);
@@ -112,6 +113,11 @@ export class DriverComponent implements OnInit {
   }
 
 
+  // private listAllDestination(){
+  //   var map = new google.maps.Map(document.getElementById("map"));
+  // }
+
+
 
   private setCurrentPosition() {
     var self = this;
@@ -131,13 +137,32 @@ export class DriverComponent implements OnInit {
         })
 
         var map = new google.maps.Map(document.getElementById('map'), {
-          zoom: 15,
+          zoom: 11,
           center: {lat: data.coords.latitude, lng: data.coords.longitude}
         });
         var marker = new google.maps.Marker({
           position: {lat: data.coords.latitude, lng: data.coords.longitude},
           map: map
         });
+        
+        for(var i = 0 ; i < self.shotgun_requests.length ; i++){
+          geocoder.geocode({'address': self.shotgun_requests[i].end }, function(res,status){
+            if(status == google.maps.GeocoderStatus.OK){
+              console.log("ALALALALAL: ", res);
+              var marker = new google.maps.Marker({
+                icon: 'http://maps.google.com/mapfiles/ms/icons/blue.png',
+                map: map,
+                position : res[0].geometry.location,
+                title  : res[0].formatted_address,
+              })
+            }
+          })
+        }
+
+
+
+
+
       });
     }
   }
@@ -147,12 +172,6 @@ export class DriverComponent implements OnInit {
   route(){
     var self = this;
     console.log("AAA", self.driver_start, self.driver_end);
-    var shotgun = {
-      start : self.driver_start,
-      end : self.driver_end,
-      _user : this._cookieService.get('loginuserId'),
-    }
-    // this._httpService.createShotGun(shotgun);
     console.log(self);
     var directionsService = new google.maps.DirectionsService;
     var directionsDisplay = new google.maps.DirectionsRenderer;
@@ -255,9 +274,6 @@ export class DriverComponent implements OnInit {
     })
     .catch(err=>{});
   }
-
-
-
 
 
   logout(){

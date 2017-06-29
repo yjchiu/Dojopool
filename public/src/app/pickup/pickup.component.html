@@ -8,6 +8,7 @@
       <td>Phone</td>
       <td>Pick up location</td>
       <td>Drop off location</td>
+      <td></td>
     </tr>
     </thead>
     <tr>
@@ -15,6 +16,7 @@
       <td> {{ shotgun_info.shotgun_phone }}</td>
       <td> {{ shotgun_info.shotgun_start }}</td>
       <td> {{ shotgun_info.shotgun_end }}</td>
+      <td><a class="btn btn-primary" (click)="dropped_off()">Dropped off</a></td>
     </tr>
   </table>
   <h3>Pick up direction</h3>

@@ -18,6 +18,7 @@ module.exports = function(app) {
 
    app.post('/newdriver', drivercontroller.new);
    app.post('/getdriver', drivercontroller.findOne);
+   app.post('/removedriver', drivercontroller.remove);
 
 
 

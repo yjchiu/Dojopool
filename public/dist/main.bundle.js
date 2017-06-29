@@ -352,7 +352,7 @@ module.exports = module.exports.toString();
 /***/ "../../../../../src/app/driver/driver.component.html":
 /***/ (function(module, exports) {
 
-module.exports = "<div id=\"driver_container\">\n  <a (click)=\"logout()\">Log out</a>\n  <a [routerLink]=\"['/dashboard']\">Dashboard</a>\n  <table class=\"table table-bordered\">\n    <thead>\n    <tr>\n      <td>Name</td>\n      <td>Guest start</td>\n      <td> Guest destination</td>\n      <td></td>\n    </tr>\n    </thead>\n    <tbody>\n      <tr *ngFor=\"let request of shotgun_requests\">\n        <td>{{request._user.first_name}} </td>\n        <td> {{request.start}} </td>\n        <td> {{request.end}} </td>\n        <td><a class=\"btn btn-primary\" (click)=\"showroute(request._id)\">See route</a>\n            <a class=\"btn btn-primary\" (click)=\"pickup(request._id)\">Pick up</a>\n        </td>\n      </tr>\n    </tbody>\n  </table>\n  <div id=\"left_container\"> \n    <div class=\"input_container\">\n          <div class=\"form-group\">\n            <input placeholder=\"start\" autocorrect=\"off\" autocapitalize=\"off\" spellcheck=\"off\" type=\"text\" class=\"form-control\" #startsearch [formControl]=\"searchControl\">\n          </div>\n          <div class=\"form-group\">\n            <input placeholder=\"destination\" autocorrect=\"off\" autocapitalize=\"off\" spellcheck=\"off\" type=\"text\" class=\"form-control\" #endsearch [formControl]=\"searchControl\">\n          </div>\n          <!--<agm-map [latitude]=\"latitude\" [longitude]=\"longitude\" [scrollwheel]=\"false\" [zoom]=\"zoom\">\n            <agm-marker [latitude]=\"latitude\" [longitude]=\"longitude\"></agm-marker>\n          </agm-map>-->\n          <button class=\"btn btn-primary\" (click)=\"route()\">Need a Ride</button>\n    </div>\n    <div id=\"map\"></div>\n  </div>\n  <div *ngIf=\"showroute_flag\" id=\"right_container\">\n    <p>Before picking up passenger: {{ driver_time }} mins </p>\n    <p>After picking up passenger: {{ carpool_time }} mins </p>\n    <p>It's {{ percentage }}% more than original.</p>\n    \n  </div>\n</div>\n"
+module.exports = "<div id=\"driver_container\">\n  <a (click)=\"logout()\">Log out</a>\n  <a [routerLink]=\"['/dashboard']\">Dashboard</a>\n  <table class=\"table table-bordered\">\n    <thead>\n    <tr>\n      <td>Name</td>\n      <td>Guest start</td>\n      <td> Guest destination</td>\n      <td></td>\n    </tr>\n    </thead>\n    <tbody>\n      <tr *ngFor=\"let request of shotgun_requests\">\n        <td>{{request._user.first_name}} </td>\n        <td> {{request.start}} </td>\n        <td> {{request.end}} </td>\n        <td><a class=\"btn btn-primary\" (click)=\"showroute(request._id)\">See route</a>\n            <a class=\"btn btn-primary\" (click)=\"pickup(request._id)\">Pick up</a>\n        </td>\n      </tr>\n    </tbody>\n  </table>\n  <div id=\"left_container\"> \n    <div class=\"input_container\">\n          <div class=\"form-group\">\n            <input placeholder=\"start\" autocorrect=\"off\" autocapitalize=\"off\" spellcheck=\"off\" type=\"text\" class=\"form-control\" #startsearch [formControl]=\"searchControl\">\n          </div>\n          <div class=\"form-group\">\n            <input placeholder=\"destination\" autocorrect=\"off\" autocapitalize=\"off\" spellcheck=\"off\" type=\"text\" class=\"form-control\" #endsearch [formControl]=\"searchControl\">\n          </div>\n          <!--<agm-map [latitude]=\"latitude\" [longitude]=\"longitude\" [scrollwheel]=\"false\" [zoom]=\"zoom\">\n            <agm-marker [latitude]=\"latitude\" [longitude]=\"longitude\"></agm-marker>\n          </agm-map>-->\n          <button class=\"btn btn-primary\" (click)=\"route()\">Need a Passenger</button>\n    </div>\n    <div id=\"map\"></div>\n  </div>\n  <div *ngIf=\"showroute_flag\" id=\"right_container\">\n    <p>Before picking up passenger: {{ driver_time }} mins </p>\n    <p>After picking up passenger: {{ carpool_time }} mins </p>\n    <p>It's {{ percentage }}% more than original.</p>\n    \n  </div>\n</div>\n"
 
 /***/ }),
 
@@ -413,6 +413,7 @@ var DriverComponent = (function () {
         this._httpService.getallshotgun(this.user_id)
             .then(function (allshotguns) {
             _this.shotgun_requests = allshotguns;
+            console.log("SHOTGUN REQUEST: ", _this.shotgun_requests);
         })
             .catch(function (err) {
             console.log("error in driver component constructor", err);
@@ -461,6 +462,9 @@ var DriverComponent = (function () {
             });
         });
     };
+    // private listAllDestination(){
+    //   var map = new google.maps.Map(document.getElementById("map"));
+    // }
     DriverComponent.prototype.setCurrentPosition = function () {
         var _this = this;
         var self = this;
@@ -478,25 +482,32 @@ var DriverComponent = (function () {
                     }
                 });
                 var map = new google.maps.Map(document.getElementById('map'), {
-                    zoom: 15,
+                    zoom: 11,
                     center: { lat: data.coords.latitude, lng: data.coords.longitude }
                 });
                 var marker = new google.maps.Marker({
                     position: { lat: data.coords.latitude, lng: data.coords.longitude },
                     map: map
                 });
+                for (var i = 0; i < self.shotgun_requests.length; i++) {
+                    geocoder.geocode({ 'address': self.shotgun_requests[i].end }, function (res, status) {
+                        if (status == google.maps.GeocoderStatus.OK) {
+                            console.log("ALALALALAL: ", res);
+                            var marker = new google.maps.Marker({
+                                icon: 'http://maps.google.com/mapfiles/ms/icons/blue.png',
+                                map: map,
+                                position: res[0].geometry.location,
+                                title: res[0].formatted_address,
+                            });
+                        }
+                    });
+                }
             });
         }
     };
     DriverComponent.prototype.route = function () {
         var self = this;
         console.log("AAA", self.driver_start, self.driver_end);
-        var shotgun = {
-            start: self.driver_start,
-            end: self.driver_end,
-            _user: this._cookieService.get('loginuserId'),
-        };
-        // this._httpService.createShotGun(shotgun);
         console.log(self);
         var directionsService = new google.maps.DirectionsService;
         var directionsDisplay = new google.maps.DirectionsRenderer;
@@ -701,6 +712,11 @@ var HttpService = (function () {
             .map(function (data) { return data.json(); })
             .toPromise();
     };
+    HttpService.prototype.removedriver = function (driver) {
+        return this._http.post('/removedriver', driver)
+            .map(function (data) { return data.json(); })
+            .toPromise();
+    };
     return HttpService;
 }());
 HttpService = __decorate([
@@ -869,7 +885,7 @@ module.exports = module.exports.toString();
 /***/ "../../../../../src/app/pickup/pickup.component.html":
 /***/ (function(module, exports) {
 
-module.exports = "<script src=\"https://maps.googleapis.com/maps/api/js?key=AIzaSyCPX438xuJDV6jvpC9VhPNzM5PlGtAHIWs&libraries=places\"></script>\n<div id=\"pickup_container\">\n  <h3>Pick up Info</h3>\n  <table class=\"table table-bordered\">\n    <thead>\n    <tr>\n      <td>Passenger</td>\n      <td>Phone</td>\n      <td>Pick up location</td>\n      <td>Drop off location</td>\n    </tr>\n    </thead>\n    <tr>\n      <td> {{ shotgun_info.shotgun_name }}</td>\n      <td> {{ shotgun_info.shotgun_phone }}</td>\n      <td> {{ shotgun_info.shotgun_start }}</td>\n      <td> {{ shotgun_info.shotgun_end }}</td>\n    </tr>\n  </table>\n  <h3>Pick up direction</h3>\n  <div id=\"info\">\n  <div id=\"map\"></div><!--\n  --><div id=\"right-panel\"></div>\n  </div>\n</div>\n"
+module.exports = "<script src=\"https://maps.googleapis.com/maps/api/js?key=AIzaSyCPX438xuJDV6jvpC9VhPNzM5PlGtAHIWs&libraries=places\"></script>\n<div id=\"pickup_container\">\n  <h3>Pick up Info</h3>\n  <table class=\"table table-bordered\">\n    <thead>\n    <tr>\n      <td>Passenger</td>\n      <td>Phone</td>\n      <td>Pick up location</td>\n      <td>Drop off location</td>\n      <td></td>\n    </tr>\n    </thead>\n    <tr>\n      <td> {{ shotgun_info.shotgun_name }}</td>\n      <td> {{ shotgun_info.shotgun_phone }}</td>\n      <td> {{ shotgun_info.shotgun_start }}</td>\n      <td> {{ shotgun_info.shotgun_end }}</td>\n      <td><a class=\"btn btn-primary\" (click)=\"dropped_off()\">Dropped off</a></td>\n    </tr>\n  </table>\n  <h3>Pick up direction</h3>\n  <div id=\"info\">\n  <div id=\"map\"></div><!--\n  --><div id=\"right-panel\"></div>\n  </div>\n</div>\n"
 
 /***/ }),
 
@@ -945,6 +961,15 @@ var PickupComponent = (function () {
                 });
             });
         });
+    };
+    PickupComponent.prototype.dropped_off = function () {
+        var _this = this;
+        this._httpService.removedriver(this.driver_id)
+            .then(function () {
+            console.log("remove successfully!!");
+            _this._route.navigate(['/driver']);
+        })
+            .catch();
     };
     return PickupComponent;
 }());
