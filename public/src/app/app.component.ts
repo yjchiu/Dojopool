@@ -3,6 +3,9 @@ import { HttpService } from './http.service';
 import { CookieService } from 'angular2-cookie/services/cookies.service';
 import { Router } from '@angular/router';
 
+import { OnDestroy } from '@angular/core';
+import { BehaviorSubject } from 'rxjs/BehaviorSubject';
+
 @Component({
   selector: 'app-root',
   templateUrl: './app.component.html',
@@ -10,11 +13,21 @@ import { Router } from '@angular/router';
 })
 export class AppComponent {
 
-  constructor(private _cookieService:CookieService, private _route:Router){
+  logoutflag;
+
+  constructor(private _communicateService: HttpService, private _cookieService:CookieService, private _route:Router){
     if(!this._cookieService.get("loginuserName")){
       this._route.navigate(['/']);
     }
+    this._communicateService.observedLogoutflag.subscribe(
+      (status)=>this.logoutflag=status,
+      (err)=>{console.log(err);}
+    );
   }
+  
+  ngOnInit() {    
+  }
+  
   // users: Array<any> = [];
   // constructor(private _http: HttpService) {
   //   this.getUsers();
@@ -32,5 +45,9 @@ export class AppComponent {
   logout(){
     this._cookieService.remove('loginuserName');
     this._route.navigate(['/']);
+    this._communicateService.updateLogoutflag(false);
+  }
+  ngOnDestroy(){
+    this._communicateService.observedLogoutflag.unsubscribe();
   }
 }

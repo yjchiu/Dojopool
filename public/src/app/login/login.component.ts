@@ -1,7 +1,10 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, Output, OnInit, EventEmitter} from '@angular/core';
 import { HttpService } from './../http.service';
 import { CookieService } from 'angular2-cookie/services/cookies.service';
-import { Router } from '@angular/router'
+import { Router } from '@angular/router';
+
+import { OnDestroy } from '@angular/core';
+import { BehaviorSubject } from 'rxjs/BehaviorSubject';
 
 
 @Component({
@@ -10,6 +13,7 @@ import { Router } from '@angular/router'
   styleUrls: ['./login.component.css']
 })
 export class LoginComponent implements OnInit {
+  logoutflag = true;
   reg_user={
     first_name   : '',
     last_name    : '',
@@ -25,10 +29,11 @@ export class LoginComponent implements OnInit {
 
   isMember=true;
 
-  constructor(private _httpServide:HttpService, private _cookieService:CookieService, private _router:Router) {
+  constructor(private _communicateService: HttpService, private _httpServide:HttpService, private _cookieService:CookieService, private _router:Router) {
     if(this._cookieService.get("loginuserName")){
       this._router.navigate(['/dashboard']);
     } 
+  
    }
 
   ngOnInit() {
@@ -48,6 +53,7 @@ export class LoginComponent implements OnInit {
       this._cookieService.put("loginuserName", user.first_name);
       this._cookieService.put("loginuserId", user._id);
       this._router.navigate(['/dashboard']);
+      this._communicateService.updateLogoutflag(true);
     })
     .catch(err=>{
       console.log("Login error: ", err);
@@ -73,6 +79,7 @@ export class LoginComponent implements OnInit {
       form.resetForm();
       this.isMember = true;
       this._router.navigate(['/dashboard']);
+      this._communicateService.updateLogoutflag(true);      
     })
     .catch(err=>{
       console.log("create user error: ", err);

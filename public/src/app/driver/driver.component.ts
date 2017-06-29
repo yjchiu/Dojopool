@@ -225,7 +225,7 @@ export class DriverComponent implements OnInit {
         ],
         travelMode: 'DRIVING'
       }, function(res, status){
-        console.log("response", res);
+        console.log("response legs", res);
         var time = 0;
         for(var i = 0; i < res.routes[0].legs.length;i++){
           time += res.routes[0].legs[i].duration.value;

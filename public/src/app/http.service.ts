@@ -1,12 +1,20 @@
 import { Injectable } from '@angular/core';
 import {Http} from '@angular/http';
 import 'rxjs';
+import { BehaviorSubject } from 'rxjs/BehaviorSubject';
+
 
 @Injectable()
 export class HttpService {
 
   constructor(private _http: Http) { }
 
+  observedLogoutflag = new BehaviorSubject(null);
+
+  updateLogoutflag(logoutflag: any) {
+    this.observedLogoutflag.next(logoutflag);
+  }
+  
   retrieveAll() {
     return this._http.get('/users')
     .map( data => data.json() )
