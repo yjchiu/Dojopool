@@ -35,6 +35,16 @@ module.exports = {
             console.log(err);
         })
     },
+    findDriver:function(req,res){
+        // console.log(req);
+        console.log('server side findDriver function', req.body);
+        Driver.findOne({ shotgun_name:req.body.name })
+        .populate('_user')
+        .exec(function(err, driver){
+            if(err){ console.log(err)}
+            res.json(driver);
+        })
+    },
     remove:function(req,res){
         console.log('server side findOne function', req.body);
         Driver.remove({ _user: req.body.id })

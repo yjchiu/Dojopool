@@ -33,7 +33,7 @@ export class PickupComponent implements OnInit {
     .then(() => {
       this._httpService.getdriver(this.driver_id)
       .then(driver_res=>{
-        console.log("pick up info: ", driver_res);
+        // console.log("pick up info: ", driver_res);
         this.shotgun_info = driver_res;
         var directionsService = new google.maps.DirectionsService;
         var directionsDisplay = new google.maps.DirectionsRenderer;
@@ -53,7 +53,7 @@ export class PickupComponent implements OnInit {
           }],
           travelMode : 'DRIVING'
         }, function(res,status){
-          console.log("direction: ", res);
+          // console.log("direction: ", res);
             directionsDisplay.setDirections(res);
             directionsDisplay.setPanel(document.getElementById('right-panel'));
         })
@@ -68,7 +68,7 @@ export class PickupComponent implements OnInit {
   dropped_off(){
     this._httpService.removedriver(this.driver_id)
     .then(()=>{
-      console.log("remove successfully!!");
+      // console.log("remove successfully!!");
       this._route.navigate(['/driver']);
     })
     .catch()

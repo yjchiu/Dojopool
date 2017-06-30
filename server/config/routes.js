@@ -2,6 +2,7 @@ var usercontroller = require('../controllers/users.js');
 var shotguncontroller = require('../controllers/shotguns.js');
 var drivercontroller = require('../controllers/drivers.js');
 
+
 var path = require('path');
 module.exports = function(app) {
    // Routes
@@ -18,6 +19,7 @@ module.exports = function(app) {
 
    app.post('/newdriver', drivercontroller.new);
    app.post('/getdriver', drivercontroller.findOne);
+   app.post('/getdriverinfo', drivercontroller.findDriver);
    app.post('/removedriver', drivercontroller.remove);
 
 

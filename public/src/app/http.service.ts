@@ -72,6 +72,12 @@ export class HttpService {
     .toPromise()
   }
 
+  getdriverinfo(shotgun_name){
+    return this._http.post('/getdriverinfo', shotgun_name)
+    .map(data=>data.json())
+    .toPromise()
+  }
+
 
   removedriver(driver){
     return this._http.post('/removedriver', driver)

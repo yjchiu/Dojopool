@@ -23810,7 +23810,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "ɵb", function() { return COMMON_PIPES; });
 
 /**
- * @license Angular v4.2.4
+ * @license Angular v4.2.3
  * (c) 2010-2017 Google, Inc. https://angular.io/
  * License: MIT
  */
@@ -26696,12 +26696,11 @@ var NumberFormatter = (function () {
      * @param {?} num
      * @param {?} locale
      * @param {?} style
-     * @param {?=} opts
+     * @param {?=} __3
      * @return {?}
      */
-    NumberFormatter.format = function (num, locale, style, opts) {
-        if (opts === void 0) { opts = {}; }
-        var minimumIntegerDigits = opts.minimumIntegerDigits, minimumFractionDigits = opts.minimumFractionDigits, maximumFractionDigits = opts.maximumFractionDigits, currency = opts.currency, _a = opts.currencyAsSymbol, currencyAsSymbol = _a === void 0 ? false : _a;
+    NumberFormatter.format = function (num, locale, style, _a) {
+        var _b = _a === void 0 ? {} : _a, minimumIntegerDigits = _b.minimumIntegerDigits, minimumFractionDigits = _b.minimumFractionDigits, maximumFractionDigits = _b.maximumFractionDigits, currency = _b.currency, _c = _b.currencyAsSymbol, currencyAsSymbol = _c === void 0 ? false : _c;
         var /** @type {?} */ options = {
             minimumIntegerDigits: minimumIntegerDigits,
             minimumFractionDigits: minimumFractionDigits,
@@ -27715,7 +27714,7 @@ function isPlatformWorkerUi(platformId) {
 /**
  * \@stable
  */
-var VERSION = new __WEBPACK_IMPORTED_MODULE_1__angular_core__["Version"]('4.2.4');
+var VERSION = new __WEBPACK_IMPORTED_MODULE_1__angular_core__["Version"]('4.2.3');
 /**
  * @license
  * Copyright Google Inc. All Rights Reserved.
@@ -27984,7 +27983,7 @@ var VERSION = new __WEBPACK_IMPORTED_MODULE_1__angular_core__["Version"]('4.2.4'
 /* unused harmony export removeSummaryDuplicates */
 
 /**
- * @license Angular v4.2.4
+ * @license Angular v4.2.3
  * (c) 2010-2017 Google, Inc. https://angular.io/
  * License: MIT
  */
@@ -28004,7 +28003,7 @@ var VERSION = new __WEBPACK_IMPORTED_MODULE_1__angular_core__["Version"]('4.2.4'
 /**
  * \@stable
  */
-var VERSION = new __WEBPACK_IMPORTED_MODULE_1__angular_core__["Version"]('4.2.4');
+var VERSION = new __WEBPACK_IMPORTED_MODULE_1__angular_core__["Version"]('4.2.3');
 /**
  * @license
  * Copyright Google Inc. All Rights Reserved.
@@ -51936,9 +51935,7 @@ var AotCompiler = (function () {
             }
             var /** @type {?} */ arity = _this._symbolResolver.getTypeArity(symbol) || 0;
             var _a = _this._symbolResolver.getImportAs(symbol) || symbol, filePath = _a.filePath, name = _a.name, members = _a.members;
-            var /** @type {?} */ importModule = _this._symbolResolver.fileNameToModuleName(filePath, genFilePath);
-            var /** @type {?} */ selfReference = _this._symbolResolver.fileNameToModuleName(genFilePath, genFilePath);
-            var /** @type {?} */ moduleName = importModule === selfReference ? null : importModule;
+            var /** @type {?} */ moduleName = _this._symbolResolver.fileNameToModuleName(filePath, genFilePath);
             // If we are in a type expression that refers to a generic type then supply
             // the required type parameters. If there were not enough type parameters
             // supplied, supply any as the type. Outside a type expression the reference
@@ -53095,6 +53092,9 @@ var StaticSymbolResolver = (function () {
      * @return {?}
      */
     StaticSymbolResolver.prototype.fileNameToModuleName = function (importedFilePath, containingFilePath) {
+        if (importedFilePath === containingFilePath) {
+            return null;
+        }
         return this.knownFileNameToModuleNames.get(importedFilePath) ||
             this.host.fileNameToModuleName(importedFilePath, containingFilePath);
     };
@@ -55712,7 +55712,7 @@ function _mergeArrays(parts) {
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "ɵu", function() { return DebugContext; });
 
 /**
- * @license Angular v4.2.4
+ * @license Angular v4.2.3
  * (c) 2010-2017 Google, Inc. https://angular.io/
  * License: MIT
  */
@@ -56446,17 +56446,17 @@ ViewEncapsulation[ViewEncapsulation.None] = "None";
  */
 var ViewMetadata = (function () {
     /**
-     * @param {?=} opts
+     * @param {?=} __0
      */
-    function ViewMetadata(opts) {
-        if (opts === void 0) { opts = {}; }
-        this.templateUrl = opts.templateUrl;
-        this.template = opts.template;
-        this.styleUrls = opts.styleUrls;
-        this.styles = opts.styles;
-        this.encapsulation = opts.encapsulation;
-        this.animations = opts.animations;
-        this.interpolation = opts.interpolation;
+    function ViewMetadata(_a) {
+        var _b = _a === void 0 ? {} : _a, templateUrl = _b.templateUrl, template = _b.template, encapsulation = _b.encapsulation, styles = _b.styles, styleUrls = _b.styleUrls, animations = _b.animations, interpolation = _b.interpolation;
+        this.templateUrl = templateUrl;
+        this.template = template;
+        this.styleUrls = styleUrls;
+        this.styles = styles;
+        this.encapsulation = encapsulation;
+        this.animations = animations;
+        this.interpolation = interpolation;
     }
     return ViewMetadata;
 }());
@@ -56508,7 +56508,7 @@ var Version = (function () {
 /**
  * \@stable
  */
-var VERSION = new Version('4.2.4');
+var VERSION = new Version('4.2.3');
 /**
  * @license
  * Copyright Google Inc. All Rights Reserved.
@@ -63589,6 +63589,26 @@ var DefaultKeyValueDiffer = (function () {
         }
     };
     /**
+     * @return {?}
+     */
+    DefaultKeyValueDiffer.prototype.toString = function () {
+        var /** @type {?} */ items = [];
+        var /** @type {?} */ previous = [];
+        var /** @type {?} */ changes = [];
+        var /** @type {?} */ additions = [];
+        var /** @type {?} */ removals = [];
+        this.forEachItem(function (r) { return items.push(stringify(r)); });
+        this.forEachPreviousItem(function (r) { return previous.push(stringify(r)); });
+        this.forEachChangedItem(function (r) { return changes.push(stringify(r)); });
+        this.forEachAddedItem(function (r) { return additions.push(stringify(r)); });
+        this.forEachRemovedItem(function (r) { return removals.push(stringify(r)); });
+        return 'map: ' + items.join(', ') + '\n' +
+            'previous: ' + previous.join(', ') + '\n' +
+            'additions: ' + additions.join(', ') + '\n' +
+            'changes: ' + changes.join(', ') + '\n' +
+            'removals: ' + removals.join(', ') + '\n';
+    };
+    /**
      * \@internal
      * @template K, V
      * @param {?} obj
@@ -63641,6 +63661,15 @@ var KeyValueChangeRecord_ = (function () {
          */
         this._nextChanged = null;
     }
+    /**
+     * @return {?}
+     */
+    KeyValueChangeRecord_.prototype.toString = function () {
+        return looseIdentical(this.previousValue, this.currentValue) ?
+            stringify(this.key) :
+            (stringify(this.key) + '[' + stringify(this.previousValue) + '->' +
+                stringify(this.currentValue) + ']');
+    };
     return KeyValueChangeRecord_;
 }());
 /**
@@ -70584,7 +70613,7 @@ function transition$$1(stateChangeExpr, steps) {
 /* unused harmony export ɵr */
 
 /**
- * @license Angular v4.2.4
+ * @license Angular v4.2.3
  * (c) 2010-2017 Google, Inc. https://angular.io/
  * License: MIT
  */
@@ -73032,14 +73061,14 @@ var AbstractControl = (function () {
      *
      * This will also mark all direct ancestors as `touched` to maintain
      * the model.
-     * @param {?=} opts
+     * @param {?=} __0
      * @return {?}
      */
-    AbstractControl.prototype.markAsTouched = function (opts) {
-        if (opts === void 0) { opts = {}; }
+    AbstractControl.prototype.markAsTouched = function (_a) {
+        var onlySelf = (_a === void 0 ? {} : _a).onlySelf;
         this._touched = true;
-        if (this._parent && !opts.onlySelf) {
-            this._parent.markAsTouched(opts);
+        if (this._parent && !onlySelf) {
+            this._parent.markAsTouched({ onlySelf: onlySelf });
         }
     };
     /**
@@ -73048,15 +73077,15 @@ var AbstractControl = (function () {
      * If the control has any children, it will also mark all children as `untouched`
      * to maintain the model, and re-calculate the `touched` status of all parent
      * controls.
-     * @param {?=} opts
+     * @param {?=} __0
      * @return {?}
      */
-    AbstractControl.prototype.markAsUntouched = function (opts) {
-        if (opts === void 0) { opts = {}; }
+    AbstractControl.prototype.markAsUntouched = function (_a) {
+        var onlySelf = (_a === void 0 ? {} : _a).onlySelf;
         this._touched = false;
         this._forEachChild(function (control) { control.markAsUntouched({ onlySelf: true }); });
-        if (this._parent && !opts.onlySelf) {
-            this._parent._updateTouched(opts);
+        if (this._parent && !onlySelf) {
+            this._parent._updateTouched({ onlySelf: onlySelf });
         }
     };
     /**
@@ -73064,14 +73093,14 @@ var AbstractControl = (function () {
      *
      * This will also mark all direct ancestors as `dirty` to maintain
      * the model.
-     * @param {?=} opts
+     * @param {?=} __0
      * @return {?}
      */
-    AbstractControl.prototype.markAsDirty = function (opts) {
-        if (opts === void 0) { opts = {}; }
+    AbstractControl.prototype.markAsDirty = function (_a) {
+        var onlySelf = (_a === void 0 ? {} : _a).onlySelf;
         this._pristine = false;
-        if (this._parent && !opts.onlySelf) {
-            this._parent.markAsDirty(opts);
+        if (this._parent && !onlySelf) {
+            this._parent.markAsDirty({ onlySelf: onlySelf });
         }
     };
     /**
@@ -73080,27 +73109,27 @@ var AbstractControl = (function () {
      * If the control has any children, it will also mark all children as `pristine`
      * to maintain the model, and re-calculate the `pristine` status of all parent
      * controls.
-     * @param {?=} opts
+     * @param {?=} __0
      * @return {?}
      */
-    AbstractControl.prototype.markAsPristine = function (opts) {
-        if (opts === void 0) { opts = {}; }
+    AbstractControl.prototype.markAsPristine = function (_a) {
+        var onlySelf = (_a === void 0 ? {} : _a).onlySelf;
         this._pristine = true;
         this._forEachChild(function (control) { control.markAsPristine({ onlySelf: true }); });
-        if (this._parent && !opts.onlySelf) {
-            this._parent._updatePristine(opts);
+        if (this._parent && !onlySelf) {
+            this._parent._updatePristine({ onlySelf: onlySelf });
         }
     };
     /**
      * Marks the control as `pending`.
-     * @param {?=} opts
+     * @param {?=} __0
      * @return {?}
      */
-    AbstractControl.prototype.markAsPending = function (opts) {
-        if (opts === void 0) { opts = {}; }
+    AbstractControl.prototype.markAsPending = function (_a) {
+        var onlySelf = (_a === void 0 ? {} : _a).onlySelf;
         this._status = PENDING;
-        if (this._parent && !opts.onlySelf) {
-            this._parent.markAsPending(opts);
+        if (this._parent && !onlySelf) {
+            this._parent.markAsPending({ onlySelf: onlySelf });
         }
     };
     /**
@@ -73108,20 +73137,20 @@ var AbstractControl = (function () {
      * excluded from the aggregate value of any parent. Its status is `DISABLED`.
      *
      * If the control has children, all children will be disabled to maintain the model.
-     * @param {?=} opts
+     * @param {?=} __0
      * @return {?}
      */
-    AbstractControl.prototype.disable = function (opts) {
-        if (opts === void 0) { opts = {}; }
+    AbstractControl.prototype.disable = function (_a) {
+        var _b = _a === void 0 ? {} : _a, onlySelf = _b.onlySelf, emitEvent = _b.emitEvent;
         this._status = DISABLED;
         this._errors = null;
         this._forEachChild(function (control) { control.disable({ onlySelf: true }); });
         this._updateValue();
-        if (opts.emitEvent !== false) {
+        if (emitEvent !== false) {
             this._valueChanges.emit(this._value);
             this._statusChanges.emit(this._status);
         }
-        this._updateAncestors(!!opts.onlySelf);
+        this._updateAncestors(!!onlySelf);
         this._onDisabledChange.forEach(function (changeFn) { return changeFn(true); });
     };
     /**
@@ -73130,15 +73159,15 @@ var AbstractControl = (function () {
      * its validators.
      *
      * If the control has children, all children will be enabled.
-     * @param {?=} opts
+     * @param {?=} __0
      * @return {?}
      */
-    AbstractControl.prototype.enable = function (opts) {
-        if (opts === void 0) { opts = {}; }
+    AbstractControl.prototype.enable = function (_a) {
+        var _b = _a === void 0 ? {} : _a, onlySelf = _b.onlySelf, emitEvent = _b.emitEvent;
         this._status = VALID;
         this._forEachChild(function (control) { control.enable({ onlySelf: true }); });
-        this.updateValueAndValidity({ onlySelf: true, emitEvent: opts.emitEvent });
-        this._updateAncestors(!!opts.onlySelf);
+        this.updateValueAndValidity({ onlySelf: true, emitEvent: emitEvent });
+        this._updateAncestors(!!onlySelf);
         this._onDisabledChange.forEach(function (changeFn) { return changeFn(false); });
     };
     /**
@@ -73185,11 +73214,11 @@ var AbstractControl = (function () {
      * Re-calculates the value and validation status of the control.
      *
      * By default, it will also update the value and validity of its ancestors.
-     * @param {?=} opts
+     * @param {?=} __0
      * @return {?}
      */
-    AbstractControl.prototype.updateValueAndValidity = function (opts) {
-        if (opts === void 0) { opts = {}; }
+    AbstractControl.prototype.updateValueAndValidity = function (_a) {
+        var _b = _a === void 0 ? {} : _a, onlySelf = _b.onlySelf, emitEvent = _b.emitEvent;
         this._setInitialStatus();
         this._updateValue();
         if (this.enabled) {
@@ -73197,26 +73226,26 @@ var AbstractControl = (function () {
             this._errors = this._runValidator();
             this._status = this._calculateStatus();
             if (this._status === VALID || this._status === PENDING) {
-                this._runAsyncValidator(opts.emitEvent);
+                this._runAsyncValidator(emitEvent);
             }
         }
-        if (opts.emitEvent !== false) {
+        if (emitEvent !== false) {
             this._valueChanges.emit(this._value);
             this._statusChanges.emit(this._status);
         }
-        if (this._parent && !opts.onlySelf) {
-            this._parent.updateValueAndValidity(opts);
+        if (this._parent && !onlySelf) {
+            this._parent.updateValueAndValidity({ onlySelf: onlySelf, emitEvent: emitEvent });
         }
     };
     /**
      * \@internal
-     * @param {?=} opts
+     * @param {?=} __0
      * @return {?}
      */
-    AbstractControl.prototype._updateTreeValidity = function (opts) {
-        if (opts === void 0) { opts = { emitEvent: true }; }
-        this._forEachChild(function (ctrl) { return ctrl._updateTreeValidity(opts); });
-        this.updateValueAndValidity({ onlySelf: true, emitEvent: opts.emitEvent });
+    AbstractControl.prototype._updateTreeValidity = function (_a) {
+        var emitEvent = (_a === void 0 ? { emitEvent: true } : _a).emitEvent;
+        this._forEachChild(function (ctrl) { return ctrl._updateTreeValidity({ emitEvent: emitEvent }); });
+        this.updateValueAndValidity({ onlySelf: true, emitEvent: emitEvent });
     };
     /**
      * @return {?}
@@ -73272,13 +73301,13 @@ var AbstractControl = (function () {
      * expect(login.valid).toEqual(true);
      * ```
      * @param {?} errors
-     * @param {?=} opts
+     * @param {?=} __1
      * @return {?}
      */
-    AbstractControl.prototype.setErrors = function (errors, opts) {
-        if (opts === void 0) { opts = {}; }
+    AbstractControl.prototype.setErrors = function (errors, _a) {
+        var emitEvent = (_a === void 0 ? {} : _a).emitEvent;
         this._errors = errors;
-        this._updateControlsErrors(opts.emitEvent !== false);
+        this._updateControlsErrors(emitEvent !== false);
     };
     /**
      * Retrieves a child control given the control's name or path.
@@ -73420,26 +73449,26 @@ var AbstractControl = (function () {
     };
     /**
      * \@internal
-     * @param {?=} opts
+     * @param {?=} __0
      * @return {?}
      */
-    AbstractControl.prototype._updatePristine = function (opts) {
-        if (opts === void 0) { opts = {}; }
+    AbstractControl.prototype._updatePristine = function (_a) {
+        var onlySelf = (_a === void 0 ? {} : _a).onlySelf;
         this._pristine = !this._anyControlsDirty();
-        if (this._parent && !opts.onlySelf) {
-            this._parent._updatePristine(opts);
+        if (this._parent && !onlySelf) {
+            this._parent._updatePristine({ onlySelf: onlySelf });
         }
     };
     /**
      * \@internal
-     * @param {?=} opts
+     * @param {?=} __0
      * @return {?}
      */
-    AbstractControl.prototype._updateTouched = function (opts) {
-        if (opts === void 0) { opts = {}; }
+    AbstractControl.prototype._updateTouched = function (_a) {
+        var onlySelf = (_a === void 0 ? {} : _a).onlySelf;
         this._touched = this._anyControlsTouched();
-        if (this._parent && !opts.onlySelf) {
-            this._parent._updateTouched(opts);
+        if (this._parent && !onlySelf) {
+            this._parent._updateTouched({ onlySelf: onlySelf });
         }
     };
     /**
@@ -76005,6 +76034,116 @@ RequiredValidator.ctorParameters = function () { return []; };
 RequiredValidator.propDecorators = {
     'required': [{ type: __WEBPACK_IMPORTED_MODULE_1__angular_core__["Input"] },],
 };
+var MIN_VALIDATOR = {
+    provide: NG_VALIDATORS,
+    useExisting: __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_1__angular_core__["forwardRef"])(function () { return MinValidator; }),
+    multi: true
+};
+/**
+ * A directive which installs the {\@link MinValidator} for any `formControlName`,
+ * `formControl`, or control with `ngModel` that also has a `min` attribute.
+ *
+ * \@experimental
+ */
+var MinValidator = (function () {
+    function MinValidator() {
+    }
+    /**
+     * @param {?} changes
+     * @return {?}
+     */
+    MinValidator.prototype.ngOnChanges = function (changes) {
+        if ('min' in changes) {
+            this._createValidator();
+            if (this._onChange)
+                this._onChange();
+        }
+    };
+    /**
+     * @param {?} c
+     * @return {?}
+     */
+    MinValidator.prototype.validate = function (c) { return this._validator(c); };
+    /**
+     * @param {?} fn
+     * @return {?}
+     */
+    MinValidator.prototype.registerOnValidatorChange = function (fn) { this._onChange = fn; };
+    /**
+     * @return {?}
+     */
+    MinValidator.prototype._createValidator = function () { this._validator = Validators.min(parseInt(this.min, 10)); };
+    return MinValidator;
+}());
+MinValidator.decorators = [
+    { type: __WEBPACK_IMPORTED_MODULE_1__angular_core__["Directive"], args: [{
+                selector: '[min][formControlName],[min][formControl],[min][ngModel]',
+                providers: [MIN_VALIDATOR],
+                host: { '[attr.min]': 'min ? min : null' }
+            },] },
+];
+/**
+ * @nocollapse
+ */
+MinValidator.ctorParameters = function () { return []; };
+MinValidator.propDecorators = {
+    'min': [{ type: __WEBPACK_IMPORTED_MODULE_1__angular_core__["Input"] },],
+};
+var MAX_VALIDATOR = {
+    provide: NG_VALIDATORS,
+    useExisting: __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_1__angular_core__["forwardRef"])(function () { return MaxValidator; }),
+    multi: true
+};
+/**
+ * A directive which installs the {\@link MaxValidator} for any `formControlName`,
+ * `formControl`, or control with `ngModel` that also has a `min` attribute.
+ *
+ * \@experimental
+ */
+var MaxValidator = (function () {
+    function MaxValidator() {
+    }
+    /**
+     * @param {?} changes
+     * @return {?}
+     */
+    MaxValidator.prototype.ngOnChanges = function (changes) {
+        if ('max' in changes) {
+            this._createValidator();
+            if (this._onChange)
+                this._onChange();
+        }
+    };
+    /**
+     * @param {?} c
+     * @return {?}
+     */
+    MaxValidator.prototype.validate = function (c) { return this._validator(c); };
+    /**
+     * @param {?} fn
+     * @return {?}
+     */
+    MaxValidator.prototype.registerOnValidatorChange = function (fn) { this._onChange = fn; };
+    /**
+     * @return {?}
+     */
+    MaxValidator.prototype._createValidator = function () { this._validator = Validators.max(parseInt(this.max, 10)); };
+    return MaxValidator;
+}());
+MaxValidator.decorators = [
+    { type: __WEBPACK_IMPORTED_MODULE_1__angular_core__["Directive"], args: [{
+                selector: '[max][formControlName],[max][formControl],[max][ngModel]',
+                providers: [MAX_VALIDATOR],
+                host: { '[attr.max]': 'max ? max : null' }
+            },] },
+];
+/**
+ * @nocollapse
+ */
+MaxValidator.ctorParameters = function () { return []; };
+MaxValidator.propDecorators = {
+    'max': [{ type: __WEBPACK_IMPORTED_MODULE_1__angular_core__["Input"] },],
+};
 /**
  * A Directive that adds the `required` validator to checkbox controls marked with the
  * `required` attribute, via the {\@link NG_VALIDATORS} binding.
@@ -76433,7 +76572,7 @@ FormBuilder.ctorParameters = function () { return []; };
 /**
  * \@stable
  */
-var VERSION = new __WEBPACK_IMPORTED_MODULE_1__angular_core__["Version"]('4.2.4');
+var VERSION = new __WEBPACK_IMPORTED_MODULE_1__angular_core__["Version"]('4.2.3');
 /**
  * @license
  * Copyright Google Inc. All Rights Reserved.
@@ -76646,7 +76785,7 @@ ReactiveFormsModule.ctorParameters = function () { return []; };
 /* unused harmony export ɵd */
 
 /**
- * @license Angular v4.2.4
+ * @license Angular v4.2.3
  * (c) 2010-2017 Google, Inc. https://angular.io/
  * License: MIT
  */
@@ -78801,7 +78940,7 @@ JsonpModule.ctorParameters = function () { return []; };
 /**
  * \@stable
  */
-var VERSION = new __WEBPACK_IMPORTED_MODULE_1__angular_core__["Version"]('4.2.4');
+var VERSION = new __WEBPACK_IMPORTED_MODULE_1__angular_core__["Version"]('4.2.3');
 /**
  * @license
  * Copyright Google Inc. All Rights Reserved.
@@ -78847,7 +78986,7 @@ var VERSION = new __WEBPACK_IMPORTED_MODULE_1__angular_core__["Version"]('4.2.4'
 /* unused harmony export ɵResourceLoaderImpl */
 
 /**
- * @license Angular v4.2.4
+ * @license Angular v4.2.3
  * (c) 2010-2017 Google, Inc. https://angular.io/
  * License: MIT
  */
@@ -78980,7 +79119,7 @@ var CachedResourceLoader = (function (_super) {
 /**
  * @stable
  */
-var VERSION = new __WEBPACK_IMPORTED_MODULE_2__angular_core__["Version"]('4.2.4');
+var VERSION = new __WEBPACK_IMPORTED_MODULE_2__angular_core__["Version"]('4.2.3');
 /**
  * @license
  * Copyright Google Inc. All Rights Reserved.
@@ -79068,7 +79207,7 @@ var platformBrowserDynamic = __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_2__
 /* unused harmony export ɵe */
 
 /**
- * @license Angular v4.2.4
+ * @license Angular v4.2.3
  * (c) 2010-2017 Google, Inc. https://angular.io/
  * License: MIT
  */
@@ -83492,7 +83631,7 @@ var By = (function () {
 /**
  * \@stable
  */
-var VERSION = new __WEBPACK_IMPORTED_MODULE_2__angular_core__["Version"]('4.2.4');
+var VERSION = new __WEBPACK_IMPORTED_MODULE_2__angular_core__["Version"]('4.2.3');
 /**
  * @license
  * Copyright Google Inc. All Rights Reserved.
@@ -83619,7 +83758,7 @@ var VERSION = new __WEBPACK_IMPORTED_MODULE_2__angular_core__["Version"]('4.2.4'
 /* unused harmony export ɵl */
 
 /**
- * @license Angular v4.2.4
+ * @license Angular v4.2.3
  * (c) 2010-2017 Google, Inc. https://angular.io/
  * License: MIT
  */
@@ -87337,12 +87476,11 @@ var Router = (function () {
      * router.createUrlTree(['../../team/44/user/22'], {relativeTo: route});
      * ```
      * @param {?} commands
-     * @param {?=} navigationExtras
+     * @param {?=} __1
      * @return {?}
      */
-    Router.prototype.createUrlTree = function (commands, navigationExtras) {
-        if (navigationExtras === void 0) { navigationExtras = {}; }
-        var relativeTo = navigationExtras.relativeTo, queryParams = navigationExtras.queryParams, fragment = navigationExtras.fragment, preserveQueryParams = navigationExtras.preserveQueryParams, queryParamsHandling = navigationExtras.queryParamsHandling, preserveFragment = navigationExtras.preserveFragment;
+    Router.prototype.createUrlTree = function (commands, _a) {
+        var _b = _a === void 0 ? {} : _a, relativeTo = _b.relativeTo, queryParams = _b.queryParams, fragment = _b.fragment, preserveQueryParams = _b.preserveQueryParams, queryParamsHandling = _b.queryParamsHandling, preserveFragment = _b.preserveFragment;
         if (__webpack_require__.i(__WEBPACK_IMPORTED_MODULE_2__angular_core__["isDevMode"])() && preserveQueryParams && (console) && (console.warn)) {
             console.warn('preserveQueryParams is deprecated, use queryParamsHandling instead.');
         }
@@ -89695,7 +89833,7 @@ function provideRouterInitializer() {
 /**
  * \@stable
  */
-var VERSION = new __WEBPACK_IMPORTED_MODULE_2__angular_core__["Version"]('4.2.4');
+var VERSION = new __WEBPACK_IMPORTED_MODULE_2__angular_core__["Version"]('0.0.0-ROUTERPLACEHOLDER');
 /**
  * @license
  * Copyright Google Inc. All Rights Reserved.

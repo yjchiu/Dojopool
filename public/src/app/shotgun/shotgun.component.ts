@@ -16,7 +16,13 @@ declare var navigator : any;
 })
 
 export class ShotgunComponent implements OnInit {
-  name='';
+  request : any;
+  result_flag = false;
+  sent = false;
+
+  user_name={
+    name:'',
+  }
   id = '';
   cur_latitude = 0.0;
   cur_lonitute = 0.0;
@@ -24,6 +30,7 @@ export class ShotgunComponent implements OnInit {
   start='';
   end='';
   duration = '';
+  result_duration = '';
   start_latlng : any;
 
   public latitude: number;
@@ -39,9 +46,17 @@ export class ShotgunComponent implements OnInit {
     if(!this._cookieService.get("loginuserName")){
       this._route.navigate(['/']);
     }
-    this.name = this._cookieService.get("loginuserName");
+    this.user_name.name = this._cookieService.get("loginuserName");
     this.id = this._cookieService.get("loginuserId");
-    console.log("IDDD", this.id);
+    // console.log("IDDD", this.id);
+    this._httpService.getdriverinfo(this.user_name)
+    .then(driver=>{    
+      this.request = driver;
+      // console.log("SHOTGUN REQUEST RESULT: ", this.request);
+    })
+    .catch(err=>{
+      console.log("error in shotgun component constructor", err);
+    })
   }
 
   ngOnInit() {
@@ -70,7 +85,7 @@ export class ShotgunComponent implements OnInit {
           if (place.geometry === undefined || place.geometry === null) {
             return;
           }
-          console.log("place", place);
+          // console.log("place", place);
           if(place){
             this.start = place.formatted_address;
           }
@@ -86,7 +101,7 @@ export class ShotgunComponent implements OnInit {
           if (place.geometry === undefined || place.geometry === null) {
             return;
           }
-          console.log("place", place);
+          // console.log("place", place);
           this.end = place.formatted_address
         });
       });
@@ -98,7 +113,7 @@ export class ShotgunComponent implements OnInit {
     var self = this;
     if(navigator.geolocation){
       navigator.geolocation.getCurrentPosition(data=>{
-        console.log("current location:", data);
+        // console.log("current location:", data);
         this.cur_latitude = data.coords.latitude;
         this.cur_lonitute = data.coords.longitude;
         this.start_latlng = new google.maps.LatLng(this.cur_latitude, this.cur_lonitute);
@@ -107,7 +122,7 @@ export class ShotgunComponent implements OnInit {
         geocoder.geocode({'latLng': this.start_latlng }, function (results, status) {
           if(status == google.maps.GeocoderStatus.OK) {           // if geocode success
             self.start = results[0].formatted_address;
-            console.log("IN geocoder: ", self.start, self);       // if address found, pass to processing function
+            // console.log("IN geocoder: ", self.start, self);       // if address found, pass to processing function
           }
         })
 
@@ -117,7 +132,8 @@ export class ShotgunComponent implements OnInit {
         });
         var marker = new google.maps.Marker({
           position: {lat: data.coords.latitude, lng: data.coords.longitude},
-          map: map
+          map: map,
+          title : "Current location"
         });
       });
     }
@@ -125,14 +141,15 @@ export class ShotgunComponent implements OnInit {
 
   route(){
     var self = this;
-    console.log("AAA", self.start, self.end);
+    // console.log("AAA", self.start, self.end);
+    self.sent = true;
     var shotgun = {
       start : self.start,
       end : self.end,
       _user : this._cookieService.get('loginuserId'),
     }
     this._httpService.createShotGun(shotgun);
-    console.log(self);
+    // console.log(self);
     var directionsService = new google.maps.DirectionsService;
     var directionsDisplay = new google.maps.DirectionsRenderer;
     var map = new google.maps.Map(document.getElementById('map'), {
@@ -145,10 +162,41 @@ export class ShotgunComponent implements OnInit {
       destination: this.end,
       travelMode: 'DRIVING'
     }, function(res, status){
-      console.log("response", res);
+      // console.log("response", res);
       self.duration = res.routes[0].legs[0].duration.text;
-      console.log("dur", self.duration); 
+      // console.log("dur", self.duration); 
       directionsDisplay.setDirections(res);
+    })
+  }
+
+
+  resultroute(){
+    var self = this;
+    // console.log("AAA", self.start, self.end);
+    var shotgun = {
+      start : self.start,
+      end : self.end,
+      _user : this._cookieService.get('loginuserId'),
+    }
+    // console.log(self);
+    var directionsService = new google.maps.DirectionsService;
+    var directionsDisplay = new google.maps.DirectionsRenderer;
+    var map = new google.maps.Map(document.getElementById('resultmap'), {
+      zoom: 7,
+      center: {lat: this.cur_latitude, lng: this.cur_lonitute},
+    });
+    directionsDisplay.setMap(map);
+    directionsService.route({
+      origin: self.request.driver_start,
+      destination: self.request.shotgun_start,
+      travelMode: 'DRIVING'
+    }, function(res, status){
+      // console.log("response", res);
+      self.result_duration = res.routes[0].legs[0].duration.text;
+      // console.log("dur", self.result_duration);
+      self.result_flag= true;
+      directionsDisplay.setDirections(res);
+      
     })
   }
 

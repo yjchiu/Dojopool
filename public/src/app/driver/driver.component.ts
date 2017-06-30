@@ -55,7 +55,7 @@ export class DriverComponent implements OnInit {
     this._httpService.getallshotgun(this.user_id)
     .then(allshotguns=>{    
       this.shotgun_requests = allshotguns;
-      console.log("SHOTGUN REQUEST: ", this.shotgun_requests);
+      // console.log("SHOTGUN REQUEST: ", this.shotgun_requests);
     })
     .catch(err=>{
       console.log("error in driver component constructor", err);
@@ -87,7 +87,7 @@ export class DriverComponent implements OnInit {
           if (place.geometry === undefined || place.geometry === null) {
             return;
           }
-          console.log("place", place);
+          // console.log("place", place);
           if(place){
             this.driver_start = place.formatted_address;
           }
@@ -103,7 +103,7 @@ export class DriverComponent implements OnInit {
           if (place.geometry === undefined || place.geometry === null) {
             return;
           }
-          console.log("place", place);
+          // console.log("place", place);
           this.driver_end = place.formatted_address
         });
       });
@@ -123,7 +123,7 @@ export class DriverComponent implements OnInit {
     var self = this;
     if(navigator.geolocation){
       navigator.geolocation.getCurrentPosition(data=>{
-        console.log("current location:", data);
+        // console.log("current location:", data);
         this.cur_latitude = data.coords.latitude;
         this.cur_lonitute = data.coords.longitude;
         this.start_latlng = new google.maps.LatLng(this.cur_latitude, this.cur_lonitute);
@@ -148,7 +148,7 @@ export class DriverComponent implements OnInit {
         for(var i = 0 ; i < self.shotgun_requests.length ; i++){
           geocoder.geocode({'address': self.shotgun_requests[i].end }, function(res,status){
             if(status == google.maps.GeocoderStatus.OK){
-              console.log("ALALALALAL: ", res);
+              // console.log("ALALALALAL: ", res);
               var marker = new google.maps.Marker({
                 icon: 'http://maps.google.com/mapfiles/ms/icons/blue.png',
                 map: map,
@@ -171,8 +171,8 @@ export class DriverComponent implements OnInit {
 
   route(){
     var self = this;
-    console.log("AAA", self.driver_start, self.driver_end);
-    console.log(self);
+    // console.log("AAA", self.driver_start, self.driver_end);
+    // console.log(self);
     var directionsService = new google.maps.DirectionsService;
     var directionsDisplay = new google.maps.DirectionsRenderer;
     var map = new google.maps.Map(document.getElementById('map'), {
@@ -185,7 +185,7 @@ export class DriverComponent implements OnInit {
       destination: this.driver_end,
       travelMode: 'DRIVING'
     }, function(res, status){
-      console.log("response", res);
+      // console.log("response", res);
       self.driver_time = Math.floor(res.routes[0].legs[0].duration.value/60);
       directionsDisplay.setDirections(res);
     })
@@ -194,13 +194,13 @@ export class DriverComponent implements OnInit {
 
   showroute(request_id){
     var self = this;
-    console.log("show route: ",request_id);
+    // console.log("show route: ",request_id);
     var request={
       id : request_id,
     }
     this._httpService.getoneshotgun(request)
     .then(shotgun_req=>{
-      console.log("find shotgun request: ", shotgun_req);
+      // console.log("find shotgun request: ", shotgun_req);
       // console.log(this.driver_start);
       // console.log(this.driver_end);
       var directionsService = new google.maps.DirectionsService;
@@ -225,7 +225,7 @@ export class DriverComponent implements OnInit {
         ],
         travelMode: 'DRIVING'
       }, function(res, status){
-        console.log("response legs", res);
+        // console.log("response legs", res);
         var time = 0;
         for(var i = 0; i < res.routes[0].legs.length;i++){
           time += res.routes[0].legs[i].duration.value;
@@ -251,7 +251,7 @@ export class DriverComponent implements OnInit {
     }
     this._httpService.getoneshotgun(request)
     .then(shotgun_req=>{
-      console.log("PICK UP REQUEST: ", shotgun_req)
+      // console.log("PICK UP REQUEST: ", shotgun_req)
       var driver = {
         driver_start  : self.driver_start,
         driver_end    : self.driver_end,
@@ -263,7 +263,7 @@ export class DriverComponent implements OnInit {
       };
       this._httpService.createDriver(driver)
       .then(driver_created=>{
-        console.log("driver created: ", driver_created);
+        // console.log("driver created: ", driver_created);
       })
       .catch(err=>{});
 
@@ -275,10 +275,5 @@ export class DriverComponent implements OnInit {
     .catch(err=>{});
   }
 
-
-  logout(){
-    this._cookieService.remove('loginuserName');
-    this._route.navigate(['/']);
-  }
 
 }

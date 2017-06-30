@@ -3,12 +3,10 @@
   <!--<a (click)="logout()">Log out</a>-->
   <div id="main_container">
     <div id="driver">
-      <h1 class="text-center"><a [routerLink]="['/driver']" style="color: white;">I'm a driver.</a> </h1>
+      <h1 class="text-center"><a (click)="driver()" style="color: white;">I'm a driver.</a> </h1>
     </div><!--
     --><div id="shotgun">
         <h1 class="text-center"><a [routerLink]="['/shotgun']" style="color: white;">I need a driver.</a></h1>
     </div>
   </div>
 
-<!--<a [routerLink]="['/driver']">I'm a driver.</a> | -->
-<!--<a [routerLink]="['/shotgun']">I need a driver.</a>-->

@@ -14,7 +14,7 @@ import { DashboardComponent } from './dashboard/dashboard.component';
 import { DriverComponent } from './driver/driver.component';
 import { ShotgunComponent } from './shotgun/shotgun.component';
 import { PickupComponent } from './pickup/pickup.component';
-import { CommunicateService } from './communicate.service';
+// import { CommunicateService } from './communicate.service';
 
 @NgModule({
   declarations: [

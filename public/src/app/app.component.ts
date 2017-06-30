@@ -18,7 +18,10 @@ export class AppComponent {
   constructor(private _communicateService: HttpService, private _cookieService:CookieService, private _route:Router){
     if(!this._cookieService.get("loginuserName")){
       this._route.navigate(['/']);
+    }else{
+      this._communicateService.updateLogoutflag(true);
     }
+
     this._communicateService.observedLogoutflag.subscribe(
       (status)=>this.logoutflag=status,
       (err)=>{console.log(err);}

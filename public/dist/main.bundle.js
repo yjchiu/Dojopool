@@ -83,7 +83,7 @@ module.exports = module.exports.toString();
 /***/ "../../../../../src/app/app.component.html":
 /***/ (function(module, exports) {
 
-module.exports = "<script src=\"https://cdnjs.cloudflare.com/ajax/libs/ng2-bootstrap/x.x.x/ng2-bootstrap.min.js\"></script>\n<link href=\"https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css\" rel=\"stylesheet\">\n<link rel=\"stylesheet\" href=\"https://bootswatch.com/readable/bootstrap.min.css\">\n\n<div class=\"container\">\n    <nav class=\"navbar navbar-default\">\n        <div class=\"container-fluid\" *ngIf=\"logoutflag\">\n            <div class=\"navbar-header\">\n                <button type=\"button\" class=\"navbar-toggle collapsed\" data-toggle=\"collapse\" data-target=\"#bs-example-navbar-collapse-1\">\n                    <span class=\"sr-only\">Toggle navigation</span>\n                    <span class=\"icon-bar\"></span>\n                    <span class=\"icon-bar\"></span>\n                    <span class=\"icon-bar\"></span>\n                </button>\n                <a class=\"navbar-brand\" href=\"#\">DojoPool </a>\n            </div>\n\n            <div class=\"collapse navbar-collapse\" id=\"bs-example-navbar-collapse-1\">\n            <ul class=\"nav navbar-nav\">\n                <li><a [routerLink]=\"['/dashboard']\">Dashboard</a></li>\n            </ul>\n            <ul class=\"nav navbar-nav navbar-right\">\n                <li><a  (click)=\"logout()\">Logout</a></li>\n            </ul>\n            </div>\n        </div>\n    </nav>\n    {{logoutflag| json}}\n   <router-outlet></router-outlet>\n</div>\n"
+module.exports = "<script src=\"https://cdnjs.cloudflare.com/ajax/libs/ng2-bootstrap/x.x.x/ng2-bootstrap.min.js\"></script>\n<link href=\"https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css\" rel=\"stylesheet\">\n<link rel=\"stylesheet\" href=\"https://bootswatch.com/readable/bootstrap.min.css\">\n\n<div class=\"container\">\n    <nav class=\"navbar navbar-default\">\n        <div class=\"container-fluid\">\n            <div class=\"navbar-header\">\n                <button type=\"button\" class=\"navbar-toggle collapsed\" data-toggle=\"collapse\" data-target=\"#bs-example-navbar-collapse-1\">\n                    <span class=\"sr-only\">Toggle navigation</span>\n                    <span class=\"icon-bar\"></span>\n                    <span class=\"icon-bar\"></span>\n                    <span class=\"icon-bar\"></span>\n                </button>\n                <a class=\"navbar-brand\" href=\"#\">DojoPool </a>\n            </div>\n\n            <div class=\"collapse navbar-collapse\" id=\"bs-example-navbar-collapse-1\">\n            <ul class=\"nav navbar-nav\">\n                <li><a [routerLink]=\"['/dashboard']\" *ngIf=\"logoutflag\">Dashboard</a></li>\n            </ul>\n            <ul class=\"nav navbar-nav navbar-right\">\n                <li><a  *ngIf=\"logoutflag\" (click)=\"logout()\">Logout</a></li>\n            </ul>\n            </div>\n        </div>\n        \n    </nav>\n\n   <router-outlet></router-outlet>\n</div>\n"
 
 /***/ }),
 
@@ -118,6 +118,9 @@ var AppComponent = (function () {
         this._route = _route;
         if (!this._cookieService.get("loginuserName")) {
             this._route.navigate(['/']);
+        }
+        else {
+            this._communicateService.updateLogoutflag(true);
         }
         this._communicateService.observedLogoutflag.subscribe(function (status) { return _this.logoutflag = status; }, function (err) { console.log(err); });
     }
@@ -202,6 +205,7 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
 
 
 
+// import { CommunicateService } from './communicate.service';
 var AppModule = (function () {
     function AppModule() {
     }
@@ -245,7 +249,7 @@ exports = module.exports = __webpack_require__("../../../../css-loader/lib/css-b
 
 
 // module
-exports.push([module.i, "/*#map {\n        height: 300px;\n        width: 50%;\n}\n\n.input_container{\n        width: 50%;\n        margin-bottom: 20px;\n}*/\n\n#main_container{\n        margin: 0px auto;\n        width: 80%;\n        height: 400px;\n}\n\n#driver{\n        width: 50%;\n        height: 400px;\n        background-color: lightgreen;\n        display: inline-block;\n        vertical-align: top;\n        \n}\n#shotgun{\n        width: 50%;\n        height: 400px;\n        background-color: lightblue;\n        display: inline-block;\n\n}\n.text-center{\n        margin-top: 180px;\n}", ""]);
+exports.push([module.i, "\n\n#main_container{\n        margin: 0px auto;\n        width: 80%;\n        height: 400px;\n        margin-bottom: 20px;\n}\n\n#driver{\n        width: 50%;\n        height: 400px;\n        background-color: lightgreen;\n        display: inline-block;\n        vertical-align: top;\n        \n}\n#shotgun{\n        width: 50%;\n        height: 400px;\n        background-color: lightblue;\n        display: inline-block;\n\n}\n.text-center{\n        margin-top: 180px;\n}", ""]);
 
 // exports
 
@@ -258,7 +262,7 @@ module.exports = module.exports.toString();
 /***/ "../../../../../src/app/dashboard/dashboard.component.html":
 /***/ (function(module, exports) {
 
-module.exports = "<div id=\"dashboard_container\">\n  <h1>Hello, {{ name }}</h1>\n  <!--<a (click)=\"logout()\">Log out</a>-->\n  <div id=\"main_container\">\n    <div id=\"driver\">\n      <h1 class=\"text-center\"><a [routerLink]=\"['/driver']\" style=\"color: white;\">I'm a driver.</a> </h1>\n    </div><!--\n    --><div id=\"shotgun\">\n        <h1 class=\"text-center\"><a [routerLink]=\"['/shotgun']\" style=\"color: white;\">I need a driver.</a></h1>\n    </div>\n  </div>\n\n<!--<a [routerLink]=\"['/driver']\">I'm a driver.</a> | -->\n<!--<a [routerLink]=\"['/shotgun']\">I need a driver.</a>-->\n"
+module.exports = "<div id=\"dashboard_container\">\n  <h1>Hello, {{ name }}</h1>\n  <!--<a (click)=\"logout()\">Log out</a>-->\n  <div id=\"main_container\">\n    <div id=\"driver\">\n      <h1 class=\"text-center\"><a (click)=\"driver()\" style=\"color: white;\">I'm a driver.</a> </h1>\n    </div><!--\n    --><div id=\"shotgun\">\n        <h1 class=\"text-center\"><a [routerLink]=\"['/shotgun']\" style=\"color: white;\">I need a driver.</a></h1>\n    </div>\n  </div>\n\n"
 
 /***/ }),
 
@@ -271,6 +275,7 @@ module.exports = "<div id=\"dashboard_container\">\n  <h1>Hello, {{ name }}</h1>
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2_angular2_cookie_services_cookies_service__ = __webpack_require__("../../../../angular2-cookie/services/cookies.service.js");
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2_angular2_cookie_services_cookies_service___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_2_angular2_cookie_services_cookies_service__);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__angular_router__ = __webpack_require__("../../../router/@angular/router.es5.js");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__http_service__ = __webpack_require__("../../../../../src/app/http.service.ts");
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return DashboardComponent; });
 var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
@@ -285,13 +290,18 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 
 
 
+
 var DashboardComponent = (function () {
-    function DashboardComponent(mapsAPILoader, ngZone, _cookieService, _route) {
+    function DashboardComponent(mapsAPILoader, ngZone, _cookieService, _route, _httpService) {
         this.mapsAPILoader = mapsAPILoader;
         this.ngZone = ngZone;
         this._cookieService = _cookieService;
         this._route = _route;
+        this._httpService = _httpService;
         this.name = '';
+        this.user_id = {
+            id: '',
+        };
         this.cur_latitude = 0.0;
         this.cur_lonitute = 0.0;
         this.start = '';
@@ -301,8 +311,23 @@ var DashboardComponent = (function () {
             this._route.navigate(['/']);
         }
         this.name = this._cookieService.get("loginuserName");
+        this.user_id.id = this._cookieService.get("loginuserId");
     }
     DashboardComponent.prototype.ngOnInit = function () { };
+    DashboardComponent.prototype.driver = function () {
+        var _this = this;
+        this._httpService.getdriver(this.user_id)
+            .then(function (driver) {
+            if (driver) {
+                // console.log("Have passenger already: ", driver);
+                _this._route.navigate(['/pickup']);
+            }
+            else {
+                _this._route.navigate(['/driver']);
+            }
+        })
+            .catch();
+    };
     DashboardComponent.prototype.logout = function () {
         this._cookieService.remove('loginuserName');
         this._route.navigate(['/']);
@@ -323,10 +348,10 @@ DashboardComponent = __decorate([
         template: __webpack_require__("../../../../../src/app/dashboard/dashboard.component.html"),
         styles: [__webpack_require__("../../../../../src/app/dashboard/dashboard.component.css")]
     }),
-    __metadata("design:paramtypes", [typeof (_c = typeof __WEBPACK_IMPORTED_MODULE_1__agm_core__["b" /* MapsAPILoader */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_1__agm_core__["b" /* MapsAPILoader */]) === "function" && _c || Object, typeof (_d = typeof __WEBPACK_IMPORTED_MODULE_0__angular_core__["NgZone"] !== "undefined" && __WEBPACK_IMPORTED_MODULE_0__angular_core__["NgZone"]) === "function" && _d || Object, typeof (_e = typeof __WEBPACK_IMPORTED_MODULE_2_angular2_cookie_services_cookies_service__["CookieService"] !== "undefined" && __WEBPACK_IMPORTED_MODULE_2_angular2_cookie_services_cookies_service__["CookieService"]) === "function" && _e || Object, typeof (_f = typeof __WEBPACK_IMPORTED_MODULE_3__angular_router__["b" /* Router */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_3__angular_router__["b" /* Router */]) === "function" && _f || Object])
+    __metadata("design:paramtypes", [typeof (_c = typeof __WEBPACK_IMPORTED_MODULE_1__agm_core__["b" /* MapsAPILoader */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_1__agm_core__["b" /* MapsAPILoader */]) === "function" && _c || Object, typeof (_d = typeof __WEBPACK_IMPORTED_MODULE_0__angular_core__["NgZone"] !== "undefined" && __WEBPACK_IMPORTED_MODULE_0__angular_core__["NgZone"]) === "function" && _d || Object, typeof (_e = typeof __WEBPACK_IMPORTED_MODULE_2_angular2_cookie_services_cookies_service__["CookieService"] !== "undefined" && __WEBPACK_IMPORTED_MODULE_2_angular2_cookie_services_cookies_service__["CookieService"]) === "function" && _e || Object, typeof (_f = typeof __WEBPACK_IMPORTED_MODULE_3__angular_router__["b" /* Router */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_3__angular_router__["b" /* Router */]) === "function" && _f || Object, typeof (_g = typeof __WEBPACK_IMPORTED_MODULE_4__http_service__["a" /* HttpService */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_4__http_service__["a" /* HttpService */]) === "function" && _g || Object])
 ], DashboardComponent);
 
-var _a, _b, _c, _d, _e, _f;
+var _a, _b, _c, _d, _e, _f, _g;
 //# sourceMappingURL=dashboard.component.js.map
 
 /***/ }),
@@ -339,7 +364,7 @@ exports = module.exports = __webpack_require__("../../../../css-loader/lib/css-b
 
 
 // module
-exports.push([module.i, "#map {\n        height: 300px;\n        \n}\n\n.input_container{\n        margin-bottom: 20px;\n}\n\n#left_container{\n    width: 45%;\n    margin-bottom: 20px;\n    display: inline-block;\n    vertical-align: top;\n}\n\n#right_container{\n    width: 45%;\n    height: 200px;\n    margin-bottom: 20px;\n    background-color: lightblue; \n    display: inline-block;\n    margin-left: 20px;\n}", ""]);
+exports.push([module.i, "#map {\n        height: 300px;\n        \n}\n\n.input_container{\n        margin-bottom: 20px;\n}\n\n#left_container{\n    width: 48%;\n    margin-bottom: 20px;\n    display: inline-block;\n    vertical-align: top;\n}\n\n#right_container{\n    width: 48%;\n    height: 200px;\n    margin-bottom: 20px;\n    /*background-color: lightblue; */\n    display: inline-block;\n    margin-left: 20px;\n}", ""]);
 
 // exports
 
@@ -352,7 +377,7 @@ module.exports = module.exports.toString();
 /***/ "../../../../../src/app/driver/driver.component.html":
 /***/ (function(module, exports) {
 
-module.exports = "<div id=\"driver_container\">\n  <a (click)=\"logout()\">Log out</a>\n  <a [routerLink]=\"['/dashboard']\">Dashboard</a>\n  <table class=\"table table-bordered\">\n    <thead>\n    <tr>\n      <td>Name</td>\n      <td>Guest start</td>\n      <td> Guest destination</td>\n      <td></td>\n    </tr>\n    </thead>\n    <tbody>\n      <tr *ngFor=\"let request of shotgun_requests\">\n        <td>{{request._user.first_name}} </td>\n        <td> {{request.start}} </td>\n        <td> {{request.end}} </td>\n        <td><a class=\"btn btn-primary\" (click)=\"showroute(request._id)\">See route</a>\n            <a class=\"btn btn-primary\" (click)=\"pickup(request._id)\">Pick up</a>\n        </td>\n      </tr>\n    </tbody>\n  </table>\n  <div id=\"left_container\"> \n    <div class=\"input_container\">\n          <div class=\"form-group\">\n            <input placeholder=\"start\" autocorrect=\"off\" autocapitalize=\"off\" spellcheck=\"off\" type=\"text\" class=\"form-control\" #startsearch [formControl]=\"searchControl\">\n          </div>\n          <div class=\"form-group\">\n            <input placeholder=\"destination\" autocorrect=\"off\" autocapitalize=\"off\" spellcheck=\"off\" type=\"text\" class=\"form-control\" #endsearch [formControl]=\"searchControl\">\n          </div>\n          <!--<agm-map [latitude]=\"latitude\" [longitude]=\"longitude\" [scrollwheel]=\"false\" [zoom]=\"zoom\">\n            <agm-marker [latitude]=\"latitude\" [longitude]=\"longitude\"></agm-marker>\n          </agm-map>-->\n          <button class=\"btn btn-primary\" (click)=\"route()\">Need a Passenger</button>\n    </div>\n    <div id=\"map\"></div>\n  </div>\n  <div *ngIf=\"showroute_flag\" id=\"right_container\">\n    <p>Before picking up passenger: {{ driver_time }} mins </p>\n    <p>After picking up passenger: {{ carpool_time }} mins </p>\n    <p>It's {{ percentage }}% more than original.</p>\n    \n  </div>\n</div>\n"
+module.exports = "<div id=\"driver_container\">\n  <table class=\"table table-bordered\">\n    <thead>\n    <tr>\n      <td>Name</td>\n      <td>Guest start</td>\n      <td> Guest destination</td>\n      <td></td>\n    </tr>\n    </thead>\n    <tbody>\n      <tr *ngFor=\"let request of shotgun_requests\">\n        <td>{{request._user.first_name}} </td>\n        <td> {{request.start}} </td>\n        <td> {{request.end}} </td>\n        <td><a class=\"btn btn-primary\" (click)=\"showroute(request._id)\">See route</a>\n            <a class=\"btn btn-primary\" (click)=\"pickup(request._id)\">Pick up</a>\n        </td>\n      </tr>\n    </tbody>\n  </table>\n  <div id=\"left_container\"> \n    <div class=\"input_container\">\n          <div class=\"form-group\">\n            <input placeholder=\"start\" autocorrect=\"off\" autocapitalize=\"off\" spellcheck=\"off\" type=\"text\" class=\"form-control\" #startsearch [formControl]=\"searchControl\">\n          </div>\n          <div class=\"form-group\">\n            <input placeholder=\"destination\" autocorrect=\"off\" autocapitalize=\"off\" spellcheck=\"off\" type=\"text\" class=\"form-control\" #endsearch [formControl]=\"searchControl\">\n          </div>\n          <!--<agm-map [latitude]=\"latitude\" [longitude]=\"longitude\" [scrollwheel]=\"false\" [zoom]=\"zoom\">\n            <agm-marker [latitude]=\"latitude\" [longitude]=\"longitude\"></agm-marker>\n          </agm-map>-->\n          <button class=\"btn btn-primary\" (click)=\"route()\">Need a Passenger</button>\n    </div>\n    <div id=\"map\"></div>\n  </div>\n  <!--<div *ngIf=\"showroute_flag\" id=\"right_container\">\n    <p>Before picking up passenger: {{ driver_time }} mins </p>\n    <p>After picking up passenger: {{ carpool_time }} mins </p>\n    <p>It's {{ percentage }}% more than original.</p>\n    \n  </div>-->\n\n  <div *ngIf=\"showroute_flag\" class=\"panel panel-primary\" id=\"right_container\">\n    <div class=\"panel-heading\">\n      <h3 class=\"panel-title\">Information</h3>\n    </div>\n    <div class=\"panel-body\">\n      <p>Before picking up passenger: {{ driver_time }} mins </p>\n      <p>After picking up passenger: {{ carpool_time }} mins </p>\n      <p>It's {{ percentage }}% more than original.</p>\n    </div>\n  </div>\n\n</div>\n"
 
 /***/ }),
 
@@ -413,7 +438,7 @@ var DriverComponent = (function () {
         this._httpService.getallshotgun(this.user_id)
             .then(function (allshotguns) {
             _this.shotgun_requests = allshotguns;
-            console.log("SHOTGUN REQUEST: ", _this.shotgun_requests);
+            // console.log("SHOTGUN REQUEST: ", this.shotgun_requests);
         })
             .catch(function (err) {
             console.log("error in driver component constructor", err);
@@ -442,7 +467,7 @@ var DriverComponent = (function () {
                     if (place.geometry === undefined || place.geometry === null) {
                         return;
                     }
-                    console.log("place", place);
+                    // console.log("place", place);
                     if (place) {
                         _this.driver_start = place.formatted_address;
                     }
@@ -456,7 +481,7 @@ var DriverComponent = (function () {
                     if (place.geometry === undefined || place.geometry === null) {
                         return;
                     }
-                    console.log("place", place);
+                    // console.log("place", place);
                     _this.driver_end = place.formatted_address;
                 });
             });
@@ -470,7 +495,7 @@ var DriverComponent = (function () {
         var self = this;
         if (navigator.geolocation) {
             navigator.geolocation.getCurrentPosition(function (data) {
-                console.log("current location:", data);
+                // console.log("current location:", data);
                 _this.cur_latitude = data.coords.latitude;
                 _this.cur_lonitute = data.coords.longitude;
                 _this.start_latlng = new google.maps.LatLng(_this.cur_latitude, _this.cur_lonitute);
@@ -492,7 +517,7 @@ var DriverComponent = (function () {
                 for (var i = 0; i < self.shotgun_requests.length; i++) {
                     geocoder.geocode({ 'address': self.shotgun_requests[i].end }, function (res, status) {
                         if (status == google.maps.GeocoderStatus.OK) {
-                            console.log("ALALALALAL: ", res);
+                            // console.log("ALALALALAL: ", res);
                             var marker = new google.maps.Marker({
                                 icon: 'http://maps.google.com/mapfiles/ms/icons/blue.png',
                                 map: map,
@@ -507,8 +532,8 @@ var DriverComponent = (function () {
     };
     DriverComponent.prototype.route = function () {
         var self = this;
-        console.log("AAA", self.driver_start, self.driver_end);
-        console.log(self);
+        // console.log("AAA", self.driver_start, self.driver_end);
+        // console.log(self);
         var directionsService = new google.maps.DirectionsService;
         var directionsDisplay = new google.maps.DirectionsRenderer;
         var map = new google.maps.Map(document.getElementById('map'), {
@@ -521,7 +546,7 @@ var DriverComponent = (function () {
             destination: this.driver_end,
             travelMode: 'DRIVING'
         }, function (res, status) {
-            console.log("response", res);
+            // console.log("response", res);
             self.driver_time = Math.floor(res.routes[0].legs[0].duration.value / 60);
             directionsDisplay.setDirections(res);
         });
@@ -529,13 +554,13 @@ var DriverComponent = (function () {
     DriverComponent.prototype.showroute = function (request_id) {
         var _this = this;
         var self = this;
-        console.log("show route: ", request_id);
+        // console.log("show route: ",request_id);
         var request = {
             id: request_id,
         };
         this._httpService.getoneshotgun(request)
             .then(function (shotgun_req) {
-            console.log("find shotgun request: ", shotgun_req);
+            // console.log("find shotgun request: ", shotgun_req);
             // console.log(this.driver_start);
             // console.log(this.driver_end);
             var directionsService = new google.maps.DirectionsService;
@@ -560,7 +585,7 @@ var DriverComponent = (function () {
                 ],
                 travelMode: 'DRIVING'
             }, function (res, status) {
-                console.log("response legs", res);
+                // console.log("response legs", res);
                 var time = 0;
                 for (var i = 0; i < res.routes[0].legs.length; i++) {
                     time += res.routes[0].legs[i].duration.value;
@@ -582,7 +607,7 @@ var DriverComponent = (function () {
         };
         this._httpService.getoneshotgun(request)
             .then(function (shotgun_req) {
-            console.log("PICK UP REQUEST: ", shotgun_req);
+            // console.log("PICK UP REQUEST: ", shotgun_req)
             var driver = {
                 driver_start: self.driver_start,
                 driver_end: self.driver_end,
@@ -594,7 +619,7 @@ var DriverComponent = (function () {
             };
             _this._httpService.createDriver(driver)
                 .then(function (driver_created) {
-                console.log("driver created: ", driver_created);
+                // console.log("driver created: ", driver_created);
             })
                 .catch(function (err) { });
             _this._httpService.removeshotgun(shotgun_req)
@@ -603,10 +628,6 @@ var DriverComponent = (function () {
             });
         })
             .catch(function (err) { });
-    };
-    DriverComponent.prototype.logout = function () {
-        this._cookieService.remove('loginuserName');
-        this._route.navigate(['/']);
     };
     return DriverComponent;
 }());
@@ -712,6 +733,11 @@ var HttpService = (function () {
             .map(function (data) { return data.json(); })
             .toPromise();
     };
+    HttpService.prototype.getdriverinfo = function (shotgun_name) {
+        return this._http.post('/getdriverinfo', shotgun_name)
+            .map(function (data) { return data.json(); })
+            .toPromise();
+    };
     HttpService.prototype.removedriver = function (driver) {
         return this._http.post('/removedriver', driver)
             .map(function (data) { return data.json(); })
@@ -750,7 +776,7 @@ module.exports = module.exports.toString();
 /***/ "../../../../../src/app/login/login.component.html":
 /***/ (function(module, exports) {
 
-module.exports = "<div id=\"sign_up_component\">\n  <!--{{ name | json }}-->\n  <h2>Welcome to Dojo Pool</h2>\n  <br>\n  {{ reg_user | json }}\n  <div class=\"row\">\n    <div *ngIf=\"!isMember\" class=\"col-md-4 col-md-offset-4\">\n      <h1>Sign Up</h1>\n      <form #signupForm=\"ngForm\" (submit)=\"newUser(signupForm)\">\n        <div class=\"row\">\n          <div class=\"col-md-6\">\n            <div class=\"form-group\">\n              <label class=\"sr-only\" for=\"first_name\">First Name</label>\n              <input type=\"text\" name=\"first_name\" placeholder=\"First Name\" class=\"form-control\"\n              [(ngModel)] = \"reg_user.first_name\"\n              required\n              minlength=\"3\"\n              #firstname=\"ngModel\"\n              >\n            </div>\n            <div class=\"red\" *ngIf='firstname.errors && ( firstname.touched || signupForm.submitted)'>\n                <p *ngIf='firstname.errors.required'>First name is required</p>\n                <p *ngIf='firstname.errors.minlength'>First name must be at least 3 characters.</p>\n            </div>\n          </div>\n\n          <div class=\"col-md-6\">\n            <div class=\"form-group\">\n              <label class=\"sr-only\" for=\"last_name\">Last Name</label>\n              <input type=\"text\" name=\"last_name\" placeholder=\"Last Name\" class=\"form-control\"\n              [(ngModel)] = \"reg_user.last_name\"\n              required\n              minlength=\"3\"\n              #lastname=\"ngModel\"\n              >\n            </div>\n            <div class=\"red\" *ngIf='lastname.errors && ( lastname.touched || signupForm.submitted)'>\n                <p *ngIf='lastname.errors.required'>Last name is required</p>\n                <p *ngIf='lastname.errors.minlength'>Last name must be at least 3 characters.</p>\n            </div>\n          </div>\n        </div>\n        <div class=\"form-group\">\n          <label class=\"sr-only\" for=\"phone_number\">Phone Number</label>\n          <input type=\"text\" name=\"phone_number\"  placeholder=\"(555) 555-5555\" class=\"form-control\"\n          [(ngModel)]=\"reg_user.phone_number\"\n          required\n          #phone=\"ngModel\"\n          >\n        </div>\n        <div class=\"red\" *ngIf='phone.errors && ( phone.touched || signupForm.submitted)'>\n                <p *ngIf='phone.errors.required'>Phone is required</p>\n        </div>\n\n        <div class=\"form-group\">\n          <label class=\"sr-only\" for=\"email\">Email</label>\n          <input type=\"text\" name=\"email\"  placeholder=\"Email\" class=\"form-control\"\n          [(ngModel)]=\"reg_user.email\"\n          required\n          pattern='^[a-zA-Z0-9.+_-]+@[a-zA-Z0-9._-]+\\.[a-zA-Z]+$'\n          #email=\"ngModel\"\n          >\n        </div>\n        <div class=\"red\" *ngIf='email.errors && ( email.touched || signupForm.submitted)'>\n                <p *ngIf='email.errors.required'>Email is required</p>\n                <p *ngIf='email.errors.pattern'>Email must be valid</p>\n        </div>\n\n        <div class=\"form-group\">\n          <label class=\"sr-only\" for=\"pwd\">Password</label>\n          <input type=\"password\" name=\"password\"  placeholder=\"Password\" class=\"form-control\"\n          [(ngModel)]=\"reg_user.password\"\n          required\n          minlength=\"8\"\n          pattern=\"^([a-zA-Z0-9@*#]{8,15})$\" \n          #pwd=\"ngModel\"\n          >\n        </div>\n        <p>*Password must be at least 8 characters</p>\n        <div class=\"red\" *ngIf='pwd.errors && ( pwd.touched || signupForm.submitted)'>\n                <p *ngIf='pwd.errors.required'>Password is required</p>\n                <p *ngIf='pwd.errors.pattern'>Password must be valid</p>\n                <p *ngIf='pwd.errors.minlength'>Password must be at least 8 characters</p>\n        </div>\n\n        <button [disabled]=\"!signupForm.valid\" type=\"submit\" class=\"btn btn-success\">Sign Up</button>\n      </form>\n    </div>\n    <div *ngIf=\"isMember\" class=\"col-md-4 col-md-offset-4\">\n      <h1>Sign In</h1>\n      <form #loginForm=\"ngForm\" (submit)=\"getUser(loginForm)\">\n        <div class=\"form-group\">\n          <label class=\"sr-only\" for=\"email\">Email</label>\n          <input type=\"text\" name=\"email\"  placeholder=\"Email\" class=\"form-control\"\n          [(ngModel)]=\"login_user.email\"\n          required\n          pattern='^[a-zA-Z0-9.+_-]+@[a-zA-Z0-9._-]+\\.[a-zA-Z]+$'\n          #loginemail=\"ngModel\"\n          >\n        </div>\n        <div class=\"red\" *ngIf='loginemail.errors && ( loginemail.touched || loginForm.submitted)'>\n                <p *ngIf='loginemail.errors.required'>Email is required</p>\n                <p *ngIf='loginemail.errors.pattern'>Email must be valid</p>\n        </div>\n\n        <div class=\"form-group\">\n          <label class=\"sr-only\" for=\"pwd\">Password</label>\n          <input type=\"password\" name=\"password\"  placeholder=\"Password\" class=\"form-control\"\n          [(ngModel)]=\"login_user.password\"\n          required\n          minlength=\"8\"\n          pattern=\"^([a-zA-Z0-9@*#]{8,15})$\" \n          #loginpwd=\"ngModel\"\n          >\n        </div>\n\n        <div class=\"red\" *ngIf='loginpwd.errors && ( loginpwd.touched || loginForm.submitted)'>\n                <p *ngIf='loginpwd.errors.required'>Password is required</p>\n                <p *ngIf='loginpwd.errors.pattern'>Password must be valid</p>\n                <p *ngIf='loginpwd.errors.minlength'>Password must be at least 8 characters</p>\n        </div>\n\n        <p>Don't have an account? <a (click)=\"notMember()\">Sign up</a></p>\n\n        <button [disabled]=\"!loginForm.valid\" type=\"submit\" class=\"btn btn-success\">Login</button>\n      </form>\n    </div>\n  </div>\n</div>\n"
+module.exports = "<div id=\"sign_up_component\">\n  <!--{{ name | json }}-->\n  <h2>Welcome to Dojo Pool</h2>\n  <br>\n  <!--{{ reg_user | json }}-->\n  <div class=\"row\">\n    <div *ngIf=\"!isMember\" class=\"col-md-4 col-md-offset-4\">\n      <h1>Sign Up</h1>\n      <form #signupForm=\"ngForm\" (submit)=\"newUser(signupForm)\">\n        <div class=\"row\">\n          <div class=\"col-md-6\">\n            <div class=\"form-group\">\n              <label class=\"sr-only\" for=\"first_name\">First Name</label>\n              <input type=\"text\" name=\"first_name\" placeholder=\"First Name\" class=\"form-control\"\n              [(ngModel)] = \"reg_user.first_name\"\n              required\n              minlength=\"3\"\n              #firstname=\"ngModel\"\n              >\n            </div>\n            <div class=\"red\" *ngIf='firstname.errors && ( firstname.touched || signupForm.submitted)'>\n                <p *ngIf='firstname.errors.required'>First name is required</p>\n                <p *ngIf='firstname.errors.minlength'>First name must be at least 3 characters.</p>\n            </div>\n          </div>\n\n          <div class=\"col-md-6\">\n            <div class=\"form-group\">\n              <label class=\"sr-only\" for=\"last_name\">Last Name</label>\n              <input type=\"text\" name=\"last_name\" placeholder=\"Last Name\" class=\"form-control\"\n              [(ngModel)] = \"reg_user.last_name\"\n              required\n              minlength=\"3\"\n              #lastname=\"ngModel\"\n              >\n            </div>\n            <div class=\"red\" *ngIf='lastname.errors && ( lastname.touched || signupForm.submitted)'>\n                <p *ngIf='lastname.errors.required'>Last name is required</p>\n                <p *ngIf='lastname.errors.minlength'>Last name must be at least 3 characters.</p>\n            </div>\n          </div>\n        </div>\n        <div class=\"form-group\">\n          <label class=\"sr-only\" for=\"phone_number\">Phone Number</label>\n          <input type=\"text\" name=\"phone_number\"  placeholder=\"(555) 555-5555\" class=\"form-control\"\n          [(ngModel)]=\"reg_user.phone_number\"\n          required\n          #phone=\"ngModel\"\n          >\n        </div>\n        <div class=\"red\" *ngIf='phone.errors && ( phone.touched || signupForm.submitted)'>\n                <p *ngIf='phone.errors.required'>Phone is required</p>\n        </div>\n\n        <div class=\"form-group\">\n          <label class=\"sr-only\" for=\"email\">Email</label>\n          <input type=\"text\" name=\"email\"  placeholder=\"Email\" class=\"form-control\"\n          [(ngModel)]=\"reg_user.email\"\n          required\n          pattern='^[a-zA-Z0-9.+_-]+@[a-zA-Z0-9._-]+\\.[a-zA-Z]+$'\n          #email=\"ngModel\"\n          >\n        </div>\n        <div class=\"red\" *ngIf='email.errors && ( email.touched || signupForm.submitted)'>\n                <p *ngIf='email.errors.required'>Email is required</p>\n                <p *ngIf='email.errors.pattern'>Email must be valid</p>\n        </div>\n\n        <div class=\"form-group\">\n          <label class=\"sr-only\" for=\"pwd\">Password</label>\n          <input type=\"password\" name=\"password\"  placeholder=\"Password\" class=\"form-control\"\n          [(ngModel)]=\"reg_user.password\"\n          required\n          minlength=\"8\"\n          pattern=\"^([a-zA-Z0-9@*#]{8,15})$\" \n          #pwd=\"ngModel\"\n          >\n        </div>\n        <p>*Password must be at least 8 characters</p>\n        <div class=\"red\" *ngIf='pwd.errors && ( pwd.touched || signupForm.submitted)'>\n                <p *ngIf='pwd.errors.required'>Password is required</p>\n                <p *ngIf='pwd.errors.pattern'>Password must be valid</p>\n                <p *ngIf='pwd.errors.minlength'>Password must be at least 8 characters</p>\n        </div>\n\n        <button [disabled]=\"!signupForm.valid\" type=\"submit\" class=\"btn btn-success\">Sign Up</button>\n      </form>\n    </div>\n    <div *ngIf=\"isMember\" class=\"col-md-4 col-md-offset-4\">\n      <h1>Sign In</h1>\n      <form #loginForm=\"ngForm\" (submit)=\"getUser(loginForm)\">\n        <div class=\"form-group\">\n          <label class=\"sr-only\" for=\"email\">Email</label>\n          <input type=\"text\" name=\"email\"  placeholder=\"Email\" class=\"form-control\"\n          [(ngModel)]=\"login_user.email\"\n          required\n          pattern='^[a-zA-Z0-9.+_-]+@[a-zA-Z0-9._-]+\\.[a-zA-Z]+$'\n          #loginemail=\"ngModel\"\n          >\n        </div>\n        <div class=\"red\" *ngIf='loginemail.errors && ( loginemail.touched || loginForm.submitted)'>\n                <p *ngIf='loginemail.errors.required'>Email is required</p>\n                <p *ngIf='loginemail.errors.pattern'>Email must be valid</p>\n        </div>\n\n        <div class=\"form-group\">\n          <label class=\"sr-only\" for=\"pwd\">Password</label>\n          <input type=\"password\" name=\"password\"  placeholder=\"Password\" class=\"form-control\"\n          [(ngModel)]=\"login_user.password\"\n          required\n          minlength=\"8\"\n          pattern=\"^([a-zA-Z0-9@*#]{8,15})$\" \n          #loginpwd=\"ngModel\"\n          >\n        </div>\n\n        <div class=\"red\" *ngIf='loginpwd.errors && ( loginpwd.touched || loginForm.submitted)'>\n                <p *ngIf='loginpwd.errors.required'>Password is required</p>\n                <p *ngIf='loginpwd.errors.pattern'>Password must be valid</p>\n                <p *ngIf='loginpwd.errors.minlength'>Password must be at least 8 characters</p>\n        </div>\n\n        <p>Don't have an account? <a (click)=\"notMember()\">Sign up</a></p>\n\n        <button [disabled]=\"!loginForm.valid\" type=\"submit\" class=\"btn btn-success\">Login</button>\n      </form>\n    </div>\n  </div>\n</div>\n"
 
 /***/ }),
 
@@ -812,7 +838,7 @@ var LoginComponent = (function () {
         }
         this._httpServide.getOneUser(this.login_user)
             .then(function (user) {
-            console.log("Login user: ", user);
+            // console.log("Login user: ", user);
             _this._cookieService.put("loginuserName", user.first_name);
             _this._cookieService.put("loginuserId", user._id);
             _this._router.navigate(['/dashboard']);
@@ -829,7 +855,7 @@ var LoginComponent = (function () {
         }
         this._httpServide.createUser(this.reg_user)
             .then(function (usercreated) {
-            console.log("created user: ", usercreated);
+            // console.log("created user: ", usercreated);
             _this._cookieService.put("loginuserName", usercreated.first_name);
             _this._cookieService.put("loginuserId", usercreated._id);
             _this.reg_user = {
@@ -936,7 +962,7 @@ var PickupComponent = (function () {
             .then(function () {
             _this._httpService.getdriver(_this.driver_id)
                 .then(function (driver_res) {
-                console.log("pick up info: ", driver_res);
+                // console.log("pick up info: ", driver_res);
                 _this.shotgun_info = driver_res;
                 var directionsService = new google.maps.DirectionsService;
                 var directionsDisplay = new google.maps.DirectionsRenderer;
@@ -955,7 +981,7 @@ var PickupComponent = (function () {
                         }],
                     travelMode: 'DRIVING'
                 }, function (res, status) {
-                    console.log("direction: ", res);
+                    // console.log("direction: ", res);
                     directionsDisplay.setDirections(res);
                     directionsDisplay.setPanel(document.getElementById('right-panel'));
                 });
@@ -966,7 +992,7 @@ var PickupComponent = (function () {
         var _this = this;
         this._httpService.removedriver(this.driver_id)
             .then(function () {
-            console.log("remove successfully!!");
+            // console.log("remove successfully!!");
             _this._route.navigate(['/driver']);
         })
             .catch();
@@ -995,7 +1021,7 @@ exports = module.exports = __webpack_require__("../../../../css-loader/lib/css-b
 
 
 // module
-exports.push([module.i, "#map {\n        height: 300px;\n        width: 50%;\n}\n\n.input_container{\n        width: 50%;\n        margin-bottom: 20px;\n}", ""]);
+exports.push([module.i, "#map {\n        height: 300px;\n        width: 50%;\n}\n#resultmap {\n        height: 300px;\n        width: 50%;\n}\n\n.input_container{\n        width: 50%;\n        margin-bottom: 20px;\n}\n\n.green{\n        color: green;\n}", ""]);
 
 // exports
 
@@ -1008,7 +1034,7 @@ module.exports = module.exports.toString();
 /***/ "../../../../../src/app/shotgun/shotgun.component.html":
 /***/ (function(module, exports) {
 
-module.exports = "<div id=\"dashboard_container\">\n  <h1>Hello, {{ name }} {{ id }}</h1>\n  <a (click)=\"logout()\">Log out</a>\n{{ start }}{{ end }}\n<!--<div *ngIf = \"duration\">\n  <p>duration</p>\n  {{duration | json}}\n</div>-->\n<p>Estimate time: {{ duration }}</p>\n    <div class=\"input_container\">\n          <div class=\"form-group\">\n            <input placeholder=\"start\" autocorrect=\"off\" autocapitalize=\"off\" spellcheck=\"off\" type=\"text\" class=\"form-control\" #startsearch [formControl]=\"searchControl\">\n          </div>\n          <div class=\"form-group\">\n            <input placeholder=\"destination\" autocorrect=\"off\" autocapitalize=\"off\" spellcheck=\"off\" type=\"text\" class=\"form-control\" #endsearch [formControl]=\"searchControl\">\n          </div>\n          <!--<agm-map [latitude]=\"latitude\" [longitude]=\"longitude\" [scrollwheel]=\"false\" [zoom]=\"zoom\">\n            <agm-marker [latitude]=\"latitude\" [longitude]=\"longitude\"></agm-marker>\n          </agm-map>-->\n          <button class=\"btn btn-primary\" (click)=\"route()\">Need a Ride</button>\n    </div>\n    <div id=\"map\"></div>\n</div>\n\n"
+module.exports = "<div id=\"dashboard_container\">\n  <h1>Hello, {{ user_name.name }}</h1>\n  <table class=\"table table-bordered\" *ngIf=\"request\">\n    <thead>\n    <tr>\n      <td> Driver name</td>\n      <td>Driver start</td>\n      <td> Meet up point</td>\n      <td>Phone number</td>\n      <td></td>\n    </tr>\n    </thead>\n    <tbody>\n      <tr *ngIf=\"request\">\n        <td>{{request._user.first_name }} </td>\n        <td> {{request.driver_start }} </td>\n        <td> {{request.shotgun_start }} </td>\n        <td>{{request._user.phone_number}} </td>\n        <td><a class=\"btn btn-primary\" (click)=\"resultroute()\">See detail</a></td>\n      </tr>\n    </tbody>\n  </table>\n    <div class=\"input_container\" *ngIf=\"!request\">\n          <div class=\"form-group\">\n            <input placeholder=\"start\" autocorrect=\"off\" autocapitalize=\"off\" spellcheck=\"off\" type=\"text\" class=\"form-control\" #startsearch [formControl]=\"searchControl\">\n          </div>\n          <div class=\"form-group\">\n            <input placeholder=\"destination\" autocorrect=\"off\" autocapitalize=\"off\" spellcheck=\"off\" type=\"text\" class=\"form-control\" #endsearch [formControl]=\"searchControl\">\n          </div>\n          <!--<agm-map [latitude]=\"latitude\" [longitude]=\"longitude\" [scrollwheel]=\"false\" [zoom]=\"zoom\">\n            <agm-marker [latitude]=\"latitude\" [longitude]=\"longitude\"></agm-marker>\n          </agm-map>-->\n          <button class=\"btn btn-primary\" (click)=\"route()\">Need a Ride</button>\n          <p *ngIf=\"sent\" class=\"green\">You sent a carpool request successfully.</p>\n    </div>\n    <p *ngIf=\"duration\">Estimate time: {{ duration }}</p>\n    <div id=\"map\" *ngIf=\"!request\"></div>\n      <div>\n        <div id=\"resultmap\"></div>\n        <p *ngIf=\"result_flag\">Estimate time: {{ result_duration }}</p>\n      </div>\n</div>\n\n"
 
 /***/ }),
 
@@ -1041,24 +1067,38 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 
 var ShotgunComponent = (function () {
     function ShotgunComponent(mapsAPILoader, ngZone, _cookieService, _route, _httpService) {
+        var _this = this;
         this.mapsAPILoader = mapsAPILoader;
         this.ngZone = ngZone;
         this._cookieService = _cookieService;
         this._route = _route;
         this._httpService = _httpService;
-        this.name = '';
+        this.result_flag = false;
+        this.sent = false;
+        this.user_name = {
+            name: '',
+        };
         this.id = '';
         this.cur_latitude = 0.0;
         this.cur_lonitute = 0.0;
         this.start = '';
         this.end = '';
         this.duration = '';
+        this.result_duration = '';
         if (!this._cookieService.get("loginuserName")) {
             this._route.navigate(['/']);
         }
-        this.name = this._cookieService.get("loginuserName");
+        this.user_name.name = this._cookieService.get("loginuserName");
         this.id = this._cookieService.get("loginuserId");
-        console.log("IDDD", this.id);
+        // console.log("IDDD", this.id);
+        this._httpService.getdriverinfo(this.user_name)
+            .then(function (driver) {
+            _this.request = driver;
+            // console.log("SHOTGUN REQUEST RESULT: ", this.request);
+        })
+            .catch(function (err) {
+            console.log("error in shotgun component constructor", err);
+        });
     }
     ShotgunComponent.prototype.ngOnInit = function () {
         var _this = this;
@@ -1083,7 +1123,7 @@ var ShotgunComponent = (function () {
                     if (place.geometry === undefined || place.geometry === null) {
                         return;
                     }
-                    console.log("place", place);
+                    // console.log("place", place);
                     if (place) {
                         _this.start = place.formatted_address;
                     }
@@ -1097,7 +1137,7 @@ var ShotgunComponent = (function () {
                     if (place.geometry === undefined || place.geometry === null) {
                         return;
                     }
-                    console.log("place", place);
+                    // console.log("place", place);
                     _this.end = place.formatted_address;
                 });
             });
@@ -1108,7 +1148,7 @@ var ShotgunComponent = (function () {
         var self = this;
         if (navigator.geolocation) {
             navigator.geolocation.getCurrentPosition(function (data) {
-                console.log("current location:", data);
+                // console.log("current location:", data);
                 _this.cur_latitude = data.coords.latitude;
                 _this.cur_lonitute = data.coords.longitude;
                 _this.start_latlng = new google.maps.LatLng(_this.cur_latitude, _this.cur_lonitute);
@@ -1116,7 +1156,7 @@ var ShotgunComponent = (function () {
                 geocoder.geocode({ 'latLng': _this.start_latlng }, function (results, status) {
                     if (status == google.maps.GeocoderStatus.OK) {
                         self.start = results[0].formatted_address;
-                        console.log("IN geocoder: ", self.start, self); // if address found, pass to processing function
+                        // console.log("IN geocoder: ", self.start, self);       // if address found, pass to processing function
                     }
                 });
                 var map = new google.maps.Map(document.getElementById('map'), {
@@ -1125,21 +1165,23 @@ var ShotgunComponent = (function () {
                 });
                 var marker = new google.maps.Marker({
                     position: { lat: data.coords.latitude, lng: data.coords.longitude },
-                    map: map
+                    map: map,
+                    title: "Current location"
                 });
             });
         }
     };
     ShotgunComponent.prototype.route = function () {
         var self = this;
-        console.log("AAA", self.start, self.end);
+        // console.log("AAA", self.start, self.end);
+        self.sent = true;
         var shotgun = {
             start: self.start,
             end: self.end,
             _user: this._cookieService.get('loginuserId'),
         };
         this._httpService.createShotGun(shotgun);
-        console.log(self);
+        // console.log(self);
         var directionsService = new google.maps.DirectionsService;
         var directionsDisplay = new google.maps.DirectionsRenderer;
         var map = new google.maps.Map(document.getElementById('map'), {
@@ -1152,9 +1194,37 @@ var ShotgunComponent = (function () {
             destination: this.end,
             travelMode: 'DRIVING'
         }, function (res, status) {
-            console.log("response", res);
+            // console.log("response", res);
             self.duration = res.routes[0].legs[0].duration.text;
-            console.log("dur", self.duration);
+            // console.log("dur", self.duration); 
+            directionsDisplay.setDirections(res);
+        });
+    };
+    ShotgunComponent.prototype.resultroute = function () {
+        var self = this;
+        // console.log("AAA", self.start, self.end);
+        var shotgun = {
+            start: self.start,
+            end: self.end,
+            _user: this._cookieService.get('loginuserId'),
+        };
+        // console.log(self);
+        var directionsService = new google.maps.DirectionsService;
+        var directionsDisplay = new google.maps.DirectionsRenderer;
+        var map = new google.maps.Map(document.getElementById('resultmap'), {
+            zoom: 7,
+            center: { lat: this.cur_latitude, lng: this.cur_lonitute },
+        });
+        directionsDisplay.setMap(map);
+        directionsService.route({
+            origin: self.request.driver_start,
+            destination: self.request.shotgun_start,
+            travelMode: 'DRIVING'
+        }, function (res, status) {
+            // console.log("response", res);
+            self.result_duration = res.routes[0].legs[0].duration.text;
+            // console.log("dur", self.result_duration);
+            self.result_flag = true;
             directionsDisplay.setDirections(res);
         });
     };

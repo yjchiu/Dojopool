@@ -1,6 +1,4 @@
 <div id="driver_container">
-  <a (click)="logout()">Log out</a>
-  <a [routerLink]="['/dashboard']">Dashboard</a>
   <table class="table table-bordered">
     <thead>
     <tr>
@@ -36,10 +34,22 @@
     </div>
     <div id="map"></div>
   </div>
-  <div *ngIf="showroute_flag" id="right_container">
+  <!--<div *ngIf="showroute_flag" id="right_container">
     <p>Before picking up passenger: {{ driver_time }} mins </p>
     <p>After picking up passenger: {{ carpool_time }} mins </p>
     <p>It's {{ percentage }}% more than original.</p>
     
+  </div>-->
+
+  <div *ngIf="showroute_flag" class="panel panel-primary" id="right_container">
+    <div class="panel-heading">
+      <h3 class="panel-title">Information</h3>
+    </div>
+    <div class="panel-body">
+      <p>Before picking up passenger: {{ driver_time }} mins </p>
+      <p>After picking up passenger: {{ carpool_time }} mins </p>
+      <p>It's {{ percentage }}% more than original.</p>
+    </div>
   </div>
+
 </div>

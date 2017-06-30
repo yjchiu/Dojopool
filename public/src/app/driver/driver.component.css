@@ -8,17 +8,17 @@
 }
 
 #left_container{
-    width: 45%;
+    width: 48%;
     margin-bottom: 20px;
     display: inline-block;
     vertical-align: top;
 }
 
 #right_container{
-    width: 45%;
+    width: 48%;
     height: 200px;
     margin-bottom: 20px;
-    background-color: lightblue; 
+    /*background-color: lightblue; */
     display: inline-block;
     margin-left: 20px;
 }
